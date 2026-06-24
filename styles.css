@@ -18,8 +18,8 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--ivory);
   color: var(--ink);
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 300;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
   line-height: 1.75;
   overflow-x: hidden;
 }
@@ -40,7 +40,7 @@ nav {
 }
 
 .nav-brand {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Fraunces', serif;
   font-size: 13px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -134,7 +134,7 @@ nav {
 }
 
 .drawer-links a {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Fraunces', serif;
   font-size: 22px;
   font-weight: 400;
   color: var(--ink);
@@ -171,7 +171,7 @@ nav {
   background: var(--ink);
   color: var(--ivory);
   padding: 15px 40px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.13em;
@@ -189,7 +189,7 @@ nav {
   background: transparent;
   color: var(--ink);
   padding: 15px 40px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.13em;
@@ -274,7 +274,7 @@ nav {
 }
 
 .modal h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Fraunces', serif;
   font-size: 24px;
   font-weight: 400;
   color: var(--ink);
@@ -306,12 +306,12 @@ nav {
   border: 1px solid rgba(44,44,44,0.15);
   background: var(--ivory);
   padding: 13px 16px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 14px;
   color: var(--ink);
   outline: none;
   transition: border-color 0.3s;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .form-group input:focus,
@@ -337,14 +337,14 @@ footer {
 }
 
 .footer-brand {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Fraunces', serif;
   font-size: 17px;
   color: var(--ink);
 }
 
 .footer-brand span {
   display: block;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
