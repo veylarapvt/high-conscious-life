@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clear The Noise — High Conscious Life</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .page-hero {
+      padding: 160px 60px 80px;
+      max-width: 860px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .breadcrumb {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 28px;
+    }
+
+    .breadcrumb a { color: var(--gold); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+
+    .page-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(40px, 6vw, 68px);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    .page-hero h1 em { font-style: italic; color: var(--sage); }
+
+    .page-hero .hero-tag {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .page-hero p {
+      font-size: 17px;
+      color: var(--ink-soft);
+      line-height: 1.9;
+      max-width: 580px;
+      margin: 0 auto;
+    }
+
+    .event-strip {
+      background: var(--ivory-warm);
+      border-top: 1px solid rgba(44,44,44,0.07);
+      border-bottom: 1px solid rgba(44,44,44,0.07);
+      padding: 28px 60px;
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      flex-wrap: wrap;
+    }
+
+    .event-item {
+      text-align: center;
+    }
+
+    .event-item .e-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .event-item .e-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--ink);
+    }
+
+    /* ── ABOUT BLOCK ── */
+    .detail-section {
+      padding: 90px 60px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .detail-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(24px, 3vw, 34px);
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 28px;
+      line-height: 1.3;
+    }
+
+    .detail-section p {
+      font-size: 16px;
+      color: var(--ink-soft);
+      line-height: 1.95;
+    }
+
+    .detail-section p + p { margin-top: 18px; }
+
+    /* ── WHAT YOU WILL EXPERIENCE ── */
+    .pillars {
+      background: var(--ivory-warm);
+      padding: 90px 60px;
+    }
+
+    .pillars-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .pillars-inner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(24px, 3vw, 34px);
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 48px;
+      line-height: 1.3;
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: rgba(44,44,44,0.07);
+    }
+
+    .pillar {
+      background: var(--white);
+      padding: 36px 30px;
+    }
+
+    .pillar-icon {
+      font-size: 22px;
+      margin-bottom: 14px;
+    }
+
+    .pillar h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+
+    .pillar p {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.8;
+    }
+
+    /* ── OUTCOMES ── */
+    .outcomes-section {
+      padding: 90px 60px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .outcomes-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(24px, 3vw, 34px);
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 40px;
+    }
+
+    .outcomes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: rgba(44,44,44,0.07);
+    }
+
+    .outcome-item {
+      background: var(--ivory);
+      padding: 24px 28px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .outcome-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+      margin-top: 10px;
+    }
+
+    .outcome-item span {
+      font-size: 15px;
+      color: var(--ink-soft);
+      line-height: 1.7;
+    }
+
+    /* ── FREEBIES ── */
+    .freebies {
+      background: var(--lavender);
+      padding: 90px 60px;
+    }
+
+    .freebies-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .freebies-inner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(24px, 3vw, 34px);
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    .freebies-sub {
+      font-size: 15px;
+      color: var(--ink-muted);
+      margin-bottom: 40px;
+    }
+
+    .freebies-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .freebie-card {
+      background: var(--white);
+      padding: 32px 28px;
+      border-bottom: 2px solid var(--gold);
+    }
+
+    .freebie-card .f-tag {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .freebie-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .freebie-card p {
+      font-size: 13.5px;
+      color: var(--ink-muted);
+      line-height: 1.75;
+    }
+
+    /* ── REGISTER / CTA ── */
+    .register-section {
+      padding: 90px 60px;
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .register-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    .register-section p {
+      font-size: 15px;
+      color: var(--ink-muted);
+      margin-bottom: 40px;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+
+    .price-original {
+      font-size: 22px;
+      color: var(--ink-muted);
+      text-decoration: line-through;
+      text-decoration-color: rgba(44,44,44,0.35);
+    }
+
+    .price-current {
+      font-family: 'Playfair Display', serif;
+      font-size: 52px;
+      font-weight: 400;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+
+    .price-tag {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--gold-light);
+      color: var(--gold);
+      padding: 5px 12px;
+      align-self: center;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .register-note {
+      margin-top: 16px;
+      font-size: 12px;
+      color: var(--ink-muted);
+    }
+
+    @media (max-width: 860px) {
+      .page-hero { padding: 130px 28px 60px; }
+      .event-strip { padding: 24px 28px; gap: 32px; }
+      .detail-section { padding: 70px 28px; }
+      .pillars { padding: 70px 28px; }
+      .pillars-grid { grid-template-columns: 1fr; }
+      .outcomes-section { padding: 70px 28px; }
+      .outcomes-grid { grid-template-columns: 1fr; }
+      .freebies { padding: 70px 28px; }
+      .freebies-list { grid-template-columns: 1fr; }
+      .register-section { padding: 70px 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-brand" href="index.html">High Conscious Life</a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="experiences.html">Experiences</a></li>
+      </ul>
+      <button class="hamburger" onclick="openDrawer()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="drawer-overlay" id="overlay" onclick="closeDrawer()"></div>
+  <div class="drawer" id="drawer">
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    <p class="drawer-label">Navigate</p>
+    <ul class="drawer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="experiences.html">Experiences</a></li>
+      <li><a href="clear-the-noise.html">Clear The Noise</a></li>
+      <li><a href="break-the-pattern.html">Break The Pattern <span class="coming">Soon</span></a></li>
+      <li><a href="manifest-your-reality.html">Manifest Your Reality <span class="coming">Soon</span></a></li>
+    </ul>
+  </div>
+
+  <!-- HERO -->
+  <div class="page-hero">
+    <p class="breadcrumb"><a href="experiences.html">Experiences</a> &nbsp;/&nbsp; Experience 01</p>
+    <span class="hero-tag">Experience 01 · Now Open</span>
+    <h1>Clear<br /><em>The Noise</em></h1>
+    <p>A 3-hour immersive evening workshop designed to help you slow down, become aware of the patterns controlling your life, and reconnect with your own inner clarity.</p>
+  </div>
+
+  <!-- EVENT STRIP -->
+  <div class="event-strip">
+    <div class="event-item"><span class="e-label">Date</span><span class="e-val">July 10, 2026</span></div>
+    <div class="event-item"><span class="e-label">Time</span><span class="e-val">5:00 PM – 8:00 PM</span></div>
+    <div class="event-item"><span class="e-label">Duration</span><span class="e-val">3 Hours</span></div>
+    <div class="event-item"><span class="e-label">Seats</span><span class="e-val">Limited</span></div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="detail-section">
+    <span class="section-label">About This Experience</span>
+    <h2>The mind never stops talking. This is where you learn to listen differently.</h2>
+    <p>We live in an age of constant input — notifications, opinions, plans, worries. Most people are not living consciously. They are living from mental chatter that has become so loud, they can no longer hear themselves think clearly.</p>
+    <p>Clear The Noise is a structured, intimate 3-hour experience that takes you out of your usual environment and into a space of genuine stillness. Through guided awareness practices, reflection exercises, mindfulness techniques, and conscious observation, you learn to step outside the noise.</p>
+    <p>This is not a meditation class. This is not a lecture. It is a living, breathing experience — where you do the inner work in real time, in a safe and held space, with others who are walking the same path.</p>
+    <p>You will leave with a clearer mind, a calmer nervous system, and a stronger sense of who you are beneath all the noise that has been covering you.</p>
+  </section>
+
+  <!-- PILLARS -->
+  <section class="pillars">
+    <div class="pillars-inner">
+      <span class="section-label">What You Will Experience</span>
+      <h2>Three hours. One clear direction.</h2>
+      <div class="pillars-grid">
+        <div class="pillar">
+          <div class="pillar-icon">◯</div>
+          <h3>Guided Awareness</h3>
+          <p>Awareness practices that help you observe your thoughts without being controlled by them.</p>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">◎</div>
+          <h3>Reflection & Journaling</h3>
+          <p>Structured reflection exercises that surface what has been running unconsciously beneath the surface.</p>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">●</div>
+          <h3>Reconnection</h3>
+          <p>A closing practice to help you anchor back into yourself — present, calm, and clear.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUTCOMES -->
+  <section class="outcomes-section">
+    <span class="section-label">What You Take Home</span>
+    <h2>The shifts you'll carry forward.</h2>
+    <div class="outcomes-grid">
+      <div class="outcome-item"><div class="outcome-dot"></div><span>Reduced overthinking and mental noise</span></div>
+      <div class="outcome-item"><div class="outcome-dot"></div><span>Greater mental clarity and focus</span></div>
+      <div class="outcome-item"><div class="outcome-dot"></div><span>Increased self-awareness</span></div>
+      <div class="outcome-item"><div class="outcome-dot"></div><span>Stronger connection with your intuition</span></div>
+      <div class="outcome-item"><div class="outcome-dot"></div><span>More presence in everyday life</span></div>
+      <div class="outcome-item"><div class="outcome-dot"></div><span>Inner calm and emotional balance</span></div>
+    </div>
+  </section>
+
+  <!-- FREEBIES -->
+  <section class="freebies">
+    <div class="freebies-inner">
+      <span class="section-label">Included With Your Seat</span>
+      <h2>Everything you need to continue the journey.</h2>
+      <p class="freebies-sub">Digital resources delivered to you after the workshop.</p>
+      <div class="freebies-list">
+        <div class="freebie-card">
+          <span class="f-tag">Digital Freebie 01</span>
+          <h4>Low Thinking Affirmations</h4>
+          <p>A curated set of affirmations designed to quieten the overactive mind and anchor you in the present.</p>
+        </div>
+        <div class="freebie-card">
+          <span class="f-tag">Digital Freebie 02</span>
+          <h4>Guided Clarity Journal</h4>
+          <p>A structured journal with prompts to help you continue the reflection work started in the workshop.</p>
+        </div>
+        <div class="freebie-card">
+          <span class="f-tag">Digital Freebie 03</span>
+          <h4>Daily Awareness Tracker</h4>
+          <p>A simple daily tracker to help you notice patterns, practice presence, and build a conscious daily habit.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGISTER -->
+  <section class="register-section" id="register">
+    <span class="section-label">Reserve Your Seat</span>
+    <h2>One evening.<br />A lasting shift.</h2>
+    <p>July 10, 2026 · 5:00 PM – 8:00 PM · Includes snacks + all materials</p>
+    <div class="price-row">
+      <span class="price-original">₹1,999</span>
+      <span class="price-current">₹799</span>
+      <span class="price-tag">Early Bird</span>
+    </div>
+    <div class="cta-buttons">
+      <a href="#" class="btn-primary">Proceed to Register</a>
+      <button class="btn-outline" onclick="openModal()">Ask a Query</button>
+    </div>
+    <p class="register-note">Secure payment via Razorpay · Limited seats available</p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">High Conscious Life<span>A Journey Back To Yourself</span></div>
+    <ul class="footer-links">
+      <li><a href="#">Instagram</a></li>
+      <li><a href="#">WhatsApp</a></li>
+      <li><a href="mailto:hello@highconsciouslife.in">hello@highconsciouslife.in</a></li>
+    </ul>
+  </footer>
+
+  <!-- QUERY MODAL -->
+  <div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <h3>Ask a Query</h3>
+      <p class="modal-sub">We'll get back to you within 24 hours.</p>
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" placeholder="Priya Sharma" />
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" placeholder="+91 98765 43210" />
+      </div>
+      <div class="form-group">
+        <label>Email ID</label>
+        <input type="email" placeholder="priya@email.com" />
+      </div>
+      <div class="form-group">
+        <label>Your Query</label>
+        <textarea placeholder="What would you like to know about Clear The Noise?"></textarea>
+      </div>
+      <button class="btn-primary form-submit">Send Query</button>
+    </div>
+  </div>
+
+  <script>
+    function openDrawer() { document.getElementById('drawer').classList.add('open'); document.getElementById('overlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeDrawer() { document.getElementById('drawer').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); document.body.style.overflow = ''; }
+    function openModal() { document.getElementById('modal').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeModal() { document.getElementById('modal').classList.remove('open'); document.body.style.overflow = ''; }
+    function handleOverlayClick(e) { if (e.target === document.getElementById('modal')) closeModal(); }
+  </script>
+</body>
+</html>

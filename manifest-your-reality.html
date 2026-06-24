@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manifest Your Reality — High Conscious Life</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .page-hero {
+      padding: 160px 60px 80px;
+      max-width: 860px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .breadcrumb {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 28px;
+    }
+
+    .breadcrumb a { color: var(--gold); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+
+    .coming-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--ivory-warm);
+      border: 1px solid rgba(44,44,44,0.1);
+      padding: 10px 20px;
+      margin-bottom: 28px;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+
+    .coming-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); opacity: 0.6; }
+
+    .page-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(40px, 6vw, 68px);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    .page-hero h1 em { font-style: italic; color: var(--sage); }
+
+    .page-hero p {
+      font-size: 17px;
+      color: var(--ink-soft);
+      line-height: 1.9;
+      max-width: 580px;
+      margin: 0 auto;
+    }
+
+    .detail-section {
+      padding: 90px 60px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .detail-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(24px, 3vw, 34px);
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 28px;
+      line-height: 1.3;
+    }
+
+    .detail-section p { font-size: 16px; color: var(--ink-soft); line-height: 1.95; }
+    .detail-section p + p { margin-top: 18px; }
+
+    .outcomes-section {
+      background: var(--ivory-warm);
+      padding: 80px 60px;
+    }
+
+    .outcomes-inner { max-width: 860px; margin: 0 auto; }
+
+    .outcomes-inner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 2.5vw, 30px);
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 36px;
+    }
+
+    .outcomes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: rgba(44,44,44,0.07);
+    }
+
+    .outcome-item {
+      background: var(--ivory);
+      padding: 22px 28px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .outcome-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex-shrink: 0; margin-top: 10px; }
+    .outcome-item span { font-size: 15px; color: var(--ink-soft); line-height: 1.7; }
+
+    .cta-section {
+      padding: 90px 60px;
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .cta-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 2.5vw, 32px);
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    .cta-section p { font-size: 15px; color: var(--ink-muted); margin-bottom: 36px; line-height: 1.8; }
+
+    .cta-buttons {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn-disabled-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .coming-note { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); }
+
+    @media (max-width: 860px) {
+      .page-hero { padding: 130px 28px 60px; }
+      .detail-section { padding: 70px 28px; }
+      .outcomes-section { padding: 60px 28px; }
+      .outcomes-grid { grid-template-columns: 1fr; }
+      .cta-section { padding: 70px 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-brand" href="index.html">High Conscious Life</a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="experiences.html">Experiences</a></li>
+      </ul>
+      <button class="hamburger" onclick="openDrawer()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="drawer-overlay" id="overlay" onclick="closeDrawer()"></div>
+  <div class="drawer" id="drawer">
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    <p class="drawer-label">Navigate</p>
+    <ul class="drawer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="experiences.html">Experiences</a></li>
+      <li><a href="clear-the-noise.html">Clear The Noise</a></li>
+      <li><a href="break-the-pattern.html">Break The Pattern <span class="coming">Soon</span></a></li>
+      <li><a href="manifest-your-reality.html">Manifest Your Reality <span class="coming">Soon</span></a></li>
+    </ul>
+  </div>
+
+  <div class="page-hero">
+    <p class="breadcrumb"><a href="experiences.html">Experiences</a> &nbsp;/&nbsp; Experience 03</p>
+    <div class="coming-banner"><span class="coming-dot"></span>Coming Soon</div>
+    <h1>Manifest<br /><em>Your Reality</em></h1>
+    <p>Manifestation is not wishing. It is not hoping. It is becoming so aligned with the reality you want that its arrival becomes inevitable.</p>
+  </div>
+
+  <div class="thin-divider"></div>
+
+  <section class="detail-section">
+    <span class="section-label">About This Experience</span>
+    <h2>Become the version of yourself who can create what you truly want.</h2>
+    <p>Manifestation is widely misunderstood. It has been reduced to vision boards and positive thinking — but true creation begins from the inside. When the mind is clear and old patterns have been released, something natural opens up: access to greater creativity, confidence, intuition, and possibility.</p>
+    <p>Manifest Your Reality teaches participants how to consciously direct their attention, energy, beliefs, and actions toward meaningful outcomes. The focus is not only on attracting goals — it is on becoming the version of yourself who is fully capable of creating them.</p>
+    <p>This experience works at the level of identity. Who you believe you are determines what you allow yourself to receive. Here, you expand that identity — consciously, deliberately, and from a grounded place of inner clarity.</p>
+    <p>By this point in the journey, the noise has been cleared. The patterns have been released. What remains is the truest version of you — ready to build, create, and live with intention.</p>
+    <p>This is the final experience of the High Conscious Life journey, and it is the most expansive. You leave not just with a vision — but with the inner architecture to actually live it.</p>
+  </section>
+
+  <section class="outcomes-section">
+    <div class="outcomes-inner">
+      <span class="section-label">What You Take Home</span>
+      <h2>The shifts you will carry forward.</h2>
+      <div class="outcomes-grid">
+        <div class="outcome-item"><div class="outcome-dot"></div><span>Clear vision and a strong sense of purpose</span></div>
+        <div class="outcome-item"><div class="outcome-dot"></div><span>Stronger alignment with your goals</span></div>
+        <div class="outcome-item"><div class="outcome-dot"></div><span>Increased confidence in decision-making</span></div>
+        <div class="outcome-item"><div class="outcome-dot"></div><span>Enhanced focus and intentional action</span></div>
+        <div class="outcome-item"><div class="outcome-dot"></div><span>A genuine abundance mindset</span></div>
+        <div class="outcome-item"><div class="outcome-dot"></div><span>Ability to consciously create desired experiences</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <span class="section-label">Interested?</span>
+    <h2>Be the first to know<br />when this opens.</h2>
+    <p>Express your interest and we'll reach out as soon as Manifest Your Reality becomes available. Priority will be given to those who complete the full journey.</p>
+    <div class="cta-buttons">
+      <div class="btn-disabled-wrap">
+        <span class="btn-disabled">Proceed to Register</span>
+        <span class="coming-note">Coming Soon</span>
+      </div>
+      <button class="btn-outline" onclick="openModal()">Ask a Query</button>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-brand">High Conscious Life<span>A Journey Back To Yourself</span></div>
+    <ul class="footer-links">
+      <li><a href="#">Instagram</a></li>
+      <li><a href="#">WhatsApp</a></li>
+      <li><a href="mailto:hello@highconsciouslife.in">hello@highconsciouslife.in</a></li>
+    </ul>
+  </footer>
+
+  <div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <h3>Ask a Query</h3>
+      <p class="modal-sub">We'll get back to you within 24 hours.</p>
+      <div class="form-group"><label>Your Name</label><input type="text" placeholder="Priya Sharma" /></div>
+      <div class="form-group"><label>Phone Number</label><input type="tel" placeholder="+91 98765 43210" /></div>
+      <div class="form-group"><label>Email ID</label><input type="email" placeholder="priya@email.com" /></div>
+      <div class="form-group"><label>Your Query</label><textarea placeholder="What would you like to know about Manifest Your Reality?"></textarea></div>
+      <button class="btn-primary form-submit">Send Query</button>
+    </div>
+  </div>
+
+  <script>
+    function openDrawer() { document.getElementById('drawer').classList.add('open'); document.getElementById('overlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeDrawer() { document.getElementById('drawer').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); document.body.style.overflow = ''; }
+    function openModal() { document.getElementById('modal').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeModal() { document.getElementById('modal').classList.remove('open'); document.body.style.overflow = ''; }
+    function handleOverlayClick(e) { if (e.target === document.getElementById('modal')) closeModal(); }
+  </script>
+</body>
+</html>
