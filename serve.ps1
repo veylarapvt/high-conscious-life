@@ -29,6 +29,7 @@ try {
     if ([string]::IsNullOrEmpty($path)) { $path = 'index.html' }
     $file = Join-Path $root $path
     if (Test-Path $file -PathType Container) { $file = Join-Path $file 'index.html' }
+    elseif (-not (Test-Path $file -PathType Leaf) -and (Test-Path "$file.html" -PathType Leaf)) { $file = "$file.html" }
     if (Test-Path $file -PathType Leaf) {
       $ext = [IO.Path]::GetExtension($file).ToLower()
       $ctx.Response.ContentType = if ($mime.ContainsKey($ext)) { $mime[$ext] } else { 'application/octet-stream' }
