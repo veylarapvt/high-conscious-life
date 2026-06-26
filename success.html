@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Successful — High Conscious Life</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .success-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 24px 60px;
+      text-align: center;
+    }
+    .success-card {
+      background: var(--white);
+      max-width: 520px;
+      width: 100%;
+      padding: 56px 48px;
+      border: 1px solid rgba(44,44,44,0.08);
+      position: relative;
+    }
+    .success-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 40px; height: 2px;
+      background: var(--gold);
+    }
+    .success-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+    }
+    .success-card h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 30px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.25;
+      margin-bottom: 14px;
+    }
+    .success-card h1 em { font-style: italic; color: var(--sage); }
+    .success-desc {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.85;
+      margin-bottom: 32px;
+    }
+    .code-box {
+      border: 1px dashed rgba(184,147,85,0.5);
+      background: var(--gold-light);
+      padding: 22px;
+      margin-bottom: 14px;
+    }
+    .code-label {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 8px;
+    }
+    .code-value {
+      font-family: 'Fraunces', serif;
+      font-size: 30px;
+      letter-spacing: 0.08em;
+      color: var(--ink);
+    }
+    .copy-btn {
+      background: none;
+      border: none;
+      color: var(--gold);
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      margin-bottom: 28px;
+    }
+    .save-note {
+      font-size: 12px;
+      color: var(--ink-muted);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+    .status-msg {
+      font-size: 14px;
+      color: var(--ink-soft);
+      line-height: 1.8;
+      margin-bottom: 28px;
+    }
+    .ref-line {
+      font-size: 11px;
+      color: var(--ink-muted);
+      margin-top: 20px;
+      letter-spacing: 0.02em;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-brand" href="/">High Conscious Life</a>
+  </nav>
+
+  <div class="success-wrap">
+    <div class="success-card">
+      <p class="success-eyebrow">Payment Successful</p>
+      <h1>Welcome to <em>Clear The Noise</em></h1>
+      <p class="success-desc">Thank you for your registration. Here is your access code for your digital freebies — please save it.</p>
+
+      <!-- LOADING -->
+      <div id="state-loading">
+        <p class="status-msg">Generating your access code…</p>
+      </div>
+
+      <!-- CODE READY -->
+      <div id="state-ready" class="hidden">
+        <div class="code-box">
+          <p class="code-label">Your Registration Code</p>
+          <p class="code-value" id="code-value">—</p>
+        </div>
+        <button class="copy-btn" id="copy-btn" onclick="copyCode()">Copy code</button>
+        <p class="save-note">Save this code somewhere safe — you'll use it to unlock your freebies any time.</p>
+        <a href="/freebies" class="btn-primary">Go to My Freebies</a>
+      </div>
+
+      <!-- PENDING / FALLBACK -->
+      <div id="state-pending" class="hidden">
+        <p class="status-msg">Your payment went through and your code is being generated. If it doesn't appear here in a moment, it can take up to a few minutes — please reach out and we'll send it right over.</p>
+        <a href="mailto:hello@highconsciouslife.in" class="btn-outline">Email Us</a>
+      </div>
+
+      <p class="ref-line" id="ref-line"></p>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://mewacoirynzkbvsqxlhh.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_m-khzeZ6_Z3YeKL0JSkG5w_QslyGqeS';
+
+    const params = new URLSearchParams(window.location.search);
+    const paymentId = params.get('razorpay_payment_id') || params.get('payment_id') || '';
+
+    if (paymentId) {
+      document.getElementById('ref-line').textContent = 'Payment reference: ' + paymentId;
+    }
+
+    function show(stateId) {
+      ['state-loading', 'state-ready', 'state-pending'].forEach(id => {
+        document.getElementById(id).classList.toggle('hidden', id !== stateId);
+      });
+    }
+
+    function copyCode() {
+      const code = document.getElementById('code-value').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        document.getElementById('copy-btn').textContent = 'Copied ✓';
+      });
+    }
+
+    async function fetchCode() {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/get-code?payment_id=${encodeURIComponent(paymentId)}`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` },
+      });
+      if (!res.ok) return null;
+      const data = await res.json();
+      return data.code || null;
+    }
+
+    async function poll() {
+      if (!paymentId) { show('state-pending'); return; }
+      for (let i = 0; i < 8; i++) {
+        try {
+          const code = await fetchCode();
+          if (code) {
+            document.getElementById('code-value').textContent = code;
+            show('state-ready');
+            return;
+          }
+        } catch (e) { /* keep trying */ }
+        await new Promise(r => setTimeout(r, 2000));
+      }
+      show('state-pending');
+    }
+
+    poll();
+  </script>
+</body>
+</html>

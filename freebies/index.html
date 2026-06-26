@@ -846,25 +846,27 @@
 
   <script>
     /* ══════════════════════════════════════
-       REGISTRATION CODES
-       Add / remove codes here freely.
-       Format: just strings in the array.
+       SUPABASE — codes are validated server-side
+       against the registrations table (created
+       automatically when a payment succeeds).
     ══════════════════════════════════════ */
-    const VALID_CODES = [
-      'HCL-001',
-      'HCL-002',
-      'HCL-003',
-      'HCL-004',
-      'HCL-005',
-      'HCL-006',
-      'HCL-007',
-      'HCL-008',
-      'HCL-009',
-      'HCL-010',
-      'HCL-011',
-      'HCL-012',
-      // Add more codes here as seats are sold
-    ];
+    const SUPABASE_URL = 'https://mewacoirynzkbvsqxlhh.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_m-khzeZ6_Z3YeKL0JSkG5w_QslyGqeS';
+
+    async function verifyCode(code) {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/verify-code`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+        },
+        body: JSON.stringify({ code }),
+      });
+      if (!res.ok) throw new Error('network');
+      const data = await res.json();
+      return data.valid === true;
+    }
 
     /* ══════════════════════════════════════
        AFFIRMATIONS
@@ -1007,25 +1009,38 @@
     /* ══════════════════════════════════════
        GATE / REGISTRATION
     ══════════════════════════════════════ */
-    function checkCode() {
+    async function checkCode() {
       const input = document.getElementById('reg-input').value.trim().toUpperCase();
       const error = document.getElementById('gate-error');
+      const btn = document.querySelector('.gate-btn');
 
       if (!input) {
         error.textContent = 'Please enter your registration number.';
         return;
       }
 
-      if (VALID_CODES.includes(input)) {
-        error.textContent = '';
-        document.getElementById('gate').style.display = 'none';
-        document.getElementById('freebies-page').style.display = 'block';
-        document.getElementById('reg-display').textContent = input;
-        buildAffirmations();
-        window.scrollTo(0, 0);
-      } else {
+      error.textContent = '';
+      const originalLabel = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Checking…';
+
+      try {
+        const valid = await verifyCode(input);
+        if (valid) {
+          document.getElementById('gate').style.display = 'none';
+          document.getElementById('freebies-page').style.display = 'block';
+          document.getElementById('reg-display').textContent = input;
+          buildAffirmations();
+          window.scrollTo(0, 0);
+          return;
+        }
         error.textContent = 'Invalid registration number. Please check your email and try again.';
         document.getElementById('reg-input').focus();
+      } catch (e) {
+        error.textContent = 'Could not verify right now. Please check your connection and try again.';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = originalLabel;
       }
     }
 
