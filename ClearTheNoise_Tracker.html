@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clear The Noise · 21-Day Tracker</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
+
+  :root {
+    --cream: #F5F0E8;
+    --cream-mid: #EDE6D6;
+    --green: #4A6741;
+    --green-light: #7A9B72;
+    --gold: #C9A84C;
+    --gold-soft: #E8D5A3;
+    --dark: #1E1E1E;
+    --text-mid: #4A4A4A;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    font-family: 'Jost', sans-serif;
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--green);
+    padding: 28px 24px 22px;
+    text-align: center;
+    position: relative;
+  }
+  .header::after {
+    content: '';
+    display: block;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin-top: 18px;
+  }
+  .brand-tag {
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 3px;
+    color: var(--gold-soft);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--cream);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+  .header-sub {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid var(--gold-soft);
+    background: var(--cream-mid);
+  }
+  .tab {
+    flex: 1;
+    padding: 14px 8px;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green-light);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    font-weight: 400;
+  }
+  .tab.active {
+    color: var(--green);
+    border-bottom: 2px solid var(--gold);
+    background: var(--cream);
+    font-weight: 500;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .content { padding: 20px 16px 80px; max-width: 480px; margin: 0 auto; }
+
+  /* ── WEEK SECTION ── */
+  .week-block { margin-bottom: 28px; }
+  .week-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .week-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .week-theme {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--green);
+    font-weight: 400;
+  }
+  .week-line {
+    flex: 1;
+    height: 1px;
+    background: var(--gold-soft);
+  }
+
+  /* ── DAY CARD ── */
+  .day-card {
+    background: white;
+    border: 1px solid var(--gold-soft);
+    border-radius: 2px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .day-card:hover { box-shadow: 0 2px 12px rgba(201,168,76,0.12); }
+  .day-card.completed { border-color: var(--green-light); background: #f7fbf6; }
+
+  .day-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 14px;
+    cursor: pointer;
+    gap: 12px;
+  }
+  .day-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--gold);
+    min-width: 32px;
+    line-height: 1;
+  }
+  .day-info { flex: 1; }
+  .day-title {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--green);
+    font-weight: 500;
+  }
+  .day-progress {
+    font-size: 10px;
+    color: var(--green-light);
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+  }
+  .day-chevron {
+    color: var(--gold-soft);
+    font-size: 14px;
+    transition: transform 0.2s;
+  }
+  .day-card.open .day-chevron { transform: rotate(180deg); }
+
+  /* ── HABITS ── */
+  .habits-panel {
+    display: none;
+    border-top: 1px solid var(--gold-soft);
+    padding: 14px;
+    background: var(--cream);
+  }
+  .day-card.open .habits-panel { display: block; }
+
+  .habit-section-label {
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .habit-section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--gold-soft);
+  }
+
+  .habit-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid #f0ead8;
+    cursor: pointer;
+  }
+  .habit-item:last-child { border-bottom: none; }
+
+  .habit-check {
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid var(--gold-soft);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    background: white;
+  }
+  .habit-item.done .habit-check {
+    background: var(--green);
+    border-color: var(--green);
+  }
+  .habit-check-mark {
+    color: white;
+    font-size: 10px;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .habit-item.done .habit-check-mark { opacity: 1; }
+
+  .habit-text {
+    font-size: 12.5px;
+    color: var(--text-mid);
+    line-height: 1.4;
+    flex: 1;
+    font-weight: 300;
+  }
+  .habit-item.done .habit-text {
+    color: var(--green);
+    text-decoration: line-through;
+    text-decoration-color: var(--green-light);
+  }
+
+  .evening-label { margin-top: 14px; }
+  .evening-label .habit-section-label { color: var(--green); }
+  .evening-label .habit-section-label::after { background: #c8ddc4; }
+
+  /* ── PRESENCE SCORE ── */
+  .presence-row {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--gold-soft);
+  }
+  .presence-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green-light);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .score-dots {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .score-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--green-light);
+    cursor: pointer;
+    transition: all 0.2s;
+    background: white;
+    font-weight: 400;
+  }
+  .score-dot.selected {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: white;
+    font-weight: 500;
+  }
+  .score-ends {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    font-size: 9px;
+    color: var(--green-light);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── OVERVIEW TAB ── */
+  .overview-section { padding-top: 4px; }
+  .overview-card {
+    background: white;
+    border: 1px solid var(--gold-soft);
+    border-radius: 2px;
+    padding: 18px 16px;
+    margin-bottom: 14px;
+  }
+  .ov-title {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+
+  /* Progress ring */
+  .ring-wrap {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 10px;
+  }
+  .ring-svg { flex-shrink: 0; }
+  .ring-stats { flex: 1; }
+  .ring-big {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--green);
+    line-height: 1;
+  }
+  .ring-label { font-size: 10px; color: var(--green-light); letter-spacing: 1px; margin-top: 4px; }
+
+  /* Calendar grid */
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+  }
+  .cal-day {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--green-light);
+    border: 1px solid var(--gold-soft);
+    background: white;
+    font-weight: 400;
+    position: relative;
+  }
+  .cal-day.done-day {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+  .cal-day.partial-day {
+    background: var(--gold-soft);
+    border-color: var(--gold);
+    color: var(--green);
+  }
+  .cal-day.future-day { opacity: 0.35; }
+
+  /* Streak */
+  .streak-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .streak-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .streak-txt { font-size: 11px; color: var(--green-light); letter-spacing: 1px; }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--green-light);
+    text-transform: uppercase;
+    border-top: 1px solid var(--gold-soft);
+  }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--green);
+    color: var(--cream);
+    padding: 10px 20px;
+    border-radius: 2px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ── MOTIVATIONAL BANNER ── */
+  .week-quote {
+    background: var(--green);
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    border-left: 3px solid var(--gold);
+  }
+  .week-quote p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    font-style: italic;
+    color: var(--cream);
+    line-height: 1.5;
+    font-weight: 300;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="brand-tag">High Conscious Life</div>
+  <h1>Clear The Noise</h1>
+  <div class="header-sub">21 · Day Presence Tracker</div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('track')">Track</div>
+  <div class="tab" onclick="switchTab('overview')">Overview</div>
+</div>
+
+<div id="tab-track" class="content">
+  <div id="tracker-root"></div>
+</div>
+
+<div id="tab-overview" class="content" style="display:none">
+  <div class="overview-section" id="overview-root"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="footer">highconsciouslife.in · A Journey Back To Yourself</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────
+const MORNING_HABITS = [
+  'I didn\'t check my phone when I woke up',
+  'I noticed how I truly feel right now',
+  'I set one clear intention for today',
+  'I noticed how people reacted to what I said today',
+];
+const EVENING_HABITS = [
+  'I did my breathwork today',
+  'I moved my body today',
+  'I read 2 pages today',
+];
+const BREATHWORK_NOTE = 'Inhale 5s · Hold 2s · Exhale 5s — at least 5 minutes';
+const WEEK_THEMES = [
+  { week: 1, name: 'Noticing', quote: 'This week, you don\'t need to change anything. Simply notice the noise — and know that you are not it.' },
+  { week: 2, name: 'Returning', quote: 'Every time you catch yourself drifting, you get to come back. That moment of return is the whole practice.' },
+  { week: 3, name: 'Residing', quote: 'You are learning to live here — in the present, in yourself. You are already home.' },
+];
+
+// ── STORAGE ───────────────────────────────────────────────────
+const KEY = 'hcl_tracker_v1';
+function load() {
+  try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; }
+}
+function save(data) {
+  try { localStorage.setItem(KEY, JSON.stringify(data)); } catch {}
+}
+
+let state = load();
+
+function getDayData(day) {
+  if (!state[day]) state[day] = { morning: {}, evening: {}, score: null };
+  return state[day];
+}
+
+// ── TOAST ─────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ── PROGRESS ──────────────────────────────────────────────────
+function getDayProgress(day) {
+  const d = getDayData(day);
+  const mDone = MORNING_HABITS.filter((_, i) => d.morning[i]).length;
+  const eDone = EVENING_HABITS.filter((_, i) => d.evening[i]).length;
+  const total = MORNING_HABITS.length + EVENING_HABITS.length;
+  return { mDone, eDone, done: mDone + eDone, total };
+}
+
+function isDayComplete(day) {
+  const { done, total } = getDayProgress(day);
+  return done === total;
+}
+
+// ── RENDER TRACK TAB ──────────────────────────────────────────
+function renderTracker() {
+  const root = document.getElementById('tracker-root');
+  root.innerHTML = '';
+
+  WEEK_THEMES.forEach(({ week, name, quote }) => {
+    const block = document.createElement('div');
+    block.className = 'week-block';
+
+    // Week header
+    block.innerHTML = `
+      <div class="week-header">
+        <span class="week-label">Week ${week}</span>
+        <span class="week-theme">${name}</span>
+        <div class="week-line"></div>
+      </div>
+      <div class="week-quote"><p>"${quote}"</p></div>
+    `;
+
+    // Days
+    for (let d = (week - 1) * 7 + 1; d <= week * 7; d++) {
+      block.appendChild(makeDayCard(d));
+    }
+    root.appendChild(block);
+  });
+}
+
+function makeDayCard(day) {
+  const prog = getDayProgress(day);
+  const complete = isDayComplete(day);
+  const data = getDayData(day);
+
+  const card = document.createElement('div');
+  card.className = `day-card${complete ? ' completed' : ''}`;
+  card.id = `day-${day}`;
+
+  const progressText = prog.done === 0
+    ? 'Not started'
+    : prog.done === prog.total
+    ? '✦ Complete'
+    : `${prog.done} of ${prog.total} done`;
+
+  card.innerHTML = `
+    <div class="day-header" onclick="toggleDay(${day})">
+      <div class="day-num">${String(day).padStart(2, '0')}</div>
+      <div class="day-info">
+        <div class="day-title">Day ${day}</div>
+        <div class="day-progress">${progressText}</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="habits-panel">
+      <div class="habit-section-label">☀ Morning</div>
+      ${MORNING_HABITS.map((h, i) => `
+        <div class="habit-item${data.morning[i] ? ' done' : ''}" onclick="toggleHabit(${day},'morning',${i})" id="habit-${day}-m-${i}">
+          <div class="habit-check"><span class="habit-check-mark">✓</span></div>
+          <div class="habit-text">${h}</div>
+        </div>
+      `).join('')}
+      <div class="evening-label">
+        <div class="habit-section-label">☽ Evening</div>
+      </div>
+      ${EVENING_HABITS.map((h, i) => `
+        <div class="habit-item${data.evening[i] ? ' done' : ''}" onclick="toggleHabit(${day},'evening',${i})" id="habit-${day}-e-${i}">
+          <div class="habit-check"><span class="habit-check-mark">✓</span></div>
+          <div style="flex:1">
+            <div class="habit-text">${h}</div>
+            ${i === 0 ? `<div style="font-size:9px;letter-spacing:1px;color:var(--gold);margin-top:3px">${BREATHWORK_NOTE}</div>` : ''}
+          </div>
+        </div>
+      `).join('')}
+      <div class="presence-row">
+        <div class="presence-label">How present did I feel today?</div>
+        <div class="score-dots">
+          ${[1,2,3,4,5,6,7].map(n => `
+            <div class="score-dot${data.score === n ? ' selected' : ''}" onclick="setScore(${day},${n})">${n}</div>
+          `).join('')}
+        </div>
+        <div class="score-ends"><span>Lost in thought</span><span>Fully present</span></div>
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+function toggleDay(day) {
+  const card = document.getElementById(`day-${day}`);
+  card.classList.toggle('open');
+}
+
+function toggleHabit(day, type, idx) {
+  const data = getDayData(day);
+  data[type][idx] = !data[type][idx];
+  save(state);
+
+  const el = document.getElementById(`habit-${day}-${type === 'morning' ? 'm' : 'e'}-${idx}`);
+  el.classList.toggle('done', data[type][idx]);
+
+  // Update card header
+  const prog = getDayProgress(day);
+  const card = document.getElementById(`day-${day}`);
+  const complete = isDayComplete(day);
+  card.classList.toggle('completed', complete);
+  card.querySelector('.day-progress').textContent = prog.done === 0
+    ? 'Not started'
+    : prog.done === prog.total
+    ? '✦ Complete'
+    : `${prog.done} of ${prog.total} done`;
+
+  if (complete) showToast('Day complete ✦ Well done');
+}
+
+function setScore(day, n) {
+  const data = getDayData(day);
+  data.score = (data.score === n) ? null : n;
+  save(state);
+
+  const card = document.getElementById(`day-${day}`);
+  card.querySelectorAll('.score-dot').forEach((dot, i) => {
+    dot.classList.toggle('selected', (i + 1) === data.score);
+  });
+}
+
+// ── RENDER OVERVIEW ───────────────────────────────────────────
+function renderOverview() {
+  const root = document.getElementById('overview-root');
+  const totalHabits = (MORNING_HABITS.length + EVENING_HABITS.length) * 21;
+  let doneHabits = 0;
+  let daysComplete = 0;
+  let streak = 0;
+  let streakRunning = true;
+
+  for (let d = 1; d <= 21; d++) {
+    const prog = getDayProgress(d);
+    doneHabits += prog.done;
+    if (isDayComplete(d)) { daysComplete++; if (streakRunning) streak++; }
+    else streakRunning = false;
+  }
+
+  const pct = Math.round((doneHabits / totalHabits) * 100);
+  const r = 36, circ = 2 * Math.PI * r;
+  const dashoffset = circ - (pct / 100) * circ;
+
+  // Calendar
+  let calHTML = '';
+  for (let d = 1; d <= 21; d++) {
+    const prog = getDayProgress(d);
+    const cls = isDayComplete(d) ? 'done-day' : prog.done > 0 ? 'partial-day' : 'future-day';
+    calHTML += `<div class="cal-day ${cls}">${d}</div>`;
+  }
+
+  root.innerHTML = `
+    <div class="overview-card">
+      <div class="ov-title">Overall Progress</div>
+      <div class="ring-wrap">
+        <svg class="ring-svg" width="90" height="90" viewBox="0 0 90 90">
+          <circle cx="45" cy="45" r="${r}" fill="none" stroke="#E8D5A3" stroke-width="5"/>
+          <circle cx="45" cy="45" r="${r}" fill="none" stroke="#4A6741" stroke-width="5"
+            stroke-dasharray="${circ}" stroke-dashoffset="${dashoffset}"
+            stroke-linecap="round" transform="rotate(-90 45 45)"
+            style="transition:stroke-dashoffset 0.6s ease"/>
+          <text x="45" y="50" text-anchor="middle" font-family="Cormorant Garamond,serif"
+            font-size="18" fill="#4A6741" font-weight="300">${pct}%</text>
+        </svg>
+        <div class="ring-stats">
+          <div class="ring-big">${daysComplete}</div>
+          <div class="ring-label">days complete</div>
+          <div style="margin-top:10px; font-size:11px; color:var(--green-light)">${doneHabits} habits checked · ${21 - daysComplete} days to go</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="overview-card">
+      <div class="ov-title">Current Streak</div>
+      <div class="streak-row">
+        <div class="streak-num">${streak}</div>
+        <div class="streak-txt">day${streak !== 1 ? 's' : ''}<br>in a row</div>
+      </div>
+      ${streak >= 7 ? '<div style="margin-top:10px;font-size:11px;color:var(--green);letter-spacing:1px">✦ One full week of presence</div>' : ''}
+      ${streak >= 21 ? '<div style="margin-top:6px;font-size:11px;color:var(--gold);letter-spacing:1px">✦ You completed the journey</div>' : ''}
+    </div>
+
+    <div class="overview-card">
+      <div class="ov-title">21-Day Calendar</div>
+      <div class="cal-grid">${calHTML}</div>
+      <div style="display:flex;gap:16px;margin-top:12px;font-size:9px;color:var(--green-light);letter-spacing:1px">
+        <span><span style="display:inline-block;width:10px;height:10px;background:var(--green);border-radius:50%;margin-right:4px;vertical-align:middle"></span>Complete</span>
+        <span><span style="display:inline-block;width:10px;height:10px;background:var(--gold-soft);border:1px solid var(--gold);border-radius:50%;margin-right:4px;vertical-align:middle"></span>Partial</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border:1px solid var(--gold-soft);border-radius:50%;margin-right:4px;vertical-align:middle;opacity:0.4"></span>Upcoming</span>
+      </div>
+    </div>
+  `;
+}
+
+// ── TABS ──────────────────────────────────────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    t.classList.toggle('active', (i === 0 && tab === 'track') || (i === 1 && tab === 'overview'));
+  });
+  document.getElementById('tab-track').style.display = tab === 'track' ? '' : 'none';
+  document.getElementById('tab-overview').style.display = tab === 'overview' ? '' : 'none';
+  if (tab === 'overview') renderOverview();
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+renderTracker();
+</script>
+</body>
+</html>
