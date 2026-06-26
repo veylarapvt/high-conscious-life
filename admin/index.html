@@ -72,7 +72,7 @@
       <table>
         <thead>
           <tr>
-            <th>Date</th><th>Name</th><th>Reservation Code</th><th>Email</th>
+            <th>Date</th><th>Event</th><th>Name</th><th>Reservation Code</th><th>Email</th>
             <th>Phone</th><th>Amount</th><th>Payment ID</th><th>Used</th>
           </tr>
         </thead>
@@ -143,6 +143,7 @@
       document.getElementById('empty').style.display = DATA.length ? 'none' : 'block';
       tbody.innerHTML = DATA.map(r => `<tr>
         <td>${esc(fmtDate(r.created_at))}</td>
+        <td>${esc(r.event || '—')}</td>
         <td>${esc(r.name || '—')}</td>
         <td class="code">${esc(r.code)}</td>
         <td>${esc(r.email || '—')}</td>
@@ -154,7 +155,7 @@
     }
 
     function downloadCsv() {
-      const cols = ['created_at','name','code','email','contact','amount','payment_id','used'];
+      const cols = ['created_at','event','name','code','email','contact','amount','payment_id','used'];
       const head = cols.join(',');
       const body = DATA.map(r => cols.map(c => {
         let v = r[c]; if (c === 'amount' && v != null) v = (v / 100);
