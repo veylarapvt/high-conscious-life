@@ -1,4 +1,8 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/register", "destination": "/clear-the-noise#register", "permanent": false },
+    { "source": "/join", "destination": "/clear-the-noise#register", "permanent": false }
+  ]
 }
