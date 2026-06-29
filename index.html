@@ -330,7 +330,137 @@
       .exp-cards { grid-template-columns: 1fr; gap: 12px; }
       .why { padding: 80px 28px; }
     }
+
+    /* ── ENTRANCE & SCROLL ANIMATIONS ── */
+    .js .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22,1,0.36,1);
+      will-change: opacity, transform;
+    }
+    .js .fade-up.in-view { opacity: 1; transform: none; }
+
+    /* hero intro / typewriter */
+    .hero-intro {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: clamp(14px, 2.2vw, 18px);
+      color: var(--ink-muted);
+      margin-bottom: 18px;
+      min-height: 2.8em;
+      max-width: 560px;
+      position: relative; z-index: 2;
+    }
+    @media (max-width: 560px) { .hero-intro { min-height: 4.4em; } }
+    .tw-cursor {
+      display: inline-block;
+      width: 2px; height: 1em;
+      vertical-align: -2px;
+      background: var(--gold);
+      margin-left: 2px;
+      animation: twblink 1s step-end infinite;
+    }
+    @keyframes twblink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+    .hero-sub { max-width: 540px; }
+    .hero-cta { margin-top: 36px; position: relative; z-index: 2; }
+
+    /* floating particles */
+    .particles { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+    .particle { position: absolute; border-radius: 50%; opacity: 0.18; animation: floaty linear infinite; }
+    @keyframes floaty {
+      0%   { transform: translate(0, 0); }
+      50%  { transform: translate(14px, -32px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    /* about additions */
+    .about-sub {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: clamp(16px, 2.6vw, 22px);
+      color: var(--sage);
+      margin-bottom: 26px;
+    }
+    .about-points {
+      list-style: none;
+      max-width: 540px;
+      margin: 30px auto 0;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .about-points li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      font-size: 16px;
+      color: var(--ink-soft);
+      line-height: 1.7;
+    }
+    .about-points li::before {
+      content: '';
+      width: 14px; height: 1px;
+      background: var(--gold);
+      flex-shrink: 0;
+      margin-top: 13px;
+    }
+    .about-footer {
+      margin-top: 34px;
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 18px;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    /* journey subheading */
+    .journey-sub {
+      margin-top: 12px;
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: clamp(15px, 2vw, 18px);
+      color: var(--ink-muted);
+    }
+
+    /* experience card glow + shimmer */
+    .exp-hover-card:hover {
+      box-shadow: 0 12px 40px rgba(44,44,44,0.10), 0 0 0 1px rgba(184,147,85,0.25);
+    }
+    .exp-hover-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -75%;
+      width: 50%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(184,147,85,0.12), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.75s ease;
+      pointer-events: none;
+    }
+    .exp-hover-card:hover::after { left: 130%; }
+
+    /* is this for you */
+    .sign-check { color: var(--sage); font-weight: 600; flex-shrink: 0; margin-top: 1px; }
+    .why-footer {
+      margin-top: 34px;
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 18px;
+      color: var(--ink);
+    }
+    .js .why .sign-item { opacity: 0; }
+    .js .why.in-view .sign-item { animation: signin 0.5s ease both; }
+    @keyframes signin { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .js .fade-up { opacity: 1 !important; transform: none !important; transition: none; }
+      .particle { animation: none; }
+      .tw-cursor { animation: none; display: none; }
+      .js .why .sign-item { opacity: 1 !important; animation: none !important; }
+    }
   </style>
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
 
@@ -361,42 +491,55 @@
   </div>
 
   <!-- HERO -->
-  <section class="hero">
-    <div class="breath-ring"></div>
-    <div class="breath-ring"></div>
-    <div class="breath-ring"></div>
-    <p class="hero-eyebrow">Welcome To</p>
-    <h1>High<br /><em>Conscious Life</em></h1>
-    <p class="hero-tagline">A Journey Back To Yourself</p>
-    <p class="hero-sub">Modern life has made us successful on the outside, yet disconnected on the inside. This is where you return.</p>
-    <div class="hero-scroll">
-      <span>Discover the journey</span>
-      <div class="scroll-line"></div>
+  <section class="hero" id="hero">
+    <div class="particles" aria-hidden="true">
+      <span class="particle" style="left:12%;top:22%;width:8px;height:8px;background:#7A9E7E;animation-duration:12s;animation-delay:0s;"></span>
+      <span class="particle" style="left:78%;top:18%;width:6px;height:6px;background:#B89355;animation-duration:14s;animation-delay:1s;"></span>
+      <span class="particle" style="left:25%;top:70%;width:10px;height:10px;background:#7A9E7E;animation-duration:16s;animation-delay:2s;"></span>
+      <span class="particle" style="left:62%;top:60%;width:5px;height:5px;background:#B89355;animation-duration:11s;animation-delay:.5s;"></span>
+      <span class="particle" style="left:45%;top:30%;width:7px;height:7px;background:#7A9E7E;animation-duration:13s;animation-delay:3s;"></span>
+      <span class="particle" style="left:88%;top:55%;width:6px;height:6px;background:#B89355;animation-duration:15s;animation-delay:1.5s;"></span>
+      <span class="particle" style="left:8%;top:50%;width:5px;height:5px;background:#B89355;animation-duration:10s;animation-delay:2.5s;"></span>
+      <span class="particle" style="left:55%;top:82%;width:8px;height:8px;background:#7A9E7E;animation-duration:17s;animation-delay:.8s;"></span>
+      <span class="particle" style="left:35%;top:12%;width:5px;height:5px;background:#7A9E7E;animation-duration:12.5s;animation-delay:3.5s;"></span>
     </div>
+    <div class="breath-ring"></div>
+    <div class="breath-ring"></div>
+    <div class="breath-ring"></div>
+    <p class="hero-intro" id="hero-type" data-text="For the ones who are tired of the same day repeating itself."></p>
+    <h1>High <em>Conscious Life</em></h1>
+    <p class="hero-sub">You're doing everything. Work. Family. Responsibilities. Scrolling. Sleeping. Repeating. But somewhere inside — something feels off. You just can't explain what. This is where that changes.</p>
+    <a href="/experiences" class="btn-primary hero-cta">Start the journey</a>
   </section>
 
   <div class="thin-divider"></div>
 
   <!-- ABOUT -->
-  <section class="about">
+  <section class="about fade-up">
     <span class="section-label">What Is This</span>
-    <h2>Not motivation. Not self-help.<br />An immersive journey back to yourself.</h2>
-    <p>We are constantly thinking, planning, worrying, comparing, and chasing. The noise becomes so loud that we forget what clarity feels like.</p>
-    <p>High Conscious Life is a transformational experience that helps you reconnect with yourself, release what no longer serves you, and consciously create the reality you truly want.</p>
-    <p>This is not a program about becoming someone new. It is about remembering who you truly are.</p>
+    <h2>This is not a motivation talk. Not a self-help course.</h2>
+    <p class="about-sub">It's a space to actually stop. And come back to yourself.</p>
+    <p>Your mind is running 24/7 — planning, worrying, comparing, scrolling, overthinking. You go to bed tired. You wake up already thinking. Somewhere in all of this... you've lost the feeling of just being you.</p>
+    <ul class="about-points">
+      <li>Quiet the mental noise that's been exhausting you</li>
+      <li>Understand the patterns that keep pulling you back</li>
+      <li>Start building the life you actually want</li>
+    </ul>
+    <p class="about-footer">This is not about becoming someone new. It's about remembering who you already are.</p>
     <div class="pull-quote">
-      <p>"You don't need more information.<br />You need less interference."</p>
+      <p>"The voice inside your head? That's not you. Your conscious mind is. It's time to let it lead."</p>
     </div>
   </section>
 
   <div class="thin-divider"></div>
 
   <!-- JOURNEY / 3 EXPERIENCES -->
-  <section class="journey">
+  <section class="journey fade-up">
     <div class="journey-inner">
       <div class="journey-header">
         <span class="section-label">The Journey</span>
-        <h2>Three experiences.<br />One lasting transformation.</h2>
+        <h2>Three experiences. One real change.</h2>
+        <p class="journey-sub">Each one takes you one step deeper.</p>
       </div>
       <div class="exp-cards">
 
@@ -404,23 +547,23 @@
           <span class="card-num">Experience 01</span>
           <h3>Clear The Noise</h3>
           <p class="card-subtitle">Reconnect with yourself.</p>
-          <p>Most people are living from constant mental chatter, stress, and endless distraction. This experience helps you step outside the noise and return to inner clarity.</p>
+          <p>Your mind has been loud for a long time. This experience helps you finally slow it down — and hear yourself again.</p>
           <div class="card-cta">Explore This Experience</div>
         </a>
 
         <a href="/experiences#break-the-pattern" class="exp-hover-card">
           <span class="card-num">Experience 02</span>
           <h3>Break The Pattern</h3>
-          <p class="card-subtitle">Release what has been holding you back.</p>
-          <p>Unconscious beliefs and emotional conditioning have been running your life in the background. This experience helps you identify and transform them.</p>
+          <p class="card-subtitle">Release what's been holding you back.</p>
+          <p>Some things keep happening in your life — same situations, same feelings, same results. This experience shows you why. And how to stop it.</p>
           <div class="coming-pill">Coming Soon</div>
         </a>
 
         <a href="/experiences#manifest-your-reality" class="exp-hover-card">
           <span class="card-num">Experience 03</span>
           <h3>Manifest Your Reality</h3>
-          <p class="card-subtitle">Create intentionally.</p>
-          <p>When the mind clears and old patterns dissolve, you gain access to creativity, confidence, and the ability to consciously build the life you want.</p>
+          <p class="card-subtitle">What you want is actually possible. Let's find out how — for you.</p>
+          <p>Manifestation is real. But not every technique works for every person. In this experience, you'll explore different ways to manifest — and find the one that actually fits your life, your mind, your way. Not just believe it. Do it.</p>
           <div class="coming-pill">Coming Soon</div>
         </a>
 
@@ -429,16 +572,18 @@
   </section>
 
   <!-- WHY -->
-  <section class="why">
+  <section class="why fade-up">
     <span class="section-label">Is This For You</span>
-    <h2>This is for you if...</h2>
+    <h2>Is this for you?</h2>
     <div class="signs">
-      <div class="sign-item"><div class="sign-dot"></div><span class="sign-text">You feel busy but not purposeful — doing a lot, but unsure why.</span></div>
-      <div class="sign-item"><div class="sign-dot"></div><span class="sign-text">You've been meaning to slow down for months. It never happens.</span></div>
-      <div class="sign-item"><div class="sign-dot"></div><span class="sign-text">Your mind races at night, even when nothing is technically wrong.</span></div>
-      <div class="sign-item"><div class="sign-dot"></div><span class="sign-text">You want to feel more like yourself and less like your schedule.</span></div>
-      <div class="sign-item"><div class="sign-dot"></div><span class="sign-text">You're drawn to growth but tired of content that doesn't actually land.</span></div>
+      <div class="sign-item" style="animation-delay:0.05s"><span class="sign-check">✓</span><span class="sign-text">You feel like you're always busy — but not actually going anywhere.</span></div>
+      <div class="sign-item" style="animation-delay:0.15s"><span class="sign-check">✓</span><span class="sign-text">You've told yourself "I'll slow down soon" — for months now.</span></div>
+      <div class="sign-item" style="animation-delay:0.25s"><span class="sign-check">✓</span><span class="sign-text">Your mind doesn't stop at night, even when nothing is wrong.</span></div>
+      <div class="sign-item" style="animation-delay:0.35s"><span class="sign-check">✓</span><span class="sign-text">You want to feel like yourself again — not just productive.</span></div>
+      <div class="sign-item" style="animation-delay:0.45s"><span class="sign-check">✓</span><span class="sign-text">You've tried motivation content. It works for a day. Then nothing.</span></div>
+      <div class="sign-item" style="animation-delay:0.55s"><span class="sign-check">✓</span><span class="sign-text">You don't know exactly what's missing — but you know something is.</span></div>
     </div>
+    <p class="why-footer">If even two of these feel true — you're in the right place.</p>
   </section>
 
   <!-- FOOTER -->
@@ -462,6 +607,44 @@
       document.getElementById('overlay').classList.remove('open');
       document.body.style.overflow = '';
     }
+
+    // Fade-up sections on scroll
+    (function () {
+      var faders = document.querySelectorAll('.fade-up');
+      if (!('IntersectionObserver' in window)) {
+        faders.forEach(function (el) { el.classList.add('in-view'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      faders.forEach(function (el) { io.observe(el); });
+    })();
+
+    // Hero subheading typewriter
+    (function () {
+      var el = document.getElementById('hero-type');
+      if (!el) return;
+      var text = el.getAttribute('data-text') || '';
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = text; return; }
+      var cursor = document.createElement('span');
+      cursor.className = 'tw-cursor';
+      el.textContent = '';
+      el.appendChild(cursor);
+      var i = 0;
+      function type() {
+        if (i < text.length) {
+          cursor.insertAdjacentText('beforebegin', text.charAt(i));
+          i++;
+          setTimeout(type, 45);
+        } else {
+          setTimeout(function () { if (cursor.parentNode) cursor.parentNode.removeChild(cursor); }, 1600);
+        }
+      }
+      setTimeout(type, 350);
+    })();
   </script>
 </body>
 </html>
