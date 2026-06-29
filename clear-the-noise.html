@@ -382,6 +382,65 @@
       .js .fade-up, .js .stagger > * { opacity: 1 !important; transform: none !important; transition: none; }
       .cta-buttons .btn-primary { animation: none; }
     }
+
+    /* ── HERO CLARITY REVEAL + BREATHING AURA ── */
+    .page-hero { position: relative; }
+    .page-hero > *:not(.hero-aura) { position: relative; z-index: 1; }
+    .hero-aura {
+      position: absolute;
+      top: 42%; left: 50%;
+      width: min(520px, 82vw); height: min(520px, 82vw);
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(122,158,126,0.16), rgba(184,147,85,0.06) 45%, transparent 70%);
+      border-radius: 50%;
+      z-index: 0;
+      pointer-events: none;
+      animation: aura 7s ease-in-out infinite;
+    }
+    @keyframes aura {
+      0%, 100% { transform: translate(-50%,-50%) scale(1); opacity: .9; }
+      50%      { transform: translate(-50%,-50%) scale(1.08); opacity: .55; }
+    }
+    .js .page-hero h1 { animation: clarity 1.5s cubic-bezier(.2,.7,.2,1) both; }
+    @keyframes clarity {
+      0%   { opacity: 0; filter: blur(14px); transform: translateY(8px); }
+      100% { opacity: 1; filter: blur(0); transform: none; }
+    }
+
+    /* ── STICKY REGISTER BAR ── */
+    .sticky-cta {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      z-index: 150;
+      background: rgba(247,243,238,0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(44,44,44,0.1);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      transform: translateY(120%);
+      transition: transform .45s cubic-bezier(.4,0,.2,1);
+    }
+    .sticky-cta.show { transform: translateY(0); }
+    .sticky-cta-text { font-size: 13px; color: var(--ink-soft); }
+    .sticky-cta-text strong { font-family: 'Fraunces', serif; color: var(--ink); font-size: 17px; }
+    .sticky-cta-text .old { color: var(--ink-muted); text-decoration: line-through; margin-left: 6px; }
+    .sticky-cta .btn-primary { padding: 12px 26px; }
+    @media (max-width: 560px) {
+      .sticky-cta { gap: 12px; padding: 10px 14px; }
+      .sticky-cta-text { font-size: 12px; }
+      .sticky-cta-text strong { font-size: 15px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-aura { animation: none; }
+      .js .page-hero h1 { animation: none; }
+      .sticky-cta { transition: none; }
+    }
   </style>
   <script>document.documentElement.classList.add('js');</script>
 </head>
@@ -414,6 +473,7 @@
 
   <!-- HERO -->
   <div class="page-hero fade-up">
+    <div class="hero-aura" aria-hidden="true"></div>
     <p class="breadcrumb"><a href="/experiences">Experiences</a> &nbsp;/&nbsp; Experience 01</p>
     <span class="hero-tag">Experience 01 · Now Open</span>
     <h1>Clear<br /><em>The Noise</em></h1>
@@ -520,6 +580,12 @@
     <p class="register-note">Secure payment via Razorpay · Limited seats available</p>
   </section>
 
+  <!-- STICKY REGISTER BAR -->
+  <div class="sticky-cta" id="stickyCta">
+    <span class="sticky-cta-text"><strong>Clear The Noise</strong> &nbsp;·&nbsp; ₹799 <span class="old">₹1,999</span></span>
+    <a href="https://rzp.io/rzp/hcl-clearthenoise" class="btn-primary" rel="noopener">Reserve Your Seat</a>
+  </div>
+
   <!-- FOOTER -->
   <footer>
     <div class="footer-brand">High Conscious Life<span>A Journey Back To Yourself</span></div>
@@ -576,6 +642,25 @@
         });
       }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
       faders.forEach(function (el) { io.observe(el); });
+    })();
+
+    // Sticky register bar: show after the hero, hide when the register section is on screen
+    (function () {
+      var bar = document.getElementById('stickyCta');
+      var reg = document.getElementById('register');
+      if (!bar) return;
+      function update() {
+        var pastHero = window.scrollY > 600;
+        var regVisible = false;
+        if (reg) {
+          var r = reg.getBoundingClientRect();
+          regVisible = r.top < window.innerHeight && r.bottom > 0;
+        }
+        bar.classList.toggle('show', pastHero && !regVisible);
+      }
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update, { passive: true });
+      update();
     })();
   </script>
 </body>
