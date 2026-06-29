@@ -371,11 +371,35 @@
     .freebie-card { transition: transform .3s ease, box-shadow .3s ease; }
     .freebie-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(44,44,44,0.08); }
 
-    /* gentle attention pulse on the register button */
-    .cta-buttons .btn-primary { animation: ctapulse 2.8s ease-in-out infinite; }
-    @keyframes ctapulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(184,147,85,0); }
-      50%      { box-shadow: 0 0 0 7px rgba(184,147,85,0.12); }
+    /* ── MAGIC GLOW BUTTONS ── */
+    @property --mg-angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+    .magic-btn { position: relative; display: inline-block; }
+    .magic-btn::before {
+      content: '';
+      position: absolute; inset: -3px;
+      background: conic-gradient(from var(--mg-angle), var(--gold), #e7cd8e, var(--sage), #e7cd8e, var(--gold));
+      filter: blur(9px);
+      opacity: .6;
+      z-index: 0;
+      animation: mgspin 4.5s linear infinite;
+    }
+    .magic-btn .btn-primary { position: relative; z-index: 1; }
+    @keyframes mgspin { to { --mg-angle: 360deg; } }
+    .magic-btn .spark {
+      position: absolute;
+      color: var(--gold);
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0;
+      text-shadow: 0 0 6px rgba(184,147,85,0.6);
+      animation: mgtwinkle 3s ease-in-out infinite;
+    }
+    .magic-btn .spark.s1 { top: -9px; right: 14px; font-size: 13px; animation-delay: .3s; }
+    .magic-btn .spark.s2 { bottom: -7px; left: 18px; font-size: 10px; animation-delay: 1.5s; }
+    .magic-btn .spark.s3 { top: 50%; right: -11px; font-size: 9px; animation-delay: 2.3s; }
+    @keyframes mgtwinkle {
+      0%, 100% { opacity: 0; transform: scale(.4) rotate(0deg); }
+      50%      { opacity: .95; transform: scale(1) rotate(90deg); }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -440,6 +464,8 @@
       .hero-aura { animation: none; }
       .js .page-hero h1 { animation: none; }
       .sticky-cta { transition: none; }
+      .magic-btn::before { animation: none; }
+      .magic-btn .spark { animation: none; opacity: 0; }
     }
   </style>
   <script>document.documentElement.classList.add('js');</script>
@@ -574,7 +600,12 @@
       <span class="price-tag">Early Bird</span>
     </div>
     <div class="cta-buttons">
-      <a href="https://rzp.io/rzp/hcl-clearthenoise" class="btn-primary" rel="noopener">Proceed to Register</a>
+      <span class="magic-btn">
+        <a href="https://rzp.io/rzp/hcl-clearthenoise" class="btn-primary" rel="noopener">Proceed to Register</a>
+        <span class="spark s1" aria-hidden="true">✦</span>
+        <span class="spark s2" aria-hidden="true">✦</span>
+        <span class="spark s3" aria-hidden="true">✦</span>
+      </span>
       <button class="btn-outline" onclick="openModal()">Ask a Query</button>
     </div>
     <p class="register-note">Secure payment via Razorpay · Limited seats available</p>
@@ -583,7 +614,11 @@
   <!-- STICKY REGISTER BAR -->
   <div class="sticky-cta" id="stickyCta">
     <span class="sticky-cta-text"><strong>Clear The Noise</strong> &nbsp;·&nbsp; ₹799 <span class="old">₹1,999</span></span>
-    <a href="https://rzp.io/rzp/hcl-clearthenoise" class="btn-primary" rel="noopener">Reserve Your Seat</a>
+    <span class="magic-btn">
+      <a href="https://rzp.io/rzp/hcl-clearthenoise" class="btn-primary" rel="noopener">Reserve Your Seat</a>
+      <span class="spark s1" aria-hidden="true">✦</span>
+      <span class="spark s2" aria-hidden="true">✦</span>
+    </span>
   </div>
 
   <!-- FOOTER -->
