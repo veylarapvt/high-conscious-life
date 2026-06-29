@@ -345,7 +345,45 @@
       .freebies-list { grid-template-columns: 1fr; }
       .register-section { padding: 70px 28px; }
     }
+
+    /* ── ENTRANCE & SCROLL ANIMATIONS ── */
+    .js .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1);
+      will-change: opacity, transform;
+    }
+    .js .fade-up.in-view { opacity: 1; transform: none; }
+
+    /* staggered children reveal */
+    .js .stagger > * { opacity: 0; transform: translateY(16px); transition: opacity .5s ease, transform .5s ease; }
+    .js .fade-up.in-view .stagger > * { opacity: 1; transform: none; }
+    .js .fade-up.in-view .stagger > *:nth-child(1) { transition-delay: .05s; }
+    .js .fade-up.in-view .stagger > *:nth-child(2) { transition-delay: .13s; }
+    .js .fade-up.in-view .stagger > *:nth-child(3) { transition-delay: .21s; }
+    .js .fade-up.in-view .stagger > *:nth-child(4) { transition-delay: .29s; }
+    .js .fade-up.in-view .stagger > *:nth-child(5) { transition-delay: .37s; }
+    .js .fade-up.in-view .stagger > *:nth-child(6) { transition-delay: .45s; }
+
+    /* card hover lifts */
+    .pillar { transition: transform .3s ease, box-shadow .3s ease; }
+    .pillar:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(44,44,44,0.08); }
+    .freebie-card { transition: transform .3s ease, box-shadow .3s ease; }
+    .freebie-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(44,44,44,0.08); }
+
+    /* gentle attention pulse on the register button */
+    .cta-buttons .btn-primary { animation: ctapulse 2.8s ease-in-out infinite; }
+    @keyframes ctapulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(184,147,85,0); }
+      50%      { box-shadow: 0 0 0 7px rgba(184,147,85,0.12); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .js .fade-up, .js .stagger > * { opacity: 1 !important; transform: none !important; transition: none; }
+      .cta-buttons .btn-primary { animation: none; }
+    }
   </style>
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
 
@@ -375,15 +413,15 @@
   </div>
 
   <!-- HERO -->
-  <div class="page-hero">
+  <div class="page-hero fade-up">
     <p class="breadcrumb"><a href="/experiences">Experiences</a> &nbsp;/&nbsp; Experience 01</p>
     <span class="hero-tag">Experience 01 · Now Open</span>
     <h1>Clear<br /><em>The Noise</em></h1>
-    <p>A 3-hour immersive evening workshop designed to help you slow down, become aware of the patterns controlling your life, and reconnect with your own inner clarity.</p>
+    <p>A 3-hour evening workshop to quiet your busy mind. Slow down, understand what's really been draining you, and walk out feeling calm, clear, and like yourself again.</p>
   </div>
 
   <!-- EVENT STRIP -->
-  <div class="event-strip">
+  <div class="event-strip fade-up stagger">
     <div class="event-item"><span class="e-label">Date</span><span class="e-val">July 18, 2026</span></div>
     <div class="event-item"><span class="e-label">Time</span><span class="e-val">5:00 PM – 8:00 PM</span></div>
     <div class="event-item"><span class="e-label">Duration</span><span class="e-val">3 Hours</span></div>
@@ -391,85 +429,85 @@
   </div>
 
   <!-- ABOUT -->
-  <section class="detail-section">
+  <section class="detail-section fade-up">
     <span class="section-label">About This Experience</span>
-    <h2>The mind never stops talking. This is where you learn to listen differently.</h2>
-    <p>We live in an age of constant input — notifications, opinions, plans, worries. Most people are not living consciously. They are living from mental chatter that has become so loud, they can no longer hear themselves think clearly.</p>
-    <p>Clear The Noise is a structured, intimate 3-hour experience that takes you out of your usual environment and into a space of genuine stillness. Through guided awareness practices, reflection exercises, mindfulness techniques, and conscious observation, you learn to step outside the noise.</p>
-    <p>This is not a meditation class. This is not a lecture. It is a living, breathing experience — where you do the inner work in real time, in a safe and held space, with others who are walking the same path.</p>
-    <p>You will leave with a clearer mind, a calmer nervous system, and a stronger sense of who you are beneath all the noise that has been covering you.</p>
+    <h2>Your mind never stops. Here, it finally gets to rest.</h2>
+    <p>From the moment you wake up, your mind is already running — to-do lists, worries, replaying conversations, the endless scroll. By night you're exhausted, but your head still won't switch off.</p>
+    <p>Clear The Noise is a calm, guided 3-hour evening, away from your usual routine. Through simple awareness practices, gentle reflection, and breathing techniques, you'll learn how to step back from the mental chatter — instead of being pulled around by it.</p>
+    <p>It's not a lecture. It's not a strict meditation class. It's a warm, safe space where you actually do the work — in real time, with others who feel exactly the same way.</p>
+    <p>You'll walk out lighter, calmer, and clearer — more like yourself than you've felt in a long time.</p>
   </section>
 
   <!-- PILLARS -->
-  <section class="pillars">
+  <section class="pillars fade-up">
     <div class="pillars-inner">
       <span class="section-label">What You Will Experience</span>
-      <h2>Three hours. One clear direction.</h2>
-      <div class="pillars-grid">
+      <h2>Three hours, gently guided.</h2>
+      <div class="pillars-grid stagger">
         <div class="pillar">
           <div class="pillar-icon">◯</div>
           <h3>Guided Awareness</h3>
-          <p>Awareness practices that help you observe your thoughts without being controlled by them.</p>
+          <p>Simple practices to notice your thoughts — without getting swept away by them.</p>
         </div>
         <div class="pillar">
           <div class="pillar-icon">◎</div>
           <h3>Reflection & Journaling</h3>
-          <p>Structured reflection exercises that surface what has been running unconsciously beneath the surface.</p>
+          <p>Easy prompts that gently bring up what's really been weighing on you.</p>
         </div>
         <div class="pillar">
           <div class="pillar-icon">●</div>
           <h3>Reconnection</h3>
-          <p>A closing practice to help you anchor back into yourself — present, calm, and clear.</p>
+          <p>A calming closing practice to bring you back to yourself — present and at peace.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- OUTCOMES -->
-  <section class="outcomes-section">
+  <section class="outcomes-section fade-up">
     <span class="section-label">What You Take Home</span>
-    <h2>The shifts you'll carry forward.</h2>
-    <div class="outcomes-grid">
-      <div class="outcome-item"><div class="outcome-dot"></div><span>Reduced overthinking and mental noise</span></div>
-      <div class="outcome-item"><div class="outcome-dot"></div><span>Greater mental clarity and focus</span></div>
-      <div class="outcome-item"><div class="outcome-dot"></div><span>Increased self-awareness</span></div>
-      <div class="outcome-item"><div class="outcome-dot"></div><span>Stronger connection with your intuition</span></div>
-      <div class="outcome-item"><div class="outcome-dot"></div><span>More presence in everyday life</span></div>
-      <div class="outcome-item"><div class="outcome-dot"></div><span>Inner calm and emotional balance</span></div>
+    <h2>What changes after one evening.</h2>
+    <div class="outcomes-grid stagger">
+      <div class="outcome-item"><div class="outcome-dot"></div><span>Less overthinking and a quieter mind</span></div>
+      <div class="outcome-item"><div class="outcome-dot"></div><span>More clarity and focus</span></div>
+      <div class="outcome-item"><div class="outcome-dot"></div><span>A calmer, steadier nervous system</span></div>
+      <div class="outcome-item"><div class="outcome-dot"></div><span>A stronger sense of who you are</span></div>
+      <div class="outcome-item"><div class="outcome-dot"></div><span>More presence in everyday moments</span></div>
+      <div class="outcome-item"><div class="outcome-dot"></div><span>Emotional balance that stays with you</span></div>
     </div>
   </section>
 
   <!-- FREEBIES -->
-  <section class="freebies">
+  <section class="freebies fade-up">
     <div class="freebies-inner">
       <span class="section-label">Included With Your Seat</span>
-      <h2>Everything you need to continue the journey.</h2>
-      <p class="freebies-sub">Digital resources delivered to you after the workshop.</p>
-      <div class="freebies-list">
+      <h2>Free resources to keep you going.</h2>
+      <p class="freebies-sub">Sent to you after the workshop — so the calm doesn't stop when the evening ends.</p>
+      <div class="freebies-list stagger">
         <div class="freebie-card">
-          <span class="f-tag">Digital Freebie 01</span>
-          <h4>Low Thinking Affirmations</h4>
-          <p>A curated set of affirmations designed to quieten the overactive mind and anchor you in the present.</p>
+          <span class="f-tag">Freebie 01</span>
+          <h4>Overthinking Affirmations</h4>
+          <p>20 affirmations to calm an overactive mind and bring you back to the present.</p>
         </div>
         <div class="freebie-card">
-          <span class="f-tag">Digital Freebie 02</span>
+          <span class="f-tag">Freebie 02</span>
           <h4>Guided Clarity Journal</h4>
-          <p>A structured journal with prompts to help you continue the reflection work started in the workshop.</p>
+          <p>A 21-day journal with daily prompts to keep the inner work going at home.</p>
         </div>
         <div class="freebie-card">
-          <span class="f-tag">Digital Freebie 03</span>
+          <span class="f-tag">Freebie 03</span>
           <h4>Daily Awareness Tracker</h4>
-          <p>A simple daily tracker to help you notice patterns, practice presence, and build a conscious daily habit.</p>
+          <p>A 30-day tracker to notice your patterns and build a calm daily habit.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- REGISTER -->
-  <section class="register-section" id="register">
+  <section class="register-section fade-up" id="register">
     <span class="section-label">Reserve Your Seat</span>
-    <h2>One evening.<br />A lasting shift.</h2>
-    <p>July 18, 2026 · 5:00 PM – 8:00 PM · Includes snacks + all materials</p>
+    <h2>One evening.<br />A real shift.</h2>
+    <p>July 18, 2026 · 5:00 PM – 8:00 PM · Snacks + all materials included</p>
     <div class="price-row">
       <span class="price-original">₹1,999</span>
       <span class="price-current">₹799</span>
@@ -524,6 +562,21 @@
     function openModal() { document.getElementById('modal').classList.add('open'); document.body.style.overflow = 'hidden'; }
     function closeModal() { document.getElementById('modal').classList.remove('open'); document.body.style.overflow = ''; }
     function handleOverlayClick(e) { if (e.target === document.getElementById('modal')) closeModal(); }
+
+    // Fade-up + staggered reveals on scroll
+    (function () {
+      var faders = document.querySelectorAll('.fade-up');
+      if (!('IntersectionObserver' in window)) {
+        faders.forEach(function (el) { el.classList.add('in-view'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      faders.forEach(function (el) { io.observe(el); });
+    })();
   </script>
 </body>
 </html>
