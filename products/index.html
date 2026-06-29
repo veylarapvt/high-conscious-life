@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Products — High Conscious Life</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .shop-hero { padding: 150px 28px 50px; text-align: center; max-width: 680px; margin: 0 auto; }
+    .shop-hero h1 { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(34px, 5vw, 56px); color: var(--ink); line-height: 1.12; margin-bottom: 16px; }
+    .shop-hero h1 em { font-style: italic; color: var(--sage); }
+    .shop-hero p { font-size: 16px; color: var(--ink-soft); line-height: 1.85; }
+
+    .shop-grid { max-width: 1020px; margin: 0 auto; padding: 20px 28px 100px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: start; }
+
+    .prod {
+      background: var(--white); border: 1px solid rgba(44,44,44,0.1);
+      padding: 34px 30px 32px; display: flex; flex-direction: column; height: 100%;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    }
+    .prod:hover { transform: translateY(-5px); box-shadow: 0 14px 44px rgba(44,44,44,0.09); border-color: rgba(184,147,85,0.3); }
+    .prod.featured { border: 2px solid var(--gold); }
+
+    .prod-badge { align-self: flex-start; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); background: var(--gold-light); padding: 5px 12px; margin-bottom: 16px; }
+    .prod-tag { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 12px; }
+    .prod h3 { font-family: 'Fraunces', serif; font-weight: 400; font-size: 23px; color: var(--ink); line-height: 1.25; margin-bottom: 12px; }
+    .prod-desc { font-size: 14px; color: var(--ink-soft); line-height: 1.75; margin-bottom: 20px; }
+
+    .prod-feats { list-style: none; display: flex; flex-direction: column; gap: 9px; margin-bottom: 26px; }
+    .prod-feats li { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; color: var(--ink-muted); line-height: 1.6; }
+    .prod-feats li::before { content: '✓'; color: var(--sage); font-weight: 600; flex-shrink: 0; }
+
+    .prod-price { margin-top: auto; display: flex; align-items: baseline; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+    .prod-price .now { font-family: 'Fraunces', serif; font-size: 34px; color: var(--ink); }
+    .prod-price .was { font-size: 16px; color: var(--ink-muted); text-decoration: line-through; }
+    .prod-price .save { font-size: 11px; letter-spacing: 0.06em; color: var(--sage); }
+    .prod .btn-primary { width: 100%; text-align: center; }
+
+    .shop-note { max-width: 1020px; margin: 0 auto; padding: 0 28px 90px; text-align: center; font-size: 13px; color: var(--ink-muted); line-height: 1.8; }
+
+    .js .fade-up { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1); }
+    .js .fade-up.in-view { opacity: 1; transform: none; }
+    .js .fade-up.in-view .prod:nth-child(2) { transition-delay: .1s; }
+    .js .fade-up.in-view .prod:nth-child(3) { transition-delay: .2s; }
+    .js .shop-grid.fade-up .prod { transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s, opacity .6s ease; }
+
+    @media (max-width: 860px) { .shop-grid { grid-template-columns: 1fr; max-width: 460px; } }
+    @media (prefers-reduced-motion: reduce) { .js .fade-up { opacity: 1 !important; transform: none !important; } }
+  </style>
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-brand" href="/">High Conscious Life</a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="/experiences">Experiences</a></li>
+        <li><a href="/products" class="active">Products</a></li>
+      </ul>
+      <button class="hamburger" onclick="openDrawer()" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="drawer-overlay" id="overlay" onclick="closeDrawer()"></div>
+  <div class="drawer" id="drawer">
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    <p class="drawer-label">Navigate</p>
+    <ul class="drawer-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/experiences">Experiences</a></li>
+      <li><a href="/products">Products</a></li>
+      <li><a href="/clear-the-noise">Clear The Noise</a></li>
+      <li><a href="/break-the-pattern">Break The Pattern <span class="coming">Soon</span></a></li>
+      <li><a href="/manifest-your-reality">Manifest Your Reality <span class="coming">Soon</span></a></li>
+    </ul>
+  </div>
+
+  <section class="shop-hero">
+    <span class="section-label">Products</span>
+    <h1>Tools to keep <em>clearing the noise</em></h1>
+    <p>Couldn't make the workshop? You can still get the journal and the tracker. Simple tools to slow your mind and build the habit of presence — yours to keep.</p>
+  </section>
+
+  <div class="shop-grid fade-up">
+
+    <div class="prod">
+      <span class="prod-tag">PDF Download</span>
+      <h3>21-Day Clarity Journal</h3>
+      <p class="prod-desc">Twenty-one days of gentle, guided prompts to slow your mind and reflect. A beautifully designed PDF.</p>
+      <ul class="prod-feats">
+        <li>21 daily reflection prompts</li>
+        <li>Print it, or type on it digitally</li>
+        <li>Yours to keep, forever</li>
+      </ul>
+      <div class="prod-price"><span class="now">₹149</span></div>
+      <a href="RZP_JOURNAL_LINK" class="btn-primary" rel="noopener">Buy the Journal</a>
+    </div>
+
+    <div class="prod">
+      <span class="prod-tag">Interactive Tool</span>
+      <h3>30-Day Awareness Tracker</h3>
+      <p class="prod-desc">A simple daily check-in that lives in your browser and remembers your progress. Build presence over 30 days.</p>
+      <ul class="prod-feats">
+        <li>Auto-saves your progress</li>
+        <li>Streaks &amp; progress bar</li>
+        <li>Backup &amp; print anytime</li>
+      </ul>
+      <div class="prod-price"><span class="now">₹149</span></div>
+      <a href="RZP_TRACKER_LINK" class="btn-primary" rel="noopener">Buy the Tracker</a>
+    </div>
+
+    <div class="prod featured">
+      <span class="prod-badge">Best Value</span>
+      <h3>Journal + Tracker Bundle</h3>
+      <p class="prod-desc">Get both and save. The full toolkit to clear the noise — and keep it clear, day after day.</p>
+      <ul class="prod-feats">
+        <li>The complete 21-Day Journal (PDF)</li>
+        <li>The 30-Day Awareness Tracker</li>
+        <li>Bonus: Overthinking Affirmations</li>
+      </ul>
+      <div class="prod-price"><span class="now">₹249</span> <span class="was">₹298</span> <span class="save">Save ₹49</span></div>
+      <a href="RZP_BUNDLE_LINK" class="btn-primary" rel="noopener">Get the Bundle</a>
+    </div>
+
+  </div>
+
+  <p class="shop-note">Secure payment via Razorpay · Delivered to your email right after purchase.</p>
+
+  <footer>
+    <div class="footer-brand">High Conscious Life<span>A Journey Back To Yourself</span></div>
+    <ul class="footer-links">
+      <li><a href="https://www.instagram.com/highconsciouslife?igsh=eHBkdTNjeWs5eHRl" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="#">WhatsApp</a></li>
+      <li><a href="mailto:highconsciouslife@gmail.com">highconsciouslife@gmail.com</a></li>
+    </ul>
+  </footer>
+
+  <script>
+    function openDrawer() { document.getElementById('drawer').classList.add('open'); document.getElementById('overlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeDrawer() { document.getElementById('drawer').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); document.body.style.overflow = ''; }
+    (function () {
+      var faders = document.querySelectorAll('.fade-up');
+      if (!('IntersectionObserver' in window)) { faders.forEach(function (el) { el.classList.add('in-view'); }); return; }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); } });
+      }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' });
+      faders.forEach(function (el) { io.observe(el); });
+    })();
+  </script>
+</body>
+</html>
