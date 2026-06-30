@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thank You — High Conscious Life</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .ty-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 110px 24px 60px; text-align: center; }
+    .ty-card { background: var(--white); max-width: 560px; width: 100%; padding: 54px 44px; border: 1px solid rgba(44,44,44,0.08); position: relative; }
+    .ty-card::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 40px; height: 2px; background: var(--gold); }
+    .ty-eyebrow { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .ty-card h1 { font-family: 'Fraunces', serif; font-size: 30px; font-weight: 400; color: var(--ink); line-height: 1.25; margin-bottom: 12px; }
+    .ty-card h1 em { font-style: italic; color: var(--sage); }
+    .ty-desc { font-size: 14px; color: var(--ink-muted); line-height: 1.85; margin-bottom: 30px; }
+
+    .ty-item {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+      border: 1px solid rgba(44,44,44,0.1); background: var(--ivory); padding: 18px 20px; margin-bottom: 12px; text-align: left;
+    }
+    .ty-item h3 { font-family: 'Fraunces', serif; font-weight: 400; font-size: 17px; color: var(--ink); margin-bottom: 3px; }
+    .ty-item p { font-size: 12.5px; color: var(--ink-muted); line-height: 1.5; }
+    .ty-item .btn-primary { padding: 11px 22px; font-size: 11px; white-space: nowrap; }
+
+    .ty-note { font-size: 12.5px; color: var(--ink-muted); line-height: 1.7; margin-top: 24px; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-brand" href="/">High Conscious Life</a>
+  </nav>
+
+  <div class="ty-wrap">
+    <div class="ty-card">
+      <p class="ty-eyebrow">Payment Successful</p>
+      <h1 id="ty-title">Thank you — <em>your tools are ready</em></h1>
+      <p class="ty-desc">Your purchase is complete. Access everything below — we've also emailed these links to you, so you'll always have them.</p>
+
+      <!-- JOURNAL -->
+      <div class="ty-item hidden" id="item-journal">
+        <div>
+          <h3>21-Day Clarity Journal</h3>
+          <p>PDF · print it or type on it digitally</p>
+        </div>
+        <a href="/ClearTheNoise_21Day_Journal.pdf" class="btn-primary" download>Download PDF</a>
+      </div>
+
+      <!-- TRACKER -->
+      <div class="ty-item hidden" id="item-tracker">
+        <div>
+          <h3>21-Day Awareness Tracker</h3>
+          <p>Opens in your browser · bookmark it, your progress saves automatically</p>
+        </div>
+        <a href="/ClearTheNoise_Tracker" class="btn-primary" target="_blank" rel="noopener">Open Tracker</a>
+      </div>
+
+      <!-- AFFIRMATIONS (bundle bonus) -->
+      <div class="ty-item hidden" id="item-affirmations">
+        <div>
+          <h3>Overthinking Affirmations</h3>
+          <p>Bonus · 20 affirmations to quiet the mind</p>
+        </div>
+        <a href="/freebies" class="btn-primary" target="_blank" rel="noopener">Open</a>
+      </div>
+
+      <p class="ty-note" id="ty-note">Tip: save your tracker link somewhere handy — your daily entries live in that browser. Lost it? Just reopen it from your email.</p>
+      <p class="ty-note">Questions? Email <a href="mailto:highconsciouslife@gmail.com" style="color:var(--gold)">highconsciouslife@gmail.com</a></p>
+    </div>
+  </div>
+
+  <script>
+    var product = (new URLSearchParams(location.search).get('product') || 'bundle').toLowerCase();
+    var show = {
+      journal:  ['journal'],
+      tracker:  ['tracker'],
+      bundle:   ['journal', 'tracker', 'affirmations']
+    }[product] || ['journal', 'tracker', 'affirmations'];
+
+    show.forEach(function (k) {
+      var el = document.getElementById('item-' + k);
+      if (el) el.classList.remove('hidden');
+    });
+
+    var titles = {
+      journal: 'Your Journal is <em>ready</em>',
+      tracker: 'Your Tracker is <em>ready</em>',
+      bundle:  'Thank you — <em>your bundle is ready</em>'
+    };
+    document.getElementById('ty-title').innerHTML = titles[product] || titles.bundle;
+
+    // tracker tip only relevant if a tracker was purchased
+    if (show.indexOf('tracker') === -1) document.getElementById('ty-note').classList.add('hidden');
+  </script>
+</body>
+</html>
