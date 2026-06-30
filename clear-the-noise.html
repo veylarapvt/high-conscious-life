@@ -466,7 +466,20 @@
       .sticky-cta { transition: none; }
       .magic-btn::before { animation: none; }
       .magic-btn .spark { animation: none; opacity: 0; }
+      .seats-left::before { animation: none; }
     }
+
+    /* seats-left urgency badge */
+    .seats-left {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13px; letter-spacing: 0.05em; font-weight: 500;
+      color: var(--gold); margin-bottom: 18px;
+    }
+    .seats-left::before {
+      content: ''; width: 7px; height: 7px; border-radius: 50%;
+      background: var(--gold); animation: seatpulse 1.6s ease-in-out infinite;
+    }
+    @keyframes seatpulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(.7); } }
   </style>
   <script>document.documentElement.classList.add('js');</script>
 </head>
@@ -511,7 +524,7 @@
     <div class="event-item"><span class="e-label">Date</span><span class="e-val">July 18, 2026</span></div>
     <div class="event-item"><span class="e-label">Time</span><span class="e-val">5:00 PM – 8:00 PM</span></div>
     <div class="event-item"><span class="e-label">Duration</span><span class="e-val">3 Hours</span></div>
-    <div class="event-item"><span class="e-label">Seats</span><span class="e-val">Limited</span></div>
+    <div class="event-item"><span class="e-label">Seats</span><span class="e-val" id="seatsVal">Limited</span></div>
   </div>
 
   <!-- ABOUT -->
@@ -599,13 +612,15 @@
       <span class="price-current">₹799</span>
       <span class="price-tag">Early Bird</span>
     </div>
+    <p class="seats-left" id="seatsLeft" style="display:none"></p>
     <div class="cta-buttons">
-      <span class="magic-btn">
+      <span class="magic-btn" id="registerMagic">
         <a href="https://rzp.io/rzp/hcl-clearthenoise" class="btn-primary" rel="noopener">Proceed to Register</a>
         <span class="spark s1" aria-hidden="true">✦</span>
         <span class="spark s2" aria-hidden="true">✦</span>
         <span class="spark s3" aria-hidden="true">✦</span>
       </span>
+      <button class="btn-primary" id="waitlistBtn" style="display:none" onclick="openWaitlist()">Join the Waitlist</button>
       <button class="btn-outline" onclick="openModal()">Ask a Query</button>
     </div>
     <p class="register-note">Secure payment via Razorpay · Limited seats available</p>
@@ -613,12 +628,13 @@
 
   <!-- STICKY REGISTER BAR -->
   <div class="sticky-cta" id="stickyCta">
-    <span class="sticky-cta-text"><strong>Clear The Noise</strong> &nbsp;·&nbsp; ₹799 <span class="old">₹1,999</span></span>
-    <span class="magic-btn">
+    <span class="sticky-cta-text" id="stickyText"><strong>Clear The Noise</strong> &nbsp;·&nbsp; ₹799 <span class="old">₹1,999</span></span>
+    <span class="magic-btn" id="stickyMagic">
       <a href="https://rzp.io/rzp/hcl-clearthenoise" class="btn-primary" rel="noopener">Reserve Your Seat</a>
       <span class="spark s1" aria-hidden="true">✦</span>
       <span class="spark s2" aria-hidden="true">✦</span>
     </span>
+    <button class="btn-primary" id="stickyWaitlist" style="display:none" onclick="openWaitlist()">Join the Waitlist</button>
   </div>
 
   <!-- FOOTER -->
@@ -654,6 +670,29 @@
         <textarea placeholder="What would you like to know about Clear The Noise?"></textarea>
       </div>
       <button class="btn-primary form-submit">Send Query</button>
+    </div>
+  </div>
+
+  <!-- WAITLIST MODAL -->
+  <div class="modal-overlay" id="waitlistModal" onclick="handleWlOverlay(event)">
+    <div class="modal">
+      <button class="modal-close" onclick="closeWaitlist()">✕</button>
+      <h3>Join the Waitlist</h3>
+      <p class="modal-sub">This round is full. Leave your details and you'll be the first to know when the next Clear The Noise opens.</p>
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" id="wlName" placeholder="Priya Sharma" />
+      </div>
+      <div class="form-group">
+        <label>Email ID</label>
+        <input type="email" id="wlEmail" placeholder="priya@email.com" />
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" id="wlPhone" placeholder="+91 98765 43210" />
+      </div>
+      <p id="wlMsg" style="font-size:12.5px; min-height:16px; margin-bottom:8px;"></p>
+      <button class="btn-primary form-submit" id="wlSubmit" onclick="submitWaitlist()">Join Waitlist</button>
     </div>
   </div>
 
@@ -696,6 +735,63 @@
       window.addEventListener('scroll', update, { passive: true });
       window.addEventListener('resize', update, { passive: true });
       update();
+    })();
+
+    // ── Seat capacity + waitlist ──
+    var SB_URL = 'https://mewacoirynzkbvsqxlhh.supabase.co';
+    var SB_KEY = 'sb_publishable_m-khzeZ6_Z3YeKL0JSkG5w_QslyGqeS';
+
+    function openWaitlist() { document.getElementById('waitlistModal').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeWaitlist() { document.getElementById('waitlistModal').classList.remove('open'); document.body.style.overflow = ''; }
+    function handleWlOverlay(e) { if (e.target === document.getElementById('waitlistModal')) closeWaitlist(); }
+
+    async function submitWaitlist() {
+      var msg = document.getElementById('wlMsg');
+      var btn = document.getElementById('wlSubmit');
+      var name = document.getElementById('wlName').value.trim();
+      var email = document.getElementById('wlEmail').value.trim();
+      var contact = document.getElementById('wlPhone').value.trim();
+      msg.style.color = '#C0392B';
+      if (!email) { msg.textContent = 'Please enter your email.'; return; }
+      btn.disabled = true; var lbl = btn.textContent; btn.textContent = 'Joining…';
+      try {
+        var r = await fetch(SB_URL + '/functions/v1/join-waitlist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY },
+          body: JSON.stringify({ name: name, email: email, contact: contact })
+        });
+        var d = await r.json();
+        if (r.ok && d.ok) {
+          msg.style.color = 'var(--sage)';
+          msg.textContent = "You're on the list — we'll be in touch. 🌿";
+          document.getElementById('wlName').value = '';
+          document.getElementById('wlEmail').value = '';
+          document.getElementById('wlPhone').value = '';
+        } else { msg.textContent = (d && d.error) || 'Something went wrong. Please try again.'; }
+      } catch (e) { msg.textContent = 'Could not connect. Please try again.'; }
+      finally { btn.disabled = false; btn.textContent = lbl; }
+    }
+
+    (function () {
+      fetch(SB_URL + '/functions/v1/seat-status', { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY } })
+        .then(function (r) { return r.json(); })
+        .then(function (s) {
+          var seatsVal = document.getElementById('seatsVal');
+          if (s.soldOut) {
+            var rm = document.getElementById('registerMagic'); if (rm) rm.style.display = 'none';
+            var wb = document.getElementById('waitlistBtn'); if (wb) wb.style.display = 'inline-block';
+            var note = document.querySelector('.register-note'); if (note) note.textContent = 'This round is full — join the waitlist to be first in line for the next one.';
+            var sm = document.getElementById('stickyMagic'); if (sm) sm.style.display = 'none';
+            var sw = document.getElementById('stickyWaitlist'); if (sw) sw.style.display = 'inline-block';
+            var st = document.getElementById('stickyText'); if (st) st.innerHTML = '<strong>Clear The Noise</strong> &nbsp;·&nbsp; Registrations full';
+            if (seatsVal) seatsVal.textContent = 'Sold Out';
+          } else if (s.showCount) {
+            var sl = document.getElementById('seatsLeft');
+            if (sl) { sl.textContent = 'Only ' + s.remaining + ' seat' + (s.remaining === 1 ? '' : 's') + ' left'; sl.style.display = 'inline-flex'; }
+            if (seatsVal) seatsVal.textContent = s.remaining + ' Left';
+          }
+        })
+        .catch(function () { /* leave default UI */ });
     })();
   </script>
 </body>
