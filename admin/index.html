@@ -80,6 +80,23 @@
       </table>
       <div class="empty" id="empty" style="display:none">No registrations yet.</div>
     </div>
+
+    <div class="admin-header" style="margin-top:48px">
+      <h1>Waitlist</h1>
+      <span class="admin-count" id="wcount"></span>
+    </div>
+    <div class="toolbar">
+      <button class="btn-outline" onclick="downloadWaitCsv()">Download CSV</button>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th></tr>
+        </thead>
+        <tbody id="wrows"></tbody>
+      </table>
+      <div class="empty" id="wempty" style="display:none">No one on the waitlist yet.</div>
+    </div>
   </div>
 
   <script>
@@ -87,6 +104,7 @@
     const SUPABASE_KEY = 'sb_publishable_m-khzeZ6_Z3YeKL0JSkG5w_QslyGqeS';
     let PWD = '';
     let DATA = [];
+    let WAIT = [];
 
     function esc(s) {
       return (s == null ? '' : String(s)).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
@@ -101,7 +119,7 @@
       return '₹' + (paise / 100).toLocaleString('en-IN');
     }
 
-    async function fetchRows(password) {
+    async function fetchData(password) {
       const res = await fetch(`${SUPABASE_URL}/functions/v1/admin-list`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` },
@@ -109,8 +127,7 @@
       });
       if (res.status === 401) throw new Error('unauthorized');
       if (!res.ok) throw new Error('failed');
-      const data = await res.json();
-      return data.rows || [];
+      return await res.json();
     }
 
     async function login() {
@@ -121,7 +138,8 @@
       if (!pwd) { err.textContent = 'Please enter the password.'; return; }
       btn.disabled = true; btn.textContent = 'Checking…';
       try {
-        DATA = await fetchRows(pwd);
+        var data = await fetchData(pwd);
+        DATA = data.rows || []; WAIT = data.waitlist || [];
         PWD = pwd;
         document.getElementById('login').style.display = 'none';
         document.getElementById('dash').style.display = 'block';
@@ -134,7 +152,7 @@
     }
 
     async function load() {
-      try { DATA = await fetchRows(PWD); render(); } catch (e) { /* ignore */ }
+      try { var data = await fetchData(PWD); DATA = data.rows || []; WAIT = data.waitlist || []; render(); } catch (e) { /* ignore */ }
     }
 
     function render() {
@@ -152,6 +170,16 @@
         <td>${esc(r.payment_id || '—')}</td>
         <td>${r.used ? 'Yes' : 'No'}</td>
       </tr>`).join('');
+
+      const wb = document.getElementById('wrows');
+      document.getElementById('wcount').textContent = WAIT.length + ' total';
+      document.getElementById('wempty').style.display = WAIT.length ? 'none' : 'block';
+      wb.innerHTML = WAIT.map(w => `<tr>
+        <td>${esc(fmtDate(w.created_at))}</td>
+        <td>${esc(w.name || '—')}</td>
+        <td>${esc(w.email || '—')}</td>
+        <td>${esc(w.contact || '—')}</td>
+      </tr>`).join('');
     }
 
     function downloadCsv() {
@@ -165,6 +193,17 @@
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
       a.download = 'registrations.csv';
+      a.click();
+    }
+
+    function downloadWaitCsv() {
+      const cols = ['created_at','name','email','contact'];
+      const head = cols.join(',');
+      const body = WAIT.map(w => cols.map(c => '"' + String(w[c] == null ? '' : w[c]).replace(/"/g, '""') + '"').join(',')).join('\n');
+      const blob = new Blob([head + '\n' + body], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'waitlist.csv';
       a.click();
     }
 
