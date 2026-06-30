@@ -57,15 +57,6 @@
         <a href="/ClearTheNoise_Tracker" class="btn-primary" target="_blank" rel="noopener">Open Tracker</a>
       </div>
 
-      <!-- AFFIRMATIONS (bundle bonus) -->
-      <div class="ty-item hidden" id="item-affirmations">
-        <div>
-          <h3>Overthinking Affirmations</h3>
-          <p>Bonus · 20 affirmations to quiet the mind</p>
-        </div>
-        <a href="/freebies" class="btn-primary" target="_blank" rel="noopener">Open</a>
-      </div>
-
       <p class="ty-note" id="ty-note">Tip: save your tracker link somewhere handy — your daily entries live in that browser. Lost it? Just reopen it from your email.</p>
       <p class="ty-note">Questions? Email <a href="mailto:highconsciouslife@gmail.com" style="color:var(--gold)">highconsciouslife@gmail.com</a></p>
     </div>
@@ -76,8 +67,8 @@
     var show = {
       journal:  ['journal'],
       tracker:  ['tracker'],
-      bundle:   ['journal', 'tracker', 'affirmations']
-    }[product] || ['journal', 'tracker', 'affirmations'];
+      bundle:   ['journal', 'tracker']
+    }[product] || ['journal', 'tracker'];
 
     show.forEach(function (k) {
       var el = document.getElementById('item-' + k);
