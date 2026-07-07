@@ -84,6 +84,19 @@
       color: var(--ink);
     }
 
+    .event-item .e-val a {
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 1px;
+      transition: color 0.3s;
+    }
+    .event-item .e-val a:hover { color: var(--gold); }
+
+    .register-venue { margin-top: -26px; margin-bottom: 34px; font-size: 14px; }
+    .register-venue a { color: var(--gold); text-decoration: none; }
+    .register-venue a:hover { text-decoration: underline; }
+
     /* ── ABOUT BLOCK ── */
     .detail-section {
       padding: 90px 60px;
@@ -526,6 +539,7 @@
     <div class="event-item"><span class="e-label">Date</span><span class="e-val">July 18, 2026</span></div>
     <div class="event-item"><span class="e-label">Time</span><span class="e-val">5:00 PM – 8:00 PM</span></div>
     <div class="event-item"><span class="e-label">Duration</span><span class="e-val">3 Hours</span></div>
+    <div class="event-item"><span class="e-label">Venue</span><span class="e-val"><a href="https://maps.app.goo.gl/n6J3d548MCUz4Y4c7?g_st=ic" target="_blank" rel="noopener">Khee Coworks, Trichy</a></span></div>
     <div class="event-item"><span class="e-label">Seats</span><span class="e-val" id="seatsVal">Limited</span></div>
   </div>
 
@@ -609,6 +623,7 @@
     <span class="section-label">Reserve Your Seat</span>
     <h2>One evening.<br />A real shift.</h2>
     <p>July 18, 2026 · 5:00 PM – 8:00 PM · Snacks + all materials included</p>
+    <p class="register-venue">📍 Khee Coworks, Trichy — <a href="https://maps.app.goo.gl/n6J3d548MCUz4Y4c7?g_st=ic" target="_blank" rel="noopener">View on map</a></p>
     <div class="price-row">
       <span class="price-original">₹1,999</span>
       <span class="price-current">₹799</span>
