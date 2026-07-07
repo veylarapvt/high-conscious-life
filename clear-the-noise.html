@@ -493,6 +493,53 @@
       background: var(--gold); animation: seatpulse 1.6s ease-in-out infinite;
     }
     @keyframes seatpulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(.7); } }
+
+    .event-item .e-val .old-price { font-size: 12px; color: var(--ink-muted); text-decoration: line-through; margin-left: 5px; }
+
+    /* ── VENUE ── */
+    .venue-section { padding: 56px 60px; max-width: 1020px; margin: 0 auto; }
+    .venue-section .section-label { text-align: center; }
+    .venue-card { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid rgba(44,44,44,0.1); background: var(--white); overflow: hidden; }
+    .venue-info { padding: 38px 40px; }
+    .venue-info .v-eyebrow { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+    .venue-info h2 { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(22px,3vw,30px); color: var(--ink); margin: 8px 0 10px; }
+    .venue-info .v-addr { font-size: 15px; color: var(--ink-soft); line-height: 1.7; margin-bottom: 22px; }
+    .venue-map-wrap { min-height: 260px; background: var(--ivory-warm); }
+    .venue-map { width: 100%; height: 100%; min-height: 260px; border: none; display: block; }
+    @media (max-width: 760px) { .venue-section { padding: 46px 28px; } .venue-card { grid-template-columns: 1fr; } .venue-info { padding: 30px 26px; } .venue-map, .venue-map-wrap { min-height: 220px; } }
+
+    /* ── FACILITATOR ── */
+    .facilitator { background: var(--ivory-warm); padding: 90px 60px; }
+    .fac-inner { max-width: 940px; margin: 0 auto; display: grid; grid-template-columns: 220px 1fr; gap: 48px; align-items: center; }
+    .fac-photo { width: 220px; height: 262px; background: var(--white); border: 1px solid rgba(44,44,44,0.1); display: flex; align-items: center; justify-content: center; color: var(--ink-muted); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; overflow: hidden; }
+    .fac-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .fac-body h2 { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(24px,3vw,34px); color: var(--ink); margin-bottom: 4px; }
+    .fac-role { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+    .fac-body p { font-size: 15.5px; color: var(--ink-soft); line-height: 1.9; margin-bottom: 12px; }
+    .ig-btn { display: inline-flex; align-items: center; gap: 9px; margin-top: 12px; background: var(--ink); color: var(--ivory); padding: 11px 20px; font-size: 12px; letter-spacing: 0.06em; text-decoration: none; transition: background .3s; }
+    .ig-btn:hover { background: var(--ink-soft); }
+    .ig-btn svg { width: 16px; height: 16px; }
+    @media (max-width: 760px) { .facilitator { padding: 70px 28px; } .fac-inner { grid-template-columns: 1fr; gap: 24px; text-align: center; } .fac-photo { width: 168px; height: 200px; margin: 0 auto; } }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials { padding: 88px 60px; max-width: 1020px; margin: 0 auto; text-align: center; }
+    .testimonials h2 { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(24px,3vw,34px); color: var(--ink); }
+    .founding-note { font-family: 'Fraunces', serif; font-style: italic; font-size: clamp(18px,2.4vw,24px); color: var(--ink); line-height: 1.55; max-width: 680px; margin: 22px auto 0; }
+    .quote-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 18px; margin-top: 40px; text-align: left; }
+    .quote-card { background: var(--white); border: 1px solid rgba(44,44,44,0.1); border-top: 2px solid var(--gold); padding: 28px 26px; }
+    .quote-card p { font-family: 'Fraunces', serif; font-style: italic; font-size: 16px; color: var(--ink); line-height: 1.6; margin-bottom: 14px; }
+    .q-author { font-size: 12px; letter-spacing: 0.08em; color: var(--ink-muted); text-transform: uppercase; }
+
+    /* ── FAQ ── */
+    .faq-section { padding: 88px 60px; max-width: 820px; margin: 0 auto; }
+    .faq-section h2 { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(24px,3vw,34px); color: var(--ink); margin-bottom: 24px; }
+    .faq-item { border-bottom: 1px solid rgba(44,44,44,0.12); }
+    .faq-q { width: 100%; text-align: left; background: none; border: none; cursor: pointer; padding: 22px 0; display: flex; justify-content: space-between; align-items: center; gap: 16px; font-family: 'Fraunces', serif; font-size: clamp(16px,2.2vw,19px); color: var(--ink); }
+    .faq-ic { color: var(--gold); font-size: 22px; flex-shrink: 0; transition: transform .3s; line-height: 1; }
+    .faq-item.open .faq-ic { transform: rotate(45deg); }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
+    .faq-a p { font-size: 15px; color: var(--ink-soft); line-height: 1.85; padding: 0 0 22px; }
+    @media (max-width: 760px) { .testimonials, .faq-section { padding: 68px 28px; } }
   </style>
   <script>document.documentElement.classList.add('js');</script>
 </head>
@@ -525,6 +572,53 @@
     </ul>
   </div>
 
+  <!-- ============================================================
+       EDIT YOUR WORKSHOP DETAILS HERE  (everything below is safe to change)
+       ============================================================ -->
+  <script>
+    window.CONFIG = {
+      // Set to true ONLY when the workshop is full. While false, the waitlist
+      // is completely hidden and registration stays open.
+      soldOut: false,
+
+      // Concrete scarcity number shown near Date/Time. Set to null for just "Limited".
+      seatsLeft: 12,
+
+      venue: {
+        name: 'Khee Coworks',
+        address: 'Khee Coworks, Trichy, Tamil Nadu',   // put the full street address here
+        mapsUrl: 'https://maps.app.goo.gl/n6J3d548MCUz4Y4c7?g_st=ic',
+        mapQuery: 'Khee Coworks Trichy'                 // used for the embedded map
+      },
+
+      facilitator: {
+        name: 'Pradhishta',
+        role: 'Facilitator · High Conscious Life',
+        instagram: 'https://www.instagram.com/pradhishtaa/',
+        photo: '',   // add an image path/URL later, e.g. '/pradhishta.jpg'
+        bio: [
+          'I created High Conscious Life after years of looking successful on the outside, yet feeling noisy and disconnected on the inside.',
+          'Clear The Noise is the space I wished existed — not another course to finish, but an evening to actually stop, breathe, and come back to yourself.',
+          'My work is gentle and grounded: no pressure, no performing, just honest presence in a room of people walking the same path.',
+          'I would love to hold that space for you.'
+        ]
+      },
+
+      // First round? Leave testimonials empty to show the founding-cohort note.
+      // Add real quotes later, e.g. { quote: '...', author: 'A. · Trichy' }
+      testimonials: [],
+      foundingCohortNote: 'This is our very first Clear The Noise circle in Trichy — you won’t just attend it, you’ll help shape it. The first cohort is always the most intimate.',
+
+      // Edit the answers below any time.
+      faqs: [
+        { q: 'Do I need prior meditation or mindfulness experience?', a: 'Not at all — Clear The Noise is designed for complete beginners. Everything is gently guided, step by step. (Edit this answer.)' },
+        { q: 'What should I bring or wear?', a: 'Wear something comfortable you can sit relaxed in. Everything else you need is provided. (Edit this answer.)' },
+        { q: 'What’s the refund / transfer policy if I can’t attend?', a: 'Add your refund and transfer policy here. (Edit this answer.)' },
+        { q: 'Is the workshop conducted in English, Tamil, or both?', a: 'The session is conducted in ___. (Edit this answer.)' }
+      ]
+    };
+  </script>
+
   <!-- HERO -->
   <div class="page-hero fade-up">
     <div class="hero-aura" aria-hidden="true"></div>
@@ -539,9 +633,26 @@
     <div class="event-item"><span class="e-label">Date</span><span class="e-val">July 18, 2026</span></div>
     <div class="event-item"><span class="e-label">Time</span><span class="e-val">5:00 PM – 8:00 PM</span></div>
     <div class="event-item"><span class="e-label">Duration</span><span class="e-val">3 Hours</span></div>
+    <div class="event-item"><span class="e-label">Price · Early Bird</span><span class="e-val">₹799 <span class="old-price">₹1,999</span></span></div>
     <div class="event-item"><span class="e-label">Venue</span><span class="e-val"><a href="https://maps.app.goo.gl/n6J3d548MCUz4Y4c7?g_st=ic" target="_blank" rel="noopener">Khee Coworks, Trichy</a></span></div>
     <div class="event-item"><span class="e-label">Seats</span><span class="e-val" id="seatsVal">Limited</span></div>
   </div>
+
+  <!-- VENUE -->
+  <section class="venue-section fade-up">
+    <span class="section-label">Where</span>
+    <div class="venue-card">
+      <div class="venue-info">
+        <span class="v-eyebrow">Venue</span>
+        <h2 id="venueName">Khee Coworks</h2>
+        <p class="v-addr" id="venueAddress">Khee Coworks, Trichy, Tamil Nadu</p>
+        <a class="btn-outline" id="venueMapLink" href="https://maps.app.goo.gl/n6J3d548MCUz4Y4c7?g_st=ic" target="_blank" rel="noopener">Open in Google Maps</a>
+      </div>
+      <div class="venue-map-wrap">
+        <iframe id="venueMap" class="venue-map" title="Venue location map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
 
   <!-- ABOUT -->
   <section class="detail-section fade-up">
@@ -592,6 +703,34 @@
     </div>
   </section>
 
+  <!-- FACILITATOR -->
+  <section class="facilitator fade-up">
+    <div class="fac-inner">
+      <div class="fac-photo" id="facPhoto">Photo</div>
+      <div class="fac-body">
+        <span class="section-label">Your Facilitator</span>
+        <h2 id="facName">Pradhishta</h2>
+        <p class="fac-role" id="facRole">Facilitator · High Conscious Life</p>
+        <div id="facBio"></div>
+        <a class="ig-btn" id="facInsta" href="https://www.instagram.com/pradhishtaa/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5"></rect>
+            <circle cx="12" cy="12" r="4"></circle>
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle>
+          </svg>
+          Follow on Instagram
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials fade-up">
+    <span class="section-label">In Their Words</span>
+    <h2>A space people don't forget.</h2>
+    <div id="testimonials"></div>
+  </section>
+
   <!-- FREEBIES -->
   <section class="freebies fade-up">
     <div class="freebies-inner">
@@ -616,6 +755,13 @@
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section fade-up">
+    <span class="section-label">Questions</span>
+    <h2>Before you book.</h2>
+    <div id="faqList"></div>
   </section>
 
   <!-- REGISTER -->
@@ -789,26 +935,78 @@
       finally { btn.disabled = false; btn.textContent = lbl; }
     }
 
+    // ── Render config-driven content + registration state ──
     (function () {
-      fetch(SB_URL + '/functions/v1/seat-status', { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY } })
-        .then(function (r) { return r.json(); })
-        .then(function (s) {
-          var seatsVal = document.getElementById('seatsVal');
-          if (s.soldOut) {
-            var rm = document.getElementById('registerMagic'); if (rm) rm.style.display = 'none';
-            var wb = document.getElementById('waitlistBtn'); if (wb) wb.style.display = 'inline-block';
-            var note = document.querySelector('.register-note'); if (note) note.textContent = 'This round is full — join the waitlist to be first in line for the next one.';
-            var sm = document.getElementById('stickyMagic'); if (sm) sm.style.display = 'none';
-            var sw = document.getElementById('stickyWaitlist'); if (sw) sw.style.display = 'inline-block';
-            var st = document.getElementById('stickyText'); if (st) st.innerHTML = '<strong>Clear The Noise</strong> &nbsp;·&nbsp; Registrations full';
-            if (seatsVal) seatsVal.textContent = 'Sold Out';
-          } else if (s.showCount) {
-            var sl = document.getElementById('seatsLeft');
-            if (sl) { sl.textContent = 'Only ' + s.remaining + ' seat' + (s.remaining === 1 ? '' : 's') + ' left'; sl.style.display = 'inline-flex'; }
-            if (seatsVal) seatsVal.textContent = s.remaining + ' Left';
-          }
-        })
-        .catch(function () { /* leave default UI */ });
+      var C = window.CONFIG || {};
+      function el(id) { return document.getElementById(id); }
+
+      // Venue
+      if (C.venue) {
+        if (el('venueName')) el('venueName').textContent = C.venue.name || '';
+        if (el('venueAddress')) el('venueAddress').textContent = C.venue.address || '';
+        if (el('venueMapLink') && C.venue.mapsUrl) el('venueMapLink').href = C.venue.mapsUrl;
+        if (el('venueMap')) el('venueMap').src = 'https://www.google.com/maps?q=' + encodeURIComponent(C.venue.mapQuery || C.venue.name || C.venue.address || '') + '&output=embed';
+      }
+
+      // Facilitator
+      if (C.facilitator) {
+        var f = C.facilitator;
+        if (el('facName')) el('facName').textContent = f.name || '';
+        if (el('facRole') && f.role) el('facRole').textContent = f.role;
+        if (el('facBio') && Array.isArray(f.bio)) el('facBio').innerHTML = f.bio.map(function (s) { return '<p>' + s + '</p>'; }).join('');
+        if (el('facInsta') && f.instagram) el('facInsta').href = f.instagram;
+        if (el('facPhoto') && f.photo) el('facPhoto').innerHTML = '<img src="' + f.photo + '" alt="' + (f.name || '') + '">';
+      }
+
+      // Testimonials — quotes if provided, else the founding-cohort note
+      var tc = el('testimonials');
+      if (tc) {
+        if (Array.isArray(C.testimonials) && C.testimonials.length) {
+          tc.innerHTML = '<div class="quote-grid">' + C.testimonials.map(function (t) {
+            return '<div class="quote-card"><p>“' + t.quote + '”</p><span class="q-author">' + (t.author || '') + '</span></div>';
+          }).join('') + '</div>';
+        } else if (C.foundingCohortNote) {
+          tc.innerHTML = '<p class="founding-note">“' + C.foundingCohortNote + '”</p>';
+        }
+      }
+
+      // FAQ accordion
+      var fl = el('faqList');
+      if (fl && Array.isArray(C.faqs)) {
+        fl.innerHTML = C.faqs.map(function (item) {
+          return '<div class="faq-item"><button class="faq-q" type="button">' + item.q + '<span class="faq-ic">+</span></button><div class="faq-a"><p>' + item.a + '</p></div></div>';
+        }).join('');
+        fl.querySelectorAll('.faq-q').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var it = btn.parentNode, body = it.querySelector('.faq-a');
+            if (it.classList.contains('open')) { it.classList.remove('open'); body.style.maxHeight = '0'; }
+            else { it.classList.add('open'); body.style.maxHeight = body.scrollHeight + 'px'; }
+          });
+        });
+      }
+
+      // Seats + registration / waitlist state (waitlist ONLY when soldOut === true)
+      var seatsVal = el('seatsVal'), seatsBadge = el('seatsLeft');
+      if (C.soldOut === true) {
+        if (el('registerMagic')) el('registerMagic').style.display = 'none';
+        if (el('waitlistBtn')) el('waitlistBtn').style.display = 'inline-block';
+        var note = document.querySelector('.register-note'); if (note) note.textContent = 'This round is full — join the waitlist to be first in line for the next one.';
+        if (el('stickyMagic')) el('stickyMagic').style.display = 'none';
+        if (el('stickyWaitlist')) el('stickyWaitlist').style.display = 'inline-block';
+        if (el('stickyText')) el('stickyText').innerHTML = '<strong>Clear The Noise</strong> &nbsp;·&nbsp; Registrations full';
+        if (seatsVal) seatsVal.textContent = 'Sold Out';
+        if (seatsBadge) seatsBadge.style.display = 'none';
+      } else {
+        // Seats open: keep waitlist fully hidden, show a concrete seat count
+        if (el('waitlistBtn')) el('waitlistBtn').style.display = 'none';
+        if (el('stickyWaitlist')) el('stickyWaitlist').style.display = 'none';
+        if (typeof C.seatsLeft === 'number') {
+          if (seatsVal) seatsVal.textContent = C.seatsLeft + ' seats';
+          if (seatsBadge) { seatsBadge.textContent = 'Only ' + C.seatsLeft + ' seat' + (C.seatsLeft === 1 ? '' : 's') + ' left'; seatsBadge.style.display = 'inline-flex'; }
+        } else if (seatsVal) {
+          seatsVal.textContent = 'Limited';
+        }
+      }
     })();
   </script>
 </body>
