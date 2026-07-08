@@ -582,8 +582,9 @@
       // is completely hidden and registration stays open.
       soldOut: false,
 
-      // Concrete scarcity number shown near Date/Time. Set to null for just "Limited".
-      seatsLeft: 12,
+      // Seats shown near Date/Time. This is the intimate cap — lower it as it fills
+      // for live urgency (e.g. 8), or set to null for just "Limited".
+      seatsLeft: 20,
 
       venue: {
         name: 'Khee Coworks',
@@ -598,10 +599,10 @@
         instagram: 'https://www.instagram.com/pradhishtaa/',
         photo: '',   // add an image path/URL later, e.g. '/pradhishta.jpg'
         bio: [
-          'I created High Conscious Life after years of looking successful on the outside, yet feeling noisy and disconnected on the inside.',
-          'Clear The Noise is the space I wished existed — not another course to finish, but an evening to actually stop, breathe, and come back to yourself.',
-          'My work is gentle and grounded: no pressure, no performing, just honest presence in a room of people walking the same path.',
-          'I would love to hold that space for you.'
+          'I created High Conscious Life to share something I lived myself — the shift that comes when you settle into a state of true consciousness.',
+          'When I found that stillness, everything changed. I began achieving and receiving what I truly wanted, from a calmer, clearer place inside.',
+          'Somewhere in that, I found my purpose: to help others come home to their own self.',
+          'Clear The Noise is where that journey begins — and I would love to walk it with you.'
         ]
       },
 
@@ -612,10 +613,10 @@
 
       // Edit the answers below any time.
       faqs: [
-        { q: 'Do I need prior meditation or mindfulness experience?', a: 'Not at all — Clear The Noise is designed for complete beginners. Everything is gently guided, step by step. (Edit this answer.)' },
-        { q: 'What should I bring or wear?', a: 'Wear something comfortable you can sit relaxed in. Everything else you need is provided. (Edit this answer.)' },
-        { q: 'What’s the refund / transfer policy if I can’t attend?', a: 'Add your refund and transfer policy here. (Edit this answer.)' },
-        { q: 'Is the workshop conducted in English, Tamil, or both?', a: 'The session is conducted in ___. (Edit this answer.)' }
+        { q: 'Do I need prior meditation or mindfulness experience?', a: 'No prior experience needed at all. Clear The Noise is made for complete beginners — everything is gently guided, step by step.' },
+        { q: 'What should I bring or wear?', a: 'Just wear whatever you feel most comfortable and relaxed in. Everything else you need is provided.' },
+        { q: 'What’s the refund / transfer policy if I can’t attend?', a: 'Seat transfers are available — you can pass your spot to someone else. Refunds are considered case by case, at the management’s discretion on the day.' },
+        { q: 'Is the workshop conducted in English, Tamil, or both?', a: 'It’s held in a warm mix of English and Tamil, so everyone feels right at home.' }
       ]
     };
   </script>
@@ -1007,7 +1008,7 @@
         if (el('stickyWaitlist')) el('stickyWaitlist').style.display = 'none';
         if (typeof C.seatsLeft === 'number') {
           if (seatsVal) seatsVal.textContent = C.seatsLeft + ' seats';
-          if (seatsBadge) { seatsBadge.textContent = 'Only ' + C.seatsLeft + ' seat' + (C.seatsLeft === 1 ? '' : 's') + ' left'; seatsBadge.style.display = 'inline-flex'; }
+          if (seatsBadge) { seatsBadge.textContent = 'Just ' + C.seatsLeft + ' seats — kept intentionally small'; seatsBadge.style.display = 'inline-flex'; }
         } else if (seatsVal) {
           seatsVal.textContent = 'Limited';
         }
