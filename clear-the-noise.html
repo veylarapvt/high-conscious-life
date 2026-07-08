@@ -510,7 +510,8 @@
 
     /* ── FACILITATOR ── */
     .facilitator { background: var(--ivory-warm); padding: 90px 60px; }
-    .fac-inner { max-width: 940px; margin: 0 auto; display: grid; grid-template-columns: 220px 1fr; gap: 48px; align-items: center; }
+    .fac-inner { max-width: 760px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 48px; align-items: center; }
+    .fac-inner.has-photo { max-width: 940px; grid-template-columns: 220px 1fr; }
     .fac-photo { width: 220px; height: 262px; background: var(--white); border: 1px solid rgba(44,44,44,0.1); display: flex; align-items: center; justify-content: center; color: var(--ink-muted); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; overflow: hidden; }
     .fac-photo img { width: 100%; height: 100%; object-fit: cover; }
     .fac-body h2 { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(24px,3vw,34px); color: var(--ink); margin-bottom: 4px; }
@@ -706,7 +707,7 @@
   <!-- FACILITATOR -->
   <section class="facilitator fade-up">
     <div class="fac-inner">
-      <div class="fac-photo" id="facPhoto">Photo</div>
+      <div class="fac-photo" id="facPhoto" style="display:none"></div>
       <div class="fac-body">
         <span class="section-label">Your Facilitator</span>
         <h2 id="facName">Pradhishta</h2>
@@ -955,7 +956,11 @@
         if (el('facRole') && f.role) el('facRole').textContent = f.role;
         if (el('facBio') && Array.isArray(f.bio)) el('facBio').innerHTML = f.bio.map(function (s) { return '<p>' + s + '</p>'; }).join('');
         if (el('facInsta') && f.instagram) el('facInsta').href = f.instagram;
-        if (el('facPhoto') && f.photo) el('facPhoto').innerHTML = '<img src="' + f.photo + '" alt="' + (f.name || '') + '">';
+        if (el('facPhoto') && f.photo) {
+          el('facPhoto').innerHTML = '<img src="' + f.photo + '" alt="' + (f.name || '') + '">';
+          el('facPhoto').style.display = 'flex';
+          var inner = document.querySelector('.fac-inner'); if (inner) inner.classList.add('has-photo');
+        }
       }
 
       // Testimonials — quotes if provided, else the founding-cohort note
