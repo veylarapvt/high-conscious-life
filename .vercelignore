@@ -1,0 +1,4 @@
+# Files kept in GitHub but NOT deployed to the public website.
+# These are internal automation / dev files, not part of the site.
+letters-automation
+serve.ps1
