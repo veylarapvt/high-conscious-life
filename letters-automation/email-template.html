@@ -1,0 +1,36 @@
+<!-- Letters From Your Future Self — email template (reference copy)
+     This exact template is also embedded inside the n8n Code nodes.
+     Placeholders the code node fills:
+       {{BODY}}            -> the letter paragraphs as <p> tags
+       {{unsubscribe_url}} -> unsubscribe link (mailto by default)
+     Inline CSS + Georgia/serif so it renders in Gmail mobile with no external fonts. -->
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background-color:#F5F0E8;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F5F0E8;">
+    <tr><td align="center" style="padding:32px 14px;">
+
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px;background-color:#FCFAF4;border:1px solid #EAE0CE;">
+        <tr><td style="height:4px;line-height:4px;font-size:0;background-color:#4A6741;">&nbsp;</td></tr>
+        <tr><td style="padding:38px 34px 30px 34px;">
+          <p style="margin:0 0 6px 0;font-family:Georgia,'Times New Roman',serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#4A6741;">A letter from your future self</p>
+          <h1 style="margin:0 0 16px 0;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:25px;line-height:1.3;color:#2E2A22;">A message from your future self</h1>
+          <div style="width:46px;height:1px;line-height:1px;font-size:0;background-color:#C9A84C;margin:0 0 22px 0;">&nbsp;</div>
+          <div style="font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:1.85;color:#3A342A;">
+            {{BODY}}
+          </div>
+        </td></tr>
+      </table>
+
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px;">
+        <tr><td style="padding:20px 34px 40px 34px;text-align:center;font-family:Georgia,'Times New Roman',serif;color:#8A8474;">
+          <p style="margin:0 0 6px 0;font-size:13px;">High Conscious Life &middot; <a href="https://highconsciouslife.in" style="color:#4A6741;text-decoration:none;">highconsciouslife.in</a></p>
+          <p style="margin:0;font-size:11px;line-height:1.6;color:#A8A290;">You're receiving this because you signed up for Letters From Your Future Self.<br><a href="{{unsubscribe_url}}" style="color:#8A8474;text-decoration:underline;">Unsubscribe</a></p>
+        </td></tr>
+      </table>
+
+    </td></tr>
+  </table>
+</body>
+</html>
