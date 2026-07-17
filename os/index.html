@@ -1182,7 +1182,9 @@ function buildNav(){
   });
   $('#workGroupLabel').style.display=(NAV.some(n=>n.group==='navWork')||P.customWork)?'':'none';
 }
+let currentView='home';
 function go(id){
+  currentView=id;
   document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.dataset.view===id));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===id));
   if(id==='home')renderGlance();
@@ -1626,12 +1628,32 @@ function tick(){
   raf=pieces.length?requestAnimationFrame(tick):null;
 }
 
-/* ---------- FAB — quick capture ---------- */
+/* ---------- FAB — context-aware quick add ----------
+   On Veylara or a work tab it adds a task to that board's To do;
+   anywhere else it captures to the HCL brain dump. */
 $('#fab').addEventListener('click',()=>{
-  capture('🌊 Quick capture','An idea, a thought — it goes to your brain dump…',idea=>{
+  if(currentView==='veylara'){
+    capture('➕ New Veylara task','Goes to the To do column…',t=>{
+      S.veylara.todo.push(t);save();renderKanban();toast('Added to Veylara · To do');
+    });
+    return;
+  }
+  if(currentView.startsWith('wt-')&&S.workTabs){
+    const tab=S.workTabs.find(t=>'wt-'+t.id===currentView);
+    if(tab){
+      capture('➕ New '+tab.name+' task','Goes to the To do column…',t=>{
+        tab.board.todo.push(t);save();
+        const sec=document.querySelector(`.view[data-view="wt-${tab.id}"]`);
+        if(sec)renderBoard(sec.querySelector('.wt-board'),tab.board,'New '+tab.name+' task','What\'s moving at '+tab.name+'?');
+        toast('Added to '+tab.name+' · To do');
+      });
+      return;
+    }
+  }
+  capture('🌊 Quick capture → Brain dump','Saved under High Conscious Life › Brain dump…',idea=>{
     S.hcl.dump=(S.hcl.dump?S.hcl.dump+'\n':'')+'• '+idea;
     const n=$('#hclDump');if(n)n.value=S.hcl.dump;
-    save();toast('Captured to brain dump ✨');
+    save();toast('Captured to High Conscious Life › Brain dump ✨');
   });
 });
 
