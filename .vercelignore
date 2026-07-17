@@ -2,3 +2,5 @@
 # These are internal automation / dev files, not part of the site.
 letters-automation
 serve.ps1
+# Old localStorage-only OS (superseded by /os with login + cloud sync)
+pradhishta-os.html

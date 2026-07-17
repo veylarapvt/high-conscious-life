@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pradhishta OS — Build. Learn. Inspire.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   PRADHISHTA OS — Design Tokens
+   ============================================================ */
+:root{
+  --bg:#FBF2F5;
+  --surface:#FFFBFC;
+  --surface-2:#F7E6EC;
+  --surface-glass:rgba(255,251,252,.9);
+  --ink:#362430;
+  --ink-2:#8D6F7D;
+  --ink-3:#BC9DAA;
+  --gold:#C96B8F;
+  --gold-soft:#F6D9E4;
+  --sage:#93A48B;
+  --sage-soft:#E7EDE1;
+  --rose:#B75D7E;
+  --rose-soft:#F4DCE5;
+  --sky:#A08CB4;
+  --sky-soft:#EDE5F3;
+  --line:#F0DBE3;
+  --shadow-sm:0 1px 2px rgba(95,42,64,.05),0 2px 8px rgba(95,42,64,.05);
+  --shadow-md:0 2px 6px rgba(95,42,64,.06),0 10px 28px rgba(95,42,64,.09);
+  --shadow-lg:0 6px 18px rgba(95,42,64,.09),0 24px 56px rgba(95,42,64,.13);
+  --r-sm:10px; --r-md:16px; --r-lg:22px; --r-xl:28px;
+  --font-display:'Space Grotesk',sans-serif;
+  --font-body:'Manrope',sans-serif;
+  --font-ui:'Inter',sans-serif;
+  --ease:cubic-bezier(.32,.72,.24,1);
+  --dur:.35s;
+}
+[data-theme="dark"]{
+  --bg:#1E1318;
+  --surface:#281B21;
+  --surface-2:#34232C;
+  --surface-glass:rgba(40,27,33,.9);
+  --ink:#F3E4EA;
+  --ink-2:#B48FA0;
+  --ink-3:#7D5D6C;
+  --gold:#E08BAB;
+  --gold-soft:#412634;
+  --sage:#9DB393;
+  --sage-soft:#283122;
+  --rose:#D07E9D;
+  --rose-soft:#41252F;
+  --sky:#B7A2CD;
+  --sky-soft:#302439;
+  --line:#3D2933;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.25),0 2px 8px rgba(0,0,0,.25);
+  --shadow-md:0 2px 6px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35);
+  --shadow-lg:0 6px 18px rgba(0,0,0,.35),0 24px 56px rgba(0,0,0,.45);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--ink);
+  min-height:100vh;
+  transition:background var(--dur) var(--ease),color var(--dur) var(--ease);
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(900px 500px at 85% -10%, var(--gold-soft), transparent 60%),
+    radial-gradient(700px 480px at -10% 110%, var(--sage-soft), transparent 60%);
+  opacity:.55;
+  transition:opacity var(--dur) var(--ease);
+}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+input,textarea,select{font-family:var(--font-body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s;width:100%;}
+input:focus,textarea:focus,select:focus{border-color:var(--gold);box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 18%,transparent);}
+textarea{resize:vertical;min-height:76px;line-height:1.6;}
+::placeholder{color:var(--ink-3);}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+
+/* ============================================================
+   Layout — sidebar + main
+   ============================================================ */
+.app{display:flex;min-height:100vh;position:relative;z-index:1;}
+.sidebar{
+  width:236px;flex-shrink:0;position:fixed;top:0;left:0;bottom:0;z-index:40;
+  padding:22px 14px 16px;display:flex;flex-direction:column;gap:3px;
+  overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--line) transparent;
+  background:var(--surface-glass);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-right:1px solid var(--line);
+  transition:transform var(--dur) var(--ease),background var(--dur) var(--ease);
+}
+.sidebar::-webkit-scrollbar{width:5px;}
+.sidebar::-webkit-scrollbar-thumb{background:var(--line);border-radius:99px;}
+.sidebar::-webkit-scrollbar-track{background:transparent;}
+.brand{padding:0 12px 14px;}
+.brand h1{font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:-.02em;display:flex;align-items:center;gap:9px;}
+.brand h1 .logo-dot{width:26px;height:26px;border-radius:9px;background:linear-gradient(135deg,var(--gold),var(--rose));display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;box-shadow:var(--shadow-sm);}
+.brand p{font-family:var(--font-ui);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-top:7px;padding-left:35px;}
+.nav-group{font-family:var(--font-ui);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);padding:11px 12px 5px;}
+.nav-btn{
+  display:flex;align-items:center;gap:11px;width:100%;padding:8px 12px;border-radius:var(--r-sm);
+  font-size:13.5px;font-weight:600;color:var(--ink-2);text-align:left;
+  transition:background .2s var(--ease),color .2s var(--ease),transform .15s var(--ease);
+}
+.nav-btn svg{width:16px;height:16px;flex-shrink:0;opacity:.75;}
+.nav-btn:hover{background:var(--surface-2);color:var(--ink);transform:translateX(2px);}
+.nav-btn.active{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm);}
+.nav-btn.active svg{opacity:1;color:var(--gold);}
+.nav-btn .nav-pct{margin-left:auto;font-family:var(--font-ui);font-size:10.5px;color:var(--ink-3);font-weight:500;}
+.sidebar-footer{margin-top:auto;padding:14px 6px 4px;display:flex;gap:8px;align-items:center;}
+.icon-btn{
+  width:38px;height:38px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;
+  background:var(--surface);border:1px solid var(--line);color:var(--ink-2);
+  transition:transform .15s var(--ease),box-shadow .2s,color .2s;
+}
+.icon-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm);color:var(--ink);}
+.icon-btn svg{width:16px;height:16px;}
+.kbd-hint{font-family:var(--font-ui);font-size:10.5px;color:var(--ink-3);margin-left:auto;padding-right:6px;}
+kbd{font-family:var(--font-ui);font-size:10px;background:var(--surface-2);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:2px 5px;color:var(--ink-2);}
+
+.main{flex:1;margin-left:236px;padding:34px 42px 110px;max-width:1160px;}
+.view{display:none;animation:viewIn .45s var(--ease);}
+.view.active{display:block;}
+@keyframes viewIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+
+/* Section headers */
+.view-head{margin-bottom:26px;}
+.eyebrow{font-family:var(--font-ui);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.eyebrow::before{content:'';width:18px;height:1px;background:var(--gold);}
+.view-head h2{font-family:var(--font-display);font-size:30px;font-weight:600;letter-spacing:-.025em;}
+.view-head .sub{color:var(--ink-2);font-size:14px;margin-top:6px;max-width:520px;line-height:1.6;}
+
+/* Cards */
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:22px;box-shadow:var(--shadow-sm);
+  transition:box-shadow .25s var(--ease),transform .25s var(--ease),background var(--dur) var(--ease),border-color var(--dur);
+}
+.card:hover{box-shadow:var(--shadow-md);}
+.card-title{font-family:var(--font-display);font-size:15px;font-weight:600;letter-spacing:-.01em;display:flex;align-items:center;gap:9px;margin-bottom:4px;}
+.card-title svg{width:16px;height:16px;color:var(--gold);}
+.card-sub{font-size:12.5px;color:var(--ink-2);margin-bottom:14px;}
+.grid{display:grid;gap:16px;}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-2{grid-template-columns:repeat(2,1fr);}
+
+/* Progress bars */
+.bar{height:6px;border-radius:99px;background:var(--surface-2);overflow:hidden;}
+.bar > span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--rose));width:0%;transition:width .6s var(--ease);}
+.bar.sage > span{background:linear-gradient(90deg,var(--sage),var(--sky));}
+.pct-label{font-family:var(--font-ui);font-size:11px;color:var(--ink-2);font-weight:500;}
+
+/* Checkboxes */
+.check{
+  width:22px;height:22px;border-radius:8px;border:1.5px solid var(--ink-3);flex-shrink:0;
+  display:inline-flex;align-items:center;justify-content:center;background:var(--surface);
+  transition:background .25s var(--ease),border-color .25s,transform .15s var(--ease);
+}
+.check svg{width:12px;height:12px;color:#fff;stroke-dasharray:20;stroke-dashoffset:20;transition:stroke-dashoffset .3s var(--ease) .05s;}
+.check:hover{transform:scale(1.08);border-color:var(--gold);}
+.check:active{transform:scale(.92);}
+.done .check, .check.on{background:var(--sage);border-color:var(--sage);}
+.done .check svg, .check.on svg{stroke-dashoffset:0;}
+@keyframes pop{0%{transform:scale(1);}40%{transform:scale(1.25);}100%{transform:scale(1);}}
+.check.pop{animation:pop .35s var(--ease);}
+</style>
+<style>
+/* ============================================================
+   Home dashboard
+   ============================================================ */
+.greeting{font-family:var(--font-display);font-size:clamp(30px,4.5vw,44px);font-weight:600;letter-spacing:-.03em;line-height:1.12;}
+.greeting em{font-style:normal;background:linear-gradient(100deg,var(--gold),var(--rose));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.date-line{font-family:var(--font-ui);font-size:13px;color:var(--ink-2);margin-top:10px;display:flex;align-items:center;gap:10px;}
+.date-line .dot{width:4px;height:4px;border-radius:50%;background:var(--gold);}
+.focus-label{font-family:var(--font-ui);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:34px 0 14px;}
+.focus-card{position:relative;overflow:hidden;padding:26px 24px;cursor:pointer;}
+.focus-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);}
+.focus-card .f-emoji{font-size:26px;display:block;margin-bottom:14px;}
+.focus-card h3{font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:-.02em;margin-bottom:4px;}
+.focus-card p{font-size:12.5px;color:var(--ink-2);line-height:1.55;}
+.focus-card .f-arrow{position:absolute;top:20px;right:20px;color:var(--ink-3);transition:transform .25s var(--ease),color .25s;}
+.focus-card:hover .f-arrow{transform:translate(3px,-3px);color:var(--gold);}
+.focus-card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:0 4px 4px 0;background:var(--accent,var(--gold));}
+.quote-card{margin-top:16px;padding:30px 32px;display:flex;gap:20px;align-items:flex-start;background:linear-gradient(135deg,var(--surface),var(--surface-2));}
+.quote-mark{font-family:var(--font-display);font-size:52px;line-height:.7;color:var(--gold);opacity:.6;}
+.quote-card blockquote{font-family:var(--font-display);font-size:19px;font-weight:500;letter-spacing:-.01em;line-height:1.5;}
+.quote-card cite{display:block;font-family:var(--font-ui);font-style:normal;font-size:12px;color:var(--ink-2);margin-top:10px;letter-spacing:.06em;}
+.home-stats{margin-top:28px;}
+.stat-row{display:flex;align-items:center;gap:14px;padding:11px 0;border-bottom:1px dashed var(--line);}
+.stat-row:last-child{border-bottom:none;}
+.stat-row .s-name{font-size:13px;font-weight:600;width:150px;flex-shrink:0;}
+.stat-row .bar{flex:1;}
+.stat-row .pct-label{width:40px;text-align:right;flex-shrink:0;}
+
+/* ============================================================
+   Timelines (Morning Ritual + Time Blocking)
+   ============================================================ */
+.timeline{position:relative;padding-left:26px;}
+.timeline::before{content:'';position:absolute;left:8px;top:10px;bottom:10px;width:1.5px;background:linear-gradient(var(--line),var(--line));border-radius:2px;}
+.t-item{position:relative;display:flex;align-items:center;gap:14px;padding:13px 16px;margin-bottom:10px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--shadow-sm);transition:transform .2s var(--ease),box-shadow .25s,opacity .3s,background var(--dur);}
+.t-item:hover{transform:translateX(4px);box-shadow:var(--shadow-md);}
+.t-item::before{content:'';position:absolute;left:-24.5px;width:9px;height:9px;border-radius:50%;background:var(--ink-3);border:2.5px solid var(--bg);transition:background .3s,box-shadow .3s;}
+.t-item.done::before{background:var(--sage);box-shadow:0 0 0 4px var(--sage-soft);}
+.t-time{font-family:var(--font-ui);font-size:11.5px;font-weight:600;color:var(--gold);width:52px;flex-shrink:0;letter-spacing:.02em;}
+.t-label{font-size:14px;font-weight:600;flex:1;transition:color .3s;}
+.t-item.done .t-label{color:var(--ink-3);text-decoration:line-through;text-decoration-color:var(--sage);text-decoration-thickness:1.5px;}
+.t-item.done{opacity:.72;}
+.block-item{align-items:flex-start;padding:16px;}
+.block-item .t-time{width:84px;padding-top:2px;}
+.block-body{flex:1;}
+.block-body h4{font-size:14.5px;font-weight:700;margin-bottom:2px;}
+.block-body .b-note{font-size:12px;color:var(--ink-2);margin-bottom:8px;}
+.tags{display:flex;flex-wrap:wrap;gap:6px;}
+.tag{font-family:var(--font-ui);font-size:10.5px;font-weight:500;padding:4px 9px;border-radius:99px;background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line);}
+.tag.warn{background:var(--rose-soft);color:var(--rose);border-color:transparent;}
+.tag.calm{background:var(--sage-soft);color:var(--sage);border-color:transparent;}
+.tag.gold{background:var(--gold-soft);color:var(--gold);border-color:transparent;}
+.block-item > .check{margin-top:2px;}
+
+/* ============================================================
+   Big Three
+   ============================================================ */
+.b3-card{position:relative;padding:24px;overflow:hidden;}
+.b3-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent,var(--gold));}
+.b3-kind{font-family:var(--font-ui);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--accent,var(--gold));margin-bottom:4px;}
+.b3-card h3{font-family:var(--font-display);font-size:18px;font-weight:600;margin-bottom:12px;}
+.b3-input{border:none;border-bottom:1.5px dashed var(--line);border-radius:0;padding:8px 2px;background:transparent;font-size:14px;font-weight:600;}
+.b3-input:focus{box-shadow:none;border-color:var(--accent,var(--gold));}
+.b3-foot{display:flex;align-items:center;gap:10px;margin-top:16px;font-size:12.5px;color:var(--ink-2);}
+.b3-card.done{background:linear-gradient(135deg,var(--surface),var(--sage-soft));}
+.b3-card.done .b3-input{text-decoration:line-through;color:var(--ink-3);}
+
+/* ============================================================
+   Hydration
+   ============================================================ */
+.hydration-wrap{display:grid;grid-template-columns:220px 1fr;gap:34px;align-items:center;}
+.bottle-stage{display:flex;flex-direction:column;align-items:center;gap:14px;}
+.bottle{cursor:pointer;transition:transform .2s var(--ease);}
+.bottle:hover{transform:scale(1.03) rotate(-1deg);}
+.bottle:active{transform:scale(.97);}
+.hydro-pct{font-family:var(--font-display);font-size:30px;font-weight:600;letter-spacing:-.02em;}
+.hydro-pct small{font-size:13px;color:var(--ink-2);font-weight:500;font-family:var(--font-ui);letter-spacing:0;}
+.glass-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+.glass{width:40px;height:52px;border-radius:8px 8px 12px 12px;border:1.5px solid var(--line);background:var(--surface);position:relative;overflow:hidden;transition:transform .15s var(--ease),border-color .25s;}
+.glass::after{content:'';position:absolute;left:0;right:0;bottom:0;height:0%;background:linear-gradient(180deg,var(--sky),var(--sage));opacity:.75;transition:height .4s var(--ease);}
+.glass:hover{transform:translateY(-3px);}
+.glass.full{border-color:var(--sky);}
+.glass.full::after{height:82%;}
+.hydro-hint{font-size:12.5px;color:var(--ink-2);margin-top:14px;line-height:1.6;}
+
+/* ============================================================
+   Field rows / small forms
+   ============================================================ */
+.field{margin-bottom:14px;}
+.field label{display:block;font-family:var(--font-ui);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--ink-2);margin-bottom:7px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.seg{display:flex;background:var(--surface-2);border-radius:12px;padding:4px;gap:4px;}
+.seg button{flex:1;padding:8px 10px;border-radius:9px;font-size:12.5px;font-weight:600;color:var(--ink-2);transition:background .2s,color .2s,box-shadow .2s;}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm);}
+.stepper{display:flex;align-items:center;gap:10px;}
+.stepper button{width:34px;height:34px;border-radius:10px;background:var(--surface-2);font-size:16px;font-weight:700;color:var(--ink-2);transition:background .2s,transform .15s;}
+.stepper button:hover{background:var(--gold-soft);color:var(--gold);transform:scale(1.06);}
+.stepper .stp-val{font-family:var(--font-display);font-size:22px;font-weight:600;min-width:44px;text-align:center;}
+
+/* ============================================================
+   Kanban (Veylara)
+   ============================================================ */
+.kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.kb-col{background:var(--surface-2);border-radius:var(--r-lg);padding:14px;min-height:260px;border:1px solid var(--line);}
+.kb-head{display:flex;align-items:center;gap:8px;font-family:var(--font-ui);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--ink-2);padding:4px 6px 12px;}
+.kb-head .kb-dot{width:8px;height:8px;border-radius:50%;}
+.kb-head .kb-count{margin-left:auto;font-size:10.5px;background:var(--surface);border-radius:99px;padding:2px 8px;border:1px solid var(--line);}
+.kb-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:12px 14px;margin-bottom:10px;font-size:13.5px;font-weight:600;box-shadow:var(--shadow-sm);display:flex;align-items:flex-start;gap:8px;animation:cardIn .3s var(--ease);transition:transform .2s var(--ease),box-shadow .2s;}
+.kb-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);}
+@keyframes cardIn{from{opacity:0;transform:scale(.95);}to{opacity:1;transform:none;}}
+.kb-card .kb-text{flex:1;line-height:1.45;}
+.kb-move{display:flex;gap:2px;opacity:0;transition:opacity .2s;}
+.kb-card:hover .kb-move{opacity:1;}
+.kb-move button{width:22px;height:22px;border-radius:6px;color:var(--ink-3);font-size:12px;display:inline-flex;align-items:center;justify-content:center;transition:background .15s,color .15s;}
+.kb-move button:hover{background:var(--surface-2);color:var(--ink);}
+.kb-add{width:100%;padding:9px;border:1.5px dashed var(--line);border-radius:var(--r-md);color:var(--ink-3);font-size:12.5px;font-weight:600;transition:border-color .2s,color .2s,background .2s;}
+.kb-add:hover{border-color:var(--gold);color:var(--gold);background:var(--surface);}
+.kb-done .kb-text{text-decoration:line-through;color:var(--ink-3);}
+
+/* Mood slider */
+.mood-wrap{display:flex;align-items:center;gap:18px;}
+.mood-emoji{font-size:34px;transition:transform .25s var(--ease);}
+input[type="range"]{-webkit-appearance:none;appearance:none;height:6px;border-radius:99px;background:linear-gradient(90deg,var(--rose),var(--gold),var(--sage));border:none;padding:0;}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--surface);border:2px solid var(--gold);box-shadow:var(--shadow-sm);cursor:grab;transition:transform .15s;}
+input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.15);}
+
+/* Weekly chart */
+.chart{display:flex;align-items:flex-end;gap:10px;height:150px;padding:10px 4px 0;}
+.chart .c-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end;}
+.chart .c-bar{width:100%;max-width:44px;border-radius:8px 8px 4px 4px;background:linear-gradient(180deg,var(--gold),var(--rose));min-height:4px;transition:height .7s var(--ease);position:relative;}
+.chart .c-bar::after{content:attr(data-v);position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-family:var(--font-ui);font-size:10px;color:var(--ink-2);font-weight:600;}
+.chart .c-day{font-family:var(--font-ui);font-size:10.5px;color:var(--ink-3);font-weight:500;}
+
+/* Vision goals */
+.goal-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px dashed var(--line);}
+.goal-row:last-child{border:none;}
+.goal-icon{width:38px;height:38px;border-radius:12px;background:var(--surface-2);display:inline-flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.goal-row .g-name{font-family:var(--font-ui);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--ink-2);width:130px;flex-shrink:0;}
+.goal-row input{border:none;background:transparent;border-bottom:1.5px dashed var(--line);border-radius:0;padding:6px 2px;font-weight:600;}
+.goal-row input:focus{box-shadow:none;border-color:var(--gold);}
+
+/* ============================================================
+   FAB, Command Palette, Toast, Confetti
+   ============================================================ */
+.fab{position:fixed;right:30px;bottom:30px;z-index:50;width:56px;height:56px;border-radius:19px;background:linear-gradient(135deg,var(--gold),var(--rose));color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-lg);transition:transform .2s var(--ease),box-shadow .25s;}
+.fab:hover{transform:translateY(-3px) rotate(90deg);}
+.fab svg{width:22px;height:22px;}
+.palette-overlay{position:fixed;inset:0;background:rgba(30,25,18,.35);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:90;display:none;align-items:flex-start;justify-content:center;padding-top:14vh;animation:fadeIn .2s var(--ease);}
+.palette-overlay.open{display:flex;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.palette{width:min(560px,92vw);background:var(--surface-glass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow-lg);overflow:hidden;animation:palIn .25s var(--ease);}
+@keyframes palIn{from{opacity:0;transform:translateY(-12px) scale(.98);}to{opacity:1;transform:none;}}
+.palette input{border:none;border-radius:0;border-bottom:1px solid var(--line);padding:17px 20px;font-size:15px;background:transparent;}
+.palette input:focus{box-shadow:none;}
+.pal-list{max-height:320px;overflow-y:auto;padding:8px;}
+.pal-item{display:flex;align-items:center;gap:12px;width:100%;padding:11px 13px;border-radius:var(--r-sm);font-size:13.5px;font-weight:600;color:var(--ink-2);text-align:left;transition:background .15s,color .15s;}
+.pal-item svg{width:15px;height:15px;opacity:.7;}
+.pal-item:hover,.pal-item.sel{background:var(--surface-2);color:var(--ink);}
+.pal-item .pal-k{margin-left:auto;}
+.toast{position:fixed;bottom:32px;left:50%;transform:translate(-50%,80px);background:var(--ink);color:var(--bg);font-size:13px;font-weight:600;padding:12px 22px;border-radius:99px;box-shadow:var(--shadow-lg);z-index:100;transition:transform .4s var(--ease);pointer-events:none;}
+.toast.show{transform:translate(-50%,0);}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
+
+/* Mobile */
+.menu-btn{display:none;position:fixed;top:16px;left:16px;z-index:60;}
+.scrim{display:none;position:fixed;inset:0;background:rgba(30,25,18,.3);z-index:35;}
+@media(max-width:960px){
+  .grid-3{grid-template-columns:1fr 1fr;}
+  .kanban{grid-template-columns:1fr;}
+  .hydration-wrap{grid-template-columns:1fr;}
+}
+@media(max-width:760px){
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.open{transform:none;box-shadow:var(--shadow-lg);background:var(--surface);}
+  .scrim.show{display:block;}
+  .menu-btn{display:inline-flex;background:var(--surface-glass);backdrop-filter:blur(12px);}
+  .main{margin-left:0;padding:70px 18px 120px;}
+  .grid-3,.grid-2,.field-row{grid-template-columns:1fr;}
+  .view-head h2{font-size:25px;}
+  .quote-card{padding:22px;}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+<!-- ============ SIDEBAR ============ -->
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <h1><span class="logo-dot">P</span>Pradhishta OS</h1>
+    <p>Build · Learn · Inspire</p>
+  </div>
+  <div class="nav-group">Day</div>
+  <nav id="navDay"></nav>
+  <div class="nav-group">Work</div>
+  <nav id="navWork"></nav>
+  <div class="nav-group">Reflect</div>
+  <nav id="navReflect"></nav>
+  <div class="sidebar-footer">
+    <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode" title="Toggle theme">
+      <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+    <button class="icon-btn" id="palBtn" aria-label="Open command palette" title="Command palette"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
+    <span class="kbd-hint"><kbd>Ctrl</kbd> <kbd>K</kbd></span>
+  </div>
+</aside>
+
+<!-- ============ MAIN ============ -->
+<main class="main" id="main">
+
+  <!-- HOME -->
+  <section class="view" data-view="home">
+    <h2 class="greeting" id="greeting">Good Morning, <em>Pradhishta</em> 🌞</h2>
+    <div class="date-line"><span id="dateLine"></span><span class="dot"></span><span id="dayProgress"></span></div>
+    <div class="focus-label">Today's Focus</div>
+    <div class="grid grid-3">
+      <div class="card focus-card" style="--accent:var(--gold)" data-go="trading">
+        <span class="f-emoji">💰</span><h3>Income</h3>
+        <p>Trading study, client invoices and one task that earns today.</p>
+        <svg class="f-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+      </div>
+      <div class="card focus-card" style="--accent:var(--sky)" data-go="veylara">
+        <span class="f-emoji">🚀</span><h3>Veylara</h3>
+        <p>Templates, client work, websites and outreach that move the agency.</p>
+        <svg class="f-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+      </div>
+      <div class="card focus-card" style="--accent:var(--sage)" data-go="hcl">
+        <span class="f-emoji">🎥</span><h3>High Conscious Life</h3>
+        <p>One piece of filming, editing or product work for the brand.</p>
+        <svg class="f-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+      </div>
+    </div>
+    <div class="focus-label">Today's Quote</div>
+    <div class="card quote-card">
+      <span class="quote-mark">“</span>
+      <div><blockquote id="quoteText"></blockquote><cite id="quoteBy"></cite></div>
+    </div>
+    <div class="card home-stats">
+      <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>Today at a glance</div>
+      <div class="card-sub">Live completion across your day. Finish everything for a little celebration.</div>
+      <div id="glanceRows"></div>
+    </div>
+  </section>
+
+  <!-- MORNING RITUAL -->
+  <section class="view" data-view="ritual">
+    <div class="view-head"><div class="eyebrow">Section 01</div><h2>Morning Ritual</h2><p class="sub">The quiet hours that set the tone. Move through them gently, one check at a time.</p></div>
+    <div class="card" style="padding:26px 26px 16px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+        <span class="pct-label" id="ritualPct">0% complete</span>
+        <div class="bar sage" style="width:180px"><span id="ritualBar"></span></div>
+      </div>
+      <div class="timeline" id="ritualList"></div>
+    </div>
+  </section>
+
+  <!-- TIME BLOCKING -->
+  <section class="view" data-view="blocks">
+    <div class="view-head"><div class="eyebrow">Section 02</div><h2>Daily Time Blocking</h2><p class="sub">Deep, protected blocks. One intention per block — nothing else gets in.</p></div>
+    <div class="card" style="padding:26px;">
+      <div class="timeline" id="blockList"></div>
+    </div>
+  </section>
+
+  <!-- BIG THREE -->
+  <section class="view" data-view="big3">
+    <div class="view-head"><div class="eyebrow">Section 03</div><h2>Today's Big Three</h2><p class="sub">If only three things happen today, let it be these.</p></div>
+    <div class="grid grid-3" id="big3Grid"></div>
+  </section>
+
+  <!-- HYDRATION -->
+  <section class="view" data-view="water">
+    <div class="view-head"><div class="eyebrow">Section 04</div><h2>Hydration Tracker</h2><p class="sub">Eight glasses. Tap the bottle or a glass — watch it fill.</p></div>
+    <div class="card">
+      <div class="hydration-wrap">
+        <div class="bottle-stage">
+          <svg class="bottle" id="bottleSvg" width="120" height="230" viewBox="0 0 120 230" role="button" aria-label="Add a glass of water">
+            <defs>
+              <clipPath id="bottleClip"><path d="M45 18 h30 v14 c14 8 22 22 22 40 v130 a18 18 0 0 1 -18 18 H41 a18 18 0 0 1 -18 -18 V72 c0-18 8-32 22-40 z"/></clipPath>
+              <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A9C3D8"/><stop offset="1" stop-color="#C69FB9"/></linearGradient>
+            </defs>
+            <path d="M45 18 h30 v14 c14 8 22 22 22 40 v130 a18 18 0 0 1 -18 18 H41 a18 18 0 0 1 -18 -18 V72 c0-18 8-32 22-40 z" fill="var(--surface-2)" stroke="var(--line)" stroke-width="2"/>
+            <g clip-path="url(#bottleClip)">
+              <rect id="waterRect" x="0" y="220" width="120" height="220" fill="url(#waterGrad)" style="transition:y .6s cubic-bezier(.32,.72,.24,1)"/>
+              <path id="wave" d="M-40 0 q15 -8 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 v14 h-180 z" fill="url(#waterGrad)" opacity=".85" transform="translate(0,220)" style="transition:transform .6s cubic-bezier(.32,.72,.24,1)"/>
+            </g>
+            <rect x="42" y="6" width="36" height="14" rx="5" fill="var(--gold)"/>
+          </svg>
+          <div class="hydro-pct"><span id="hydroPct">0%</span> <small id="hydroCount">0 / 8 glasses</small></div>
+        </div>
+        <div>
+          <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2s6 6.5 6 12a6 6 0 0 1-12 0c0-5.5 6-12 6-12z"/></svg>Today's glasses</div>
+          <div class="card-sub">Each glass ≈ 250 ml. Tap to fill, tap the last full one to undo.</div>
+          <div class="glass-row" id="glassRow"></div>
+          <p class="hydro-hint">💡 Gentle rhythm: one glass on waking, one before each meal, one before the gym and one after — you'll be done before evening.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GYM -->
+  <section class="view" data-view="gym">
+    <div class="view-head"><div class="eyebrow">Section 05</div><h2>Gym Tracker</h2><p class="sub">Show up, log it, move on. Consistency over intensity.</p></div>
+    <div class="grid grid-2">
+      <div class="card">
+        <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6.5 6.5l11 11M4 10l-2 2 2 2M10 4l2-2 2 2M20 10l2 2-2 2M10 20l2 2 2-2"/></svg>Today's session</div>
+        <div class="card-sub">Mark the workout and how long you trained.</div>
+        <div class="field"><label>Workout completed?</label>
+          <div class="seg" id="gymDoneSeg"><button data-v="yes">Yes 💪</button><button data-v="rest">Rest day 🌿</button><button data-v="no">Not yet</button></div>
+        </div>
+        <div class="field"><label>Duration (minutes)</label>
+          <div class="stepper"><button id="durMinus">−</button><span class="stp-val" id="durVal">0</span><button id="durPlus">+</button></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Split & notes</div>
+        <div class="card-sub">What did you train, and how did it feel?</div>
+        <div class="field"><label>Today's split</label>
+          <select id="gymSplit"><option value="">Choose split…</option><option>Push — chest, shoulders, triceps</option><option>Pull — back, biceps</option><option>Legs</option><option>Upper body</option><option>Lower body</option><option>Full body</option><option>Cardio + core</option><option>Yoga / mobility</option><option>Badminton 🏸</option></select>
+        </div>
+        <div class="field"><label>Notes</label><textarea id="gymNotes" placeholder="PRs, energy, soreness, anything worth remembering…"></textarea></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRADING -->
+  <section class="view" data-view="trading">
+    <div class="view-head"><div class="eyebrow">Section 06</div><h2>Trading Tracker</h2><p class="sub">Your 11–1 deep work block. Protect it — no Instagram, no distractions.</p></div>
+    <div class="grid grid-2">
+      <div class="card">
+        <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Study time</div>
+        <div class="card-sub">Log today's focused study.</div>
+        <div class="field-row">
+          <div class="field"><label>Hours</label><div class="stepper"><button id="trHMinus">−</button><span class="stp-val" id="trH">0</span><button id="trHPlus">+</button></div></div>
+          <div class="field"><label>Minutes</label><div class="stepper"><button id="trMMinus">−</button><span class="stp-val" id="trM">0</span><button id="trMPlus">+</button></div></div>
+        </div>
+        <div class="field"><label>Current module</label><input id="trModule" placeholder="e.g. Price action — support & resistance" /></div>
+        <div class="field"><label>Course progress</label>
+          <div style="display:flex;align-items:center;gap:14px;"><input type="range" id="trProg" min="0" max="100" value="0" style="flex:1" /><span class="pct-label" id="trProgLabel" style="width:38px;text-align:right">0%</span></div>
+          <div class="bar" style="margin-top:10px"><span id="trProgBar"></span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5v13z"/></svg>Learning log</div>
+        <div class="card-sub">What went in, and what's still fuzzy.</div>
+        <div class="field"><label>Concepts learned today</label><textarea id="trConcepts" placeholder="e.g. Candlestick psychology, liquidity zones…"></textarea></div>
+        <div class="field"><label>Questions to research</label><textarea id="trQuestions" placeholder="Anything unclear — capture it now, answer it tomorrow."></textarea></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VEYLARA -->
+  <section class="view" data-view="veylara">
+    <div class="view-head"><div class="eyebrow">Section 07</div><h2>Veylara Dashboard</h2><p class="sub">Templates, websites, automation, portfolio, outreach — everything moving through the board.</p></div>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>Today's client</div>
+      <input id="veyClient" placeholder="Who are you building for today?" style="margin-top:6px" />
+    </div>
+    <div class="kanban" id="kanban"></div>
+  </section>
+
+  <!-- HCL -->
+  <section class="view" data-view="hcl">
+    <div class="view-head"><div class="eyebrow">Section 08</div><h2>High Conscious Life</h2><p class="sub">A calm home for every idea — content, products, programs and pure brain dump.</p></div>
+    <div class="grid grid-2">
+      <div class="card"><div class="card-title">✨ Content ideas</div><textarea id="hclContent" placeholder="Reels, carousels, captions…"></textarea></div>
+      <div class="card"><div class="card-title">🎬 Video ideas</div><textarea id="hclVideo" placeholder="Scripts, hooks, YouTube topics…"></textarea></div>
+      <div class="card"><div class="card-title">📦 Digital products</div><textarea id="hclProducts" placeholder="Journals, guides, templates…"></textarea></div>
+      <div class="card"><div class="card-title">🌱 Online programs</div><textarea id="hclPrograms" placeholder="Courses, cohorts, memberships…"></textarea></div>
+      <div class="card"><div class="card-title">🪷 Workshop ideas</div><textarea id="hclWorkshops" placeholder="Clear The Noise, Break The Pattern, what's next…"></textarea></div>
+      <div class="card"><div class="card-title">🌊 Brain dump</div><textarea id="hclDump" placeholder="Everything else. No structure needed."></textarea></div>
+    </div>
+  </section>
+
+  <!-- ROOM RESET -->
+  <section class="view" data-view="room">
+    <div class="view-head"><div class="eyebrow">Section 09</div><h2>Room Reset</h2><p class="sub">A clear room, a clear mind. Six small resets.</p></div>
+    <div class="card" style="padding:26px 26px 16px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+        <span class="pct-label" id="roomPct">0% complete</span>
+        <div class="bar sage" style="width:180px"><span id="roomBar"></span></div>
+      </div>
+      <div class="timeline" id="roomList"></div>
+    </div>
+  </section>
+
+  <!-- NIGHT RITUAL -->
+  <section class="view" data-view="nightritual">
+    <div class="view-head"><div class="eyebrow">Section 10</div><h2>Night Ritual</h2><p class="sub">Close the day softly. Journal, skincare, switch off — and go to sleep as your future self.</p></div>
+    <div class="card" style="padding:26px 26px 16px;margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+        <span class="pct-label" id="nightRPct">0% complete</span>
+        <div class="bar sage" style="width:180px"><span id="nightRBar"></span></div>
+      </div>
+      <div class="timeline" id="nightRList"></div>
+    </div>
+    <div class="card quote-card" style="margin-top:0;">
+      <span class="quote-mark">✦</span>
+      <div>
+        <div class="card-title" style="margin-bottom:8px;">Tonight's affirmation</div>
+        <blockquote id="affirmText" style="font-size:17px;"></blockquote>
+        <cite style="display:block;font-family:var(--font-ui);font-style:normal;font-size:12px;color:var(--ink-2);margin-top:10px;">A new one every night — say it slowly, three times, and let it be the last thought of the day.</cite>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <div class="card-title">💫 Whisper these before sleep</div>
+      <div class="card-sub">Read them softly. Your brain believes what it hears last.</div>
+      <div id="affirmList"></div>
+    </div>
+  </section>
+
+  <!-- NIGHT REFLECTION -->
+  <section class="view" data-view="night">
+    <div class="view-head"><div class="eyebrow">Section 11</div><h2>Night Reflection</h2><p class="sub">Close the day with honesty and gratitude.</p></div>
+    <div class="grid grid-2">
+      <div class="card"><div class="card-title">🏆 Today's wins</div><textarea id="nWins" placeholder="What went right today?"></textarea></div>
+      <div class="card"><div class="card-title">🙏 Gratitude</div><textarea id="nGratitude" placeholder="Three things you're grateful for…"></textarea></div>
+      <div class="card"><div class="card-title">📖 Lessons</div><textarea id="nLessons" placeholder="What did today teach you?"></textarea></div>
+      <div class="card"><div class="card-title">🌅 Tomorrow's Big Three</div><textarea id="nTomorrow" placeholder="Money · Business · Brand"></textarea></div>
+      <div class="card">
+        <div class="card-title">💛 Mood</div><div class="card-sub">How did today feel, honestly?</div>
+        <div class="mood-wrap"><span class="mood-emoji" id="moodEmoji">🙂</span><input type="range" id="moodSlider" min="1" max="5" value="3" style="flex:1" /></div>
+      </div>
+      <div class="card">
+        <div class="card-title">🌙 Sleep time</div><div class="card-sub">When are you switching off?</div>
+        <input type="time" id="sleepTime" />
+      </div>
+    </div>
+  </section>
+
+  <!-- WEEKLY REVIEW -->
+  <section class="view" data-view="weekly">
+    <div class="view-head"><div class="eyebrow">Section 12</div><h2>Weekly Review</h2><p class="sub">Zoom out once a week. Patterns matter more than days.</p></div>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="8" rx="1"/><rect x="13" y="6" width="3" height="12" rx="1"/></svg>Daily completion — last 7 days</div>
+      <div class="card-sub">Percentage of your daily checklist completed each day.</div>
+      <div class="chart" id="weekChart"></div>
+    </div>
+    <div class="grid grid-3">
+      <div class="card"><div class="card-title">🌟 Wins</div><textarea id="wWins" placeholder="What compounded this week?"></textarea></div>
+      <div class="card"><div class="card-title">🧭 Mistakes</div><textarea id="wMistakes" placeholder="What would you do differently?"></textarea></div>
+      <div class="card"><div class="card-title">🔁 Habits</div><textarea id="wHabits" placeholder="Which habits held? Which slipped?"></textarea></div>
+    </div>
+  </section>
+
+  <!-- VISION -->
+  <section class="view" data-view="vision">
+    <div class="view-head"><div class="eyebrow">Section 13</div><h2>Vision</h2><p class="sub">The goals everything else serves. Read them every morning.</p></div>
+    <div class="card">
+      <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>Current goals</div>
+      <div class="card-sub">Write them as if they're already on the way.</div>
+      <div id="goalList"></div>
+    </div>
+  </section>
+
+</main>
+</div>
+
+<!-- FAB -->
+<button class="fab" id="fab" aria-label="Quick capture an idea" title="Quick capture (adds to Brain Dump)">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+</button>
+
+<!-- COMMAND PALETTE -->
+<div class="palette-overlay" id="palOverlay">
+  <div class="palette" role="dialog" aria-label="Command palette">
+    <input id="palInput" placeholder="Search sections or type a command…" autocomplete="off" />
+    <div class="pal-list" id="palList"></div>
+  </div>
+</div>
+
+<!-- CAPTURE MODAL -->
+<div class="palette-overlay" id="capOverlay">
+  <div class="palette" role="dialog" aria-label="Quick capture" style="width:min(460px,92vw)">
+    <div style="padding:18px 20px 0;font-family:var(--font-display);font-size:15px;font-weight:600;" id="capTitle">Quick capture</div>
+    <input id="capInput" placeholder="Type it here…" autocomplete="off" />
+    <div style="display:flex;justify-content:flex-end;gap:8px;padding:12px 16px;">
+      <button class="pal-item" style="width:auto" id="capCancel">Cancel</button>
+      <button class="pal-item" style="width:auto;background:var(--gold);color:#fff" id="capOk">Add</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<canvas id="confetti"></canvas>
+<script>
+/* ============================================================
+   PRADHISHTA OS — Application
+   Organised as: Store → UI helpers → Sections → Global (palette,
+   shortcuts, theme, confetti). Everything persists to localStorage.
+   ============================================================ */
+(function(){
+'use strict';
+
+/* ---------- Store ---------- */
+const KEY='pradhishta-os-v1';
+const todayStr=()=>new Date().toISOString().slice(0,10);
+
+const freshDaily=()=>({
+  ritual:{}, blocks:{}, water:0,
+  big3:[{text:'',done:false},{text:'',done:false},{text:'',done:false}],
+  gym:{done:'',duration:0,split:'',notes:''},
+  trading:{h:0,m:0,concepts:'',questions:''},
+  room:{}, nightRitual:{},
+  night:{wins:'',gratitude:'',lessons:'',tomorrow:'',mood:3,sleep:''},
+  celebrated:false
+});
+
+const defaults=()=>({
+  date:todayStr(), theme:'light',
+  daily:freshDaily(),
+  tradingCourse:{module:'',progress:0},
+  veylara:{client:'',todo:['Template library — next template','Portfolio case study','Outreach — 3 warm leads'],doing:['Client website build'],done:[]},
+  hcl:{content:'',video:'',products:'',programs:'',workshops:'',dump:''},
+  weekly:{wins:'',mistakes:'',habits:''},
+  vision:{income:'',fitness:'',business:'',youtube:'',instagram:'',workshop:''},
+  history:[]
+});
+
+/* Storage wrapper: uses localStorage when available (normal browsers),
+   falls back to in-memory so the app never breaks in sandboxed previews. */
+const storage=(()=>{  
+  try{ const t='__pos_test__'; localStorage.setItem(t,'1'); localStorage.removeItem(t);
+    return {get:k=>localStorage.getItem(k), set:(k,v)=>localStorage.setItem(k,v)}; }
+  catch(e){ const mem={}; return {get:k=>mem[k]||null, set:(k,v)=>{mem[k]=v;}}; }
+})();
+let S;
+try{ S=JSON.parse(storage.get(KEY)) || defaults(); }
+catch(e){ S=defaults(); }
+// deep-merge missing keys after updates
+const base=defaults();
+for(const k in base){ if(S[k]===undefined) S[k]=base[k]; }
+if(!S.daily.nightRitual) S.daily.nightRitual={};
+
+let saveT;
+function save(){ clearTimeout(saveT); saveT=setTimeout(()=>storage.set(KEY,JSON.stringify(S)),150); }
+
+/* ---------- Static data ---------- */
+const RITUAL=[
+  ['5:30','🌞 Wakeyy wakeyyy!'],['5:45','Refresh up'],['6:00','Coffee making ☕'],
+  ['6:30','Journal + Read 📖'],['6:45','Meditation 🧘'],['7:00','Get ready'],
+  ['7:30','Gym 💪'],['9:00','Help Mom ❤️'],['10:00','Breakfast + get ready 🍳']
+];
+const BLOCKS=[
+  {id:'trading',time:'11:00–1:00',title:'Trading Course 📈',note:'Priority block — protect it.',tags:[['No Instagram','warn'],['No distractions','warn']]},
+  {id:'lunch',time:'1:00–2:00',title:'Lunch',note:'Slow down. Eat away from screens.',tags:[['Rest','calm']]},
+  {id:'veylara',time:'2:00–4:00',title:'Veylara 🚀',note:'Pick one lane and stay in it.',tags:[['Examples',''],['Templates',''],['Client work',''],['Website',''],['Portfolio','']]},
+  {id:'break',time:'4:00',title:'Break',note:'Step away from the desk.',tags:[['Hydration reminder 💧','calm']]},
+  {id:'hcl',time:'4:30–6:00',title:'High Conscious Life 🎥',note:'One task only.',tags:[['Filming',''],['Editing',''],['Digital products',''],['Course','']]},
+  {id:'flex',time:'6:00 →',title:'Flexible Block',note:'Life outside the laptop.',tags:[['Room cleaning',''],['Reading',''],['Family','gold'],['Badminton 🏸','']]}
+];
+const ROOM=['Bed','Desk','Clothes','Laundry','Trash','Wipe table'];
+const NIGHTR=[
+  ['9:30','Night journal 📓 — 30 quiet minutes'],
+  ['10:00','Prep tomorrow — clothes, desk, Big Three 🌅'],
+  ['10:30','Skincare 🧴'],
+  ['10:45','Close everything — screens off, lights low 🌙'],
+  ['10:50','Good night affirmations 💫 — reset the mind'],
+  ['11:00','Sleep — dream big, wake fresh 😴']
+];
+const AFFIRMATIONS=[
+  'I did enough today. I release the rest with love.',
+  'My mind is calm, my body is soft, my sleep is deep.',
+  'Tomorrow I wake up fresh, focused and grateful — already her.',
+  'Everything I am building keeps growing quietly, even while I sleep.',
+  'I forgive today\'s mistakes. They were lessons wearing disguises.',
+  'I am becoming the woman my dreams require.',
+  'Money, clients and ideas flow to me with ease.',
+  'My future self is proud of how I showed up today.',
+  'I let go of the noise. What is meant for me is already on its way.',
+  'Each night I rest, each morning I rise stronger.'
+];
+
+const B3=[
+  {kind:'Money',accent:'var(--gold)',title:'One task that earns income',ph:'e.g. Send the Surfers Café invoice'},
+  {kind:'Business',accent:'var(--sky)',title:'One task for Veylara',ph:'e.g. Finish the CRM dashboard template'},
+  {kind:'Brand',accent:'var(--sage)',title:'One task for High Conscious Life',ph:'e.g. Film the intuition reel'}
+];
+const GOALS=[
+  ['income','💰','Income goal','e.g. ₹1L/month by December'],
+  ['fitness','💪','Fitness goal','e.g. Gym 5×/week, 55 kg strong'],
+  ['business','🚀','Business goal','e.g. 5 retainer clients for Veylara'],
+  ['youtube','📺','YouTube goal','e.g. 52 videos this year'],
+  ['instagram','📸','Instagram goal','e.g. 10k on @pradhishtaa'],
+  ['workshop','🪷','Workshop goal','e.g. Sold-out Break The Pattern']
+];
+const QUOTES=[
+  ['Discipline is choosing between what you want now and what you want most.','Abraham Lincoln (attributed)'],
+  ['You have the right to work, but never to the fruit of work.','Bhagavad Gita 2.47'],
+  ['We are what we repeatedly do. Excellence, then, is not an act, but a habit.','Will Durant, on Aristotle'],
+  ['The successful warrior is the average person, with laser-like focus.','Bruce Lee'],
+  ['Do the difficult things while they are easy and do the great things while they are small.','Lao Tzu'],
+  ['Almost everything will work again if you unplug it for a few minutes. Including you.','Anne Lamott'],
+  ['How we spend our days is, of course, how we spend our lives.','Annie Dillard'],
+  ['Whatever you do, do it with full involvement — that is meditation.','Sadhguru'],
+  ['It is not the mountain we conquer, but ourselves.','Edmund Hillary'],
+  ['The mind is everything. What you think, you become.','Buddhist teaching'],
+  ['Small daily improvements are the key to staggering long-term results.','Robin Sharma'],
+  ['Quiet the noise, and the answer is already there.','High Conscious Life'],
+  ['Manifestation begins within.','High Conscious Life'],
+  ['Amateurs sit and wait for inspiration. The rest of us just get up and go to work.','Stephen King'],
+  ['A river cuts through rock not because of its power, but because of its persistence.','James N. Watkins']
+];
+
+// Day rollover: archive yesterday's completion, reset daily state
+if(S.date!==todayStr()){
+  S.history.push({date:S.date,pct:dayPct()});
+  S.history=S.history.slice(-14);
+  S.date=todayStr();
+  S.daily=freshDaily();
+}
+
+/* ---------- Tiny helpers ---------- */
+const $=s=>document.querySelector(s);
+const el=(tag,cls,html)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(html!==undefined)e.innerHTML=html;return e;};
+const checkHTML='<span class="check"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></span>';
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200);}
+/* Custom capture dialog (prompt() is blocked in sandboxed previews) */
+function capture(title,placeholder,cb){
+  const o=$('#capOverlay'),inp=$('#capInput');
+  $('#capTitle').textContent=title;inp.placeholder=placeholder;inp.value='';
+  o.classList.add('open');setTimeout(()=>inp.focus(),30);
+  const done=v=>{o.classList.remove('open');cleanup();if(v&&v.trim())cb(v.trim());};
+  const onOk=()=>done(inp.value), onCancel=()=>done(null);
+  const onKey=e=>{if(e.key==='Enter')done(inp.value);if(e.key==='Escape')done(null);};
+  const onBg=e=>{if(e.target===o)done(null);};
+  function cleanup(){$('#capOk').removeEventListener('click',onOk);$('#capCancel').removeEventListener('click',onCancel);inp.removeEventListener('keydown',onKey);o.removeEventListener('click',onBg);}
+  $('#capOk').addEventListener('click',onOk);$('#capCancel').addEventListener('click',onCancel);
+  inp.addEventListener('keydown',onKey);o.addEventListener('click',onBg);
+}
+function bindText(id,get,set){const n=$(id);n.value=get()||'';n.addEventListener('input',()=>{set(n.value);save();});}
+const pct=(done,total)=>total?Math.round(done/total*100):0;
+
+/* ---------- Day completion (for glance, history, confetti) ---------- */
+function sectionPcts(){
+  const d=S.daily;
+  return {
+    ritual:pct(RITUAL.filter((_,i)=>d.ritual[i]).length,RITUAL.length),
+    blocks:pct(BLOCKS.filter(b=>d.blocks[b.id]).length,BLOCKS.length),
+    big3:pct(d.big3.filter(x=>x.done).length,3),
+    water:pct(d.water,8),
+    room:pct(ROOM.filter((_,i)=>d.room[i]).length,ROOM.length),
+    nightR:pct(NIGHTR.filter((_,i)=>d.nightRitual[i]).length,NIGHTR.length)
+  };
+}
+function dayPct(){
+  const p=sectionPcts();const v=Object.values(p);
+  return Math.round(v.reduce((a,b)=>a+b,0)/v.length);
+}
+
+/* ---------- Navigation ---------- */
+const NAV=[
+  {id:'home',label:'Home',group:'navDay',icon:'<path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/>'},
+  {id:'ritual',label:'Morning Ritual',group:'navDay',icon:'<circle cx="12" cy="14" r="5"/><path d="M12 2v3M5 5l2 2M19 5l-2 2M2 14h2M20 14h2"/>'},
+  {id:'blocks',label:'Time Blocking',group:'navDay',icon:'<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M4 10h16M10 10v10"/>'},
+  {id:'big3',label:'Big Three',group:'navDay',icon:'<path d="M12 2l2.6 6.6L21 9.3l-5 4.4 1.6 6.6L12 16.8 6.4 20.3 8 13.7 3 9.3l6.4-.7z"/>'},
+  {id:'water',label:'Hydration',group:'navDay',icon:'<path d="M12 2s6 6.5 6 12a6 6 0 0 1-12 0c0-5.5 6-12 6-12z"/>'},
+  {id:'gym',label:'Gym',group:'navDay',icon:'<path d="M6.5 6.5l11 11M2 12l4-4M22 12l-4 4M8 2l4 4M16 22l-4-4"/>'},
+  {id:'trading',label:'Trading',group:'navWork',icon:'<path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/>'},
+  {id:'veylara',label:'Veylara',group:'navWork',icon:'<path d="M4.5 16.5L3 21l4.5-1.5M14 4l6 6-9.5 9.5L5 14z"/>'},
+  {id:'hcl',label:'High Conscious Life',group:'navWork',icon:'<circle cx="12" cy="12" r="9"/><path d="M8 12c1.5-2.5 6.5-2.5 8 0-1.5 2.5-6.5 2.5-8 0z"/>'},
+  {id:'room',label:'Room Reset',group:'navReflect',icon:'<path d="M4 20h16M6 20V9l6-5 6 5v11"/>'},
+  {id:'nightritual',label:'Night Ritual',group:'navReflect',icon:'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/><path d="M17 4l.7 1.8L19.5 6.5l-1.8.7L17 9l-.7-1.8-1.8-.7 1.8-.7z"/>'},
+  {id:'night',label:'Night Reflection',group:'navReflect',icon:'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>'},
+  {id:'weekly',label:'Weekly Review',group:'navReflect',icon:'<rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4M3 9h18"/>'},
+  {id:'vision',label:'Vision',group:'navReflect',icon:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/>'}
+];
+NAV.forEach(n=>{
+  const b=el('button','nav-btn',`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${n.icon}</svg><span>${n.label}</span>`);
+  b.dataset.view=n.id;
+  b.addEventListener('click',()=>go(n.id));
+  $('#'+n.group).appendChild(b);
+});
+function go(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.dataset.view===id));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===id));
+  if(id==='home')renderGlance();
+  if(id==='weekly')renderChart();
+  window.scrollTo({top:0});
+  closeSidebar();
+}
+document.querySelectorAll('[data-go]').forEach(c=>c.addEventListener('click',()=>go(c.dataset.go)));
+
+/* Mobile sidebar */
+const sidebar=$('#sidebar'),scrim=$('#scrim');
+$('#menuBtn').addEventListener('click',()=>{sidebar.classList.add('open');scrim.classList.add('show');});
+function closeSidebar(){sidebar.classList.remove('open');scrim.classList.remove('show');}
+scrim.addEventListener('click',closeSidebar);
+
+/* ---------- Home ---------- */
+(function home(){
+  const h=new Date().getHours();
+  const word=h<5?'Good Night':h<12?'Good Morning':h<17?'Good Afternoon':'Good Evening';
+  const emo=h<5?'🌙':h<12?'🌞':h<17?'🌤️':'🌆';
+  $('#greeting').innerHTML=`${word}, <em>Pradhishta</em> ${emo}`;
+  $('#dateLine').textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const q=QUOTES[Math.floor(Math.random()*QUOTES.length)];
+  $('#quoteText').textContent=q[0];$('#quoteBy').textContent='— '+q[1];
+})();
+function renderGlance(){
+  const p=sectionPcts();
+  const rows=[['Morning ritual',p.ritual],['Time blocks',p.blocks],['Big Three',p.big3],['Hydration',p.water],['Room reset',p.room],['Night ritual',p.nightR]];
+  $('#glanceRows').innerHTML=rows.map(([n,v])=>`<div class="stat-row"><span class="s-name">${n}</span><div class="bar${v===100?' sage':''}"><span style="width:${v}%"></span></div><span class="pct-label">${v}%</span></div>`).join('');
+  $('#dayProgress').textContent=`Day ${dayPct()}% complete`;
+}
+
+/* ---------- Morning Ritual ---------- */
+function renderRitual(){
+  const list=$('#ritualList');list.innerHTML='';
+  RITUAL.forEach(([time,label],i)=>{
+    const row=el('div','t-item'+(S.daily.ritual[i]?' done':''),`<span class="t-time">${time}</span>${checkHTML}<span class="t-label">${label}</span>`);
+    row.addEventListener('click',()=>{S.daily.ritual[i]=!S.daily.ritual[i];save();popCheck(row);renderRitual();maybeCelebrate('ritual');});
+    list.appendChild(row);
+  });
+  const p=sectionPcts().ritual;
+  $('#ritualPct').textContent=p+'% complete';$('#ritualBar').style.width=p+'%';
+  refreshNavPct();
+}
+
+/* ---------- Time Blocking ---------- */
+function renderBlocks(){
+  const list=$('#blockList');list.innerHTML='';
+  BLOCKS.forEach(b=>{
+    const on=!!S.daily.blocks[b.id];
+    const row=el('div','t-item block-item'+(on?' done':''),
+      `<span class="t-time">${b.time}</span>${checkHTML}
+       <div class="block-body"><h4>${b.title}</h4><div class="b-note">${b.note}</div>
+       <div class="tags">${b.tags.map(([t,c])=>`<span class="tag ${c}">${t}</span>`).join('')}</div></div>`);
+    row.querySelector('.check').addEventListener('click',e=>{e.stopPropagation();S.daily.blocks[b.id]=!on;save();popCheck(row);renderBlocks();maybeCelebrate('blocks');});
+    list.appendChild(row);
+  });
+  refreshNavPct();
+}
+
+/* ---------- Big Three ---------- */
+function renderBig3(){
+  const g=$('#big3Grid');g.innerHTML='';
+  B3.forEach((c,i)=>{
+    const st=S.daily.big3[i];
+    const card=el('div','card b3-card'+(st.done?' done':''),
+      `<div class="b3-kind" style="color:${c.accent}">${c.kind}</div><h3>${c.title}</h3>
+       <input class="b3-input" placeholder="${c.ph}" value="${st.text.replace(/"/g,'&quot;')}" />
+       <div class="b3-foot">${checkHTML}<span>${st.done?'Done — beautiful.':'Mark complete'}</span></div>`);
+    card.style.setProperty('--accent',c.accent);
+    card.querySelector('input').addEventListener('input',e=>{st.text=e.target.value;save();});
+    card.querySelector('.check').addEventListener('click',()=>{st.done=!st.done;save();popCheck(card);renderBig3();maybeCelebrate('big3');});
+    g.appendChild(card);
+  });
+  refreshNavPct();
+}
+
+/* ---------- Hydration ---------- */
+function renderWater(){
+  const n=S.daily.water,p=pct(n,8);
+  $('#hydroPct').textContent=p+'%';
+  $('#hydroCount').textContent=`${n} / 8 glasses`;
+  const level=220-(n/8)*186; // 220 empty → 34 full (within clip)
+  $('#waterRect').setAttribute('y',level);
+  $('#wave').setAttribute('transform',`translate(0,${level-8})`);
+  const row=$('#glassRow');row.innerHTML='';
+  for(let i=0;i<8;i++){
+    const g=el('button','glass'+(i<n?' full':''));
+    g.setAttribute('aria-label','Glass '+(i+1));
+    g.addEventListener('click',()=>{S.daily.water=(i<n)?i:i+1;save();renderWater();if(S.daily.water===8){toast('💧 Fully hydrated — well done!');burst(60);}maybeCelebrate('water');});
+    row.appendChild(g);
+  }
+  refreshNavPct();
+}
+$('#bottleSvg').addEventListener('click',()=>{
+  if(S.daily.water<8){S.daily.water++;save();renderWater();if(S.daily.water===8){toast('💧 Fully hydrated — well done!');burst(60);}maybeCelebrate('water');}
+});
+
+/* ---------- Gym ---------- */
+(function gym(){
+  const seg=$('#gymDoneSeg');
+  function paint(){seg.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===S.daily.gym.done));}
+  seg.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{S.daily.gym.done=b.dataset.v;save();paint();if(b.dataset.v==='yes'){toast('💪 Session logged. Strong.');}}));
+  paint();
+  const dv=$('#durVal');dv.textContent=S.daily.gym.duration;
+  $('#durMinus').addEventListener('click',()=>{S.daily.gym.duration=Math.max(0,S.daily.gym.duration-5);dv.textContent=S.daily.gym.duration;save();});
+  $('#durPlus').addEventListener('click',()=>{S.daily.gym.duration+=5;dv.textContent=S.daily.gym.duration;save();});
+  const sp=$('#gymSplit');sp.value=S.daily.gym.split;sp.addEventListener('change',()=>{S.daily.gym.split=sp.value;save();});
+  bindText('#gymNotes',()=>S.daily.gym.notes,v=>S.daily.gym.notes=v);
+})();
+
+/* ---------- Trading ---------- */
+(function trading(){
+  const t=S.daily.trading,c=S.tradingCourse;
+  const H=$('#trH'),M=$('#trM');H.textContent=t.h;M.textContent=t.m;
+  $('#trHMinus').addEventListener('click',()=>{t.h=Math.max(0,t.h-1);H.textContent=t.h;save();});
+  $('#trHPlus').addEventListener('click',()=>{t.h++;H.textContent=t.h;save();});
+  $('#trMMinus').addEventListener('click',()=>{t.m=Math.max(0,t.m-15);M.textContent=t.m;save();});
+  $('#trMPlus').addEventListener('click',()=>{t.m=Math.min(59,t.m+15);M.textContent=t.m;save();});
+  bindText('#trModule',()=>c.module,v=>c.module=v);
+  bindText('#trConcepts',()=>t.concepts,v=>t.concepts=v);
+  bindText('#trQuestions',()=>t.questions,v=>t.questions=v);
+  const r=$('#trProg');r.value=c.progress;
+  function paint(){$('#trProgLabel').textContent=c.progress+'%';$('#trProgBar').style.width=c.progress+'%';}
+  r.addEventListener('input',()=>{c.progress=+r.value;paint();save();});
+  paint();
+})();
+
+/* ---------- Veylara Kanban ---------- */
+const KB_COLS=[['todo','To do','var(--ink-3)'],['doing','Doing','var(--gold)'],['done','Done','var(--sage)']];
+function renderKanban(){
+  const wrap=$('#kanban');wrap.innerHTML='';
+  KB_COLS.forEach(([key,label,dot],ci)=>{
+    const col=el('div','kb-col');
+    col.appendChild(el('div','kb-head',`<span class="kb-dot" style="background:${dot}"></span>${label}<span class="kb-count">${S.veylara[key].length}</span>`));
+    S.veylara[key].forEach((text,i)=>{
+      const card=el('div','kb-card'+(key==='done'?' kb-done':''),
+        `<span class="kb-text">${text}</span>
+         <span class="kb-move">
+           ${ci>0?'<button title="Move left" aria-label="Move left">‹</button>':''}
+           ${ci<2?'<button title="Move right" aria-label="Move right">›</button>':''}
+           <button title="Delete" aria-label="Delete">✕</button>
+         </span>`);
+      const btns=card.querySelectorAll('.kb-move button');
+      let bi=0;
+      if(ci>0){btns[bi++].addEventListener('click',()=>moveKb(key,i,KB_COLS[ci-1][0]));}
+      if(ci<2){btns[bi++].addEventListener('click',()=>moveKb(key,i,KB_COLS[ci+1][0]));}
+      btns[bi].addEventListener('click',()=>{S.veylara[key].splice(i,1);save();renderKanban();});
+      col.appendChild(card);
+    });
+    const add=el('button','kb-add','+ Add task');
+    add.addEventListener('click',()=>{
+      capture('New Veylara task','Templates, website, automation, portfolio, outreach…',t=>{
+        S.veylara[key].push(t);save();renderKanban();
+      });
+    });
+    col.appendChild(add);
+    wrap.appendChild(col);
+  });
+}
+function moveKb(from,i,to){
+  const [item]=S.veylara[from].splice(i,1);
+  S.veylara[to].push(item);save();renderKanban();
+  if(to==='done'){toast('✅ Shipped: '+item);burst(40);}
+}
+bindText('#veyClient',()=>S.veylara.client,v=>S.veylara.client=v);
+
+/* ---------- HCL ---------- */
+[['#hclContent','content'],['#hclVideo','video'],['#hclProducts','products'],['#hclPrograms','programs'],['#hclWorkshops','workshops'],['#hclDump','dump']]
+  .forEach(([id,k])=>bindText(id,()=>S.hcl[k],v=>S.hcl[k]=v));
+
+/* ---------- Room Reset ---------- */
+function renderRoom(){
+  const list=$('#roomList');list.innerHTML='';
+  ROOM.forEach((label,i)=>{
+    const row=el('div','t-item'+(S.daily.room[i]?' done':''),`<span class="t-time">0${i+1}</span>${checkHTML}<span class="t-label">${label}</span>`);
+    row.addEventListener('click',()=>{S.daily.room[i]=!S.daily.room[i];save();popCheck(row);renderRoom();maybeCelebrate('room');});
+    list.appendChild(row);
+  });
+  const p=sectionPcts().room;
+  $('#roomPct').textContent=p+'% complete';$('#roomBar').style.width=p+'%';
+  refreshNavPct();
+}
+
+/* ---------- Night Ritual ---------- */
+function renderNightRitual(){
+  const list=$('#nightRList');list.innerHTML='';
+  NIGHTR.forEach(([time,label],i)=>{
+    const row=el('div','t-item'+(S.daily.nightRitual[i]?' done':''),`<span class="t-time">${time}</span>${checkHTML}<span class="t-label">${label}</span>`);
+    row.addEventListener('click',()=>{S.daily.nightRitual[i]=!S.daily.nightRitual[i];save();popCheck(row);renderNightRitual();maybeCelebrate('nightR');});
+    list.appendChild(row);
+  });
+  const p=sectionPcts().nightR;
+  $('#nightRPct').textContent=p+'% complete';$('#nightRBar').style.width=p+'%';
+  refreshNavPct();
+}
+(function affirmations(){
+  const dayIndex=Math.floor(new Date().setHours(0,0,0,0)/86400000)%AFFIRMATIONS.length;
+  $('#affirmText').textContent='“'+AFFIRMATIONS[dayIndex]+'”';
+  $('#affirmList').innerHTML=AFFIRMATIONS.map(a=>`<div class="stat-row" style="gap:10px;"><span style="color:var(--gold);flex-shrink:0;">✦</span><span style="font-size:13.5px;line-height:1.6;">${a}</span></div>`).join('');
+})();
+
+/* ---------- Night Reflection ---------- */
+(function night(){
+  const n=S.daily.night;
+  bindText('#nWins',()=>n.wins,v=>n.wins=v);
+  bindText('#nGratitude',()=>n.gratitude,v=>n.gratitude=v);
+  bindText('#nLessons',()=>n.lessons,v=>n.lessons=v);
+  bindText('#nTomorrow',()=>n.tomorrow,v=>n.tomorrow=v);
+  const sl=$('#moodSlider'),em=$('#moodEmoji'),faces=['😞','😕','🙂','😊','🤩'];
+  sl.value=n.mood;em.textContent=faces[n.mood-1];
+  sl.addEventListener('input',()=>{n.mood=+sl.value;em.textContent=faces[n.mood-1];em.style.transform='scale(1.25)';setTimeout(()=>em.style.transform='',200);save();});
+  const st=$('#sleepTime');st.value=n.sleep;st.addEventListener('change',()=>{n.sleep=st.value;save();});
+})();
+
+/* ---------- Weekly ---------- */
+bindText('#wWins',()=>S.weekly.wins,v=>S.weekly.wins=v);
+bindText('#wMistakes',()=>S.weekly.mistakes,v=>S.weekly.mistakes=v);
+bindText('#wHabits',()=>S.weekly.habits,v=>S.weekly.habits=v);
+function renderChart(){
+  const wrap=$('#weekChart');wrap.innerHTML='';
+  const days=[...S.history.slice(-6),{date:S.date,pct:dayPct()}];
+  days.forEach(d=>{
+    const day=new Date(d.date+'T00:00').toLocaleDateString('en-IN',{weekday:'short'});
+    const col=el('div','c-col',`<div class="c-bar" data-v="${d.pct}%" style="height:4px"></div><span class="c-day">${day}</span>`);
+    wrap.appendChild(col);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{col.querySelector('.c-bar').style.height=Math.max(4,d.pct)+'%';}));
+  });
+}
+
+/* ---------- Vision ---------- */
+(function vision(){
+  const wrap=$('#goalList');
+  GOALS.forEach(([k,emoji,name,ph])=>{
+    const row=el('div','goal-row',`<span class="goal-icon">${emoji}</span><span class="g-name">${name}</span><input placeholder="${ph}" value="${(S.vision[k]||'').replace(/"/g,'&quot;')}" />`);
+    row.querySelector('input').addEventListener('input',e=>{S.vision[k]=e.target.value;save();});
+    wrap.appendChild(row);
+  });
+})();
+
+/* ---------- Nav percentages ---------- */
+function refreshNavPct(){
+  const p=sectionPcts();
+  const map={ritual:p.ritual,blocks:p.blocks,big3:p.big3,water:p.water,room:p.room,nightritual:p.nightR};
+  document.querySelectorAll('.nav-btn').forEach(b=>{
+    const v=map[b.dataset.view];
+    let tag=b.querySelector('.nav-pct');
+    if(v===undefined)return;
+    if(!tag){tag=el('span','nav-pct');b.appendChild(tag);}
+    tag.textContent=v+'%';
+  });
+  if($('.view[data-view="home"]').classList.contains('active'))renderGlance();
+}
+
+/* ---------- Celebration ---------- */
+function popCheck(scope){const c=scope.querySelector('.check');if(c){c.classList.remove('pop');void c.offsetWidth;c.classList.add('pop');}}
+function maybeCelebrate(section){
+  const p=sectionPcts();
+  if(p[section]===100){const names={ritual:'Morning ritual',blocks:'All time blocks',big3:'Big Three',water:'Hydration',room:'Room reset',nightR:'Night ritual — sleep well'};toast(`🎉 ${names[section]} complete!`);burst(50);}
+  if(dayPct()===100&&!S.daily.celebrated){S.daily.celebrated=true;save();toast('🌟 A perfect day, Pradhishta. Everything done!');burst(220);}
+}
+
+/* ---------- Confetti ---------- */
+const canvas=$('#confetti'),ctx=canvas.getContext('2d');
+let pieces=[],raf=null;
+function sizeCanvas(){canvas.width=innerWidth;canvas.height=innerHeight;}
+sizeCanvas();addEventListener('resize',sizeCanvas);
+const COLORS=['#C96B8F','#E9B4C9','#B75D7E','#A08CB4','#F6D9E4'];
+function burst(n){
+  for(let i=0;i<n;i++){
+    pieces.push({x:innerWidth/2+(Math.random()-.5)*200,y:innerHeight*0.3,vx:(Math.random()-.5)*9,vy:Math.random()*-9-3,g:.25+Math.random()*.15,s:5+Math.random()*6,r:Math.random()*Math.PI,vr:(Math.random()-.5)*.25,c:COLORS[i%COLORS.length],life:110});
+  }
+  if(!raf)tick();
+}
+function tick(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  pieces=pieces.filter(p=>p.life>0);
+  pieces.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.r+=p.vr;p.life--;
+    ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);
+    ctx.globalAlpha=Math.min(1,p.life/40);
+    ctx.fillStyle=p.c;ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.62);
+    ctx.restore();
+  });
+  raf=pieces.length?requestAnimationFrame(tick):null;
+}
+
+/* ---------- FAB — quick capture ---------- */
+$('#fab').addEventListener('click',()=>{
+  capture('🌊 Quick capture','An idea, a thought — it goes to your HCL brain dump…',idea=>{
+    S.hcl.dump=(S.hcl.dump?S.hcl.dump+'\n':'')+'• '+idea;
+    $('#hclDump').value=S.hcl.dump;save();toast('Captured to brain dump ✨');
+  });
+});
+
+/* ---------- Command palette + search ---------- */
+const overlay=$('#palOverlay'),palInput=$('#palInput'),palList=$('#palList');
+const COMMANDS=[
+  ...NAV.map(n=>({label:'Go to '+n.label,icon:n.icon,run:()=>go(n.id),keys:n.label})),
+  {label:'Toggle dark mode',icon:'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',run:toggleTheme,keys:'dark light theme'},
+  {label:'Add a glass of water',icon:'<path d="M12 2s6 6.5 6 12a6 6 0 0 1-12 0c0-5.5 6-12 6-12z"/>',run:()=>{if(S.daily.water<8){S.daily.water++;save();renderWater();toast('💧 +1 glass');}},keys:'water hydration drink'},
+  {label:'Quick capture idea',icon:'<path d="M12 5v14M5 12h14"/>',run:()=>$('#fab').click(),keys:'idea capture note dump'},
+  {label:'New Veylara task',icon:'<path d="M4.5 16.5L3 21l4.5-1.5M14 4l6 6-9.5 9.5L5 14z"/>',run:()=>{go('veylara');setTimeout(()=>$('.kb-add').click(),50);},keys:'task veylara client'}
+];
+let palSel=0,palItems=[];
+function openPal(){overlay.classList.add('open');palInput.value='';renderPal('');palInput.focus();}
+function closePal(){overlay.classList.remove('open');}
+function renderPal(q){
+  q=q.toLowerCase();
+  palItems=COMMANDS.filter(c=>(c.label+' '+c.keys).toLowerCase().includes(q));
+  palSel=0;
+  palList.innerHTML='';
+  palItems.forEach((c,i)=>{
+    const b=el('button','pal-item'+(i===0?' sel':''),`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${c.icon}</svg><span>${c.label}</span>${i===0?'<span class="pal-k"><kbd>↵</kbd></span>':''}`);
+    b.addEventListener('click',()=>{closePal();c.run();});
+    palList.appendChild(b);
+  });
+  if(!palItems.length)palList.innerHTML='<div class="pal-item" style="cursor:default">No matches — try "water", "dark" or a section name.</div>';
+}
+palInput.addEventListener('input',()=>renderPal(palInput.value));
+palInput.addEventListener('keydown',e=>{
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+    e.preventDefault();
+    palSel=(palSel+(e.key==='ArrowDown'?1:-1)+palItems.length)%palItems.length;
+    palList.querySelectorAll('.pal-item').forEach((n,i)=>n.classList.toggle('sel',i===palSel));
+    palList.children[palSel]?.scrollIntoView({block:'nearest'});
+  }
+  if(e.key==='Enter'&&palItems[palSel]){closePal();palItems[palSel].run();}
+});
+overlay.addEventListener('click',e=>{if(e.target===overlay)closePal();});
+$('#palBtn').addEventListener('click',openPal);
+
+/* ---------- Keyboard shortcuts ---------- */
+addEventListener('keydown',e=>{
+  const typing=/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();overlay.classList.contains('open')?closePal():openPal();return;}
+  if(e.key==='Escape')closePal();
+  if(typing||overlay.classList.contains('open'))return;
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='d'){e.preventDefault();toggleTheme();return;}
+  const n=parseInt(e.key);
+  if(n>=1&&n<=9&&!e.ctrlKey&&!e.metaKey&&!e.altKey)go(NAV[n-1].id);
+  if(e.key==='0')go('vision');
+});
+
+/* ---------- Theme ---------- */
+function applyTheme(){
+  document.documentElement.dataset.theme=S.theme;
+  $('#iconSun').style.display=S.theme==='light'?'block':'none';
+  $('#iconMoon').style.display=S.theme==='dark'?'block':'none';
+}
+function toggleTheme(){S.theme=S.theme==='light'?'dark':'light';save();applyTheme();}
+$('#themeBtn').addEventListener('click',toggleTheme);
+applyTheme();
+
+/* ---------- Boot ---------- */
+renderRitual();renderBlocks();renderBig3();renderWater();renderKanban();renderRoom();renderNightRitual();
+go('home');
+})();
+</script>
+</body>
+</html>
