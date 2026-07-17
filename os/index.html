@@ -7,59 +7,60 @@
 <title>OS — High Conscious Life</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
 /* ============================================================
    OS — Design Tokens (default = prathy pink; hariny's purple set
    is injected at login via #profileTheme)
    ============================================================ */
 :root{
-  --bg:#FBF2F5;
-  --surface:#FFFBFC;
-  --surface-2:#F7E6EC;
-  --surface-glass:rgba(255,251,252,.9);
-  --ink:#362430;
-  --ink-2:#8D6F7D;
-  --ink-3:#BC9DAA;
+  /* High Conscious Life base (ivory / ink / sage) with a pink touch — prathy's default */
+  --bg:#F7F3EE;
+  --surface:#FFFFFF;
+  --surface-2:#F5E9EC;
+  --surface-glass:rgba(255,255,255,.92);
+  --ink:#2C2C2C;
+  --ink-2:#6F6468;
+  --ink-3:#A89CA1;
   --gold:#C96B8F;
-  --gold-soft:#F6D9E4;
-  --sage:#93A48B;
-  --sage-soft:#E7EDE1;
+  --gold-soft:#F4E2E9;
+  --sage:#7A9E7E;
+  --sage-soft:#E9EFE5;
   --rose:#B75D7E;
-  --rose-soft:#F4DCE5;
+  --rose-soft:#F2DEE6;
   --sky:#A08CB4;
-  --sky-soft:#EDE5F3;
-  --line:#F0DBE3;
-  --shadow-sm:0 1px 2px rgba(95,42,64,.05),0 2px 8px rgba(95,42,64,.05);
-  --shadow-md:0 2px 6px rgba(95,42,64,.06),0 10px 28px rgba(95,42,64,.09);
-  --shadow-lg:0 6px 18px rgba(95,42,64,.09),0 24px 56px rgba(95,42,64,.13);
-  --r-sm:10px; --r-md:16px; --r-lg:22px; --r-xl:28px;
-  --font-display:'Space Grotesk',sans-serif;
-  --font-body:'Manrope',sans-serif;
+  --sky-soft:#EDE7F2;
+  --line:#E5DCD2;
+  --shadow-sm:0 0 0 rgba(0,0,0,0);
+  --shadow-md:0 10px 28px rgba(44,44,44,.07);
+  --shadow-lg:0 18px 48px rgba(44,44,44,.12);
+  --r-sm:0; --r-md:0; --r-lg:0; --r-xl:0;
+  --font-display:'Fraunces',serif;
+  --font-body:'Inter',sans-serif;
   --font-ui:'Inter',sans-serif;
   --ease:cubic-bezier(.32,.72,.24,1);
   --dur:.35s;
 }
 [data-theme="dark"]{
-  --bg:#1E1318;
-  --surface:#281B21;
-  --surface-2:#34232C;
-  --surface-glass:rgba(40,27,33,.9);
-  --ink:#F3E4EA;
-  --ink-2:#B48FA0;
-  --ink-3:#7D5D6C;
-  --gold:#E08BAB;
-  --gold-soft:#412634;
-  --sage:#9DB393;
-  --sage-soft:#283122;
-  --rose:#D07E9D;
-  --rose-soft:#41252F;
-  --sky:#B7A2CD;
-  --sky-soft:#302439;
-  --line:#3D2933;
-  --shadow-sm:0 1px 2px rgba(0,0,0,.25),0 2px 8px rgba(0,0,0,.25);
-  --shadow-md:0 2px 6px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35);
-  --shadow-lg:0 6px 18px rgba(0,0,0,.35),0 24px 56px rgba(0,0,0,.45);
+  --bg:#211C1E;
+  --surface:#2A2426;
+  --surface-2:#352C2F;
+  --surface-glass:rgba(42,36,38,.92);
+  --ink:#F1EBED;
+  --ink-2:#B3A6AB;
+  --ink-3:#7C6F74;
+  --gold:#D98BA8;
+  --gold-soft:#3D2A33;
+  --sage:#93AC8E;
+  --sage-soft:#2A3226;
+  --rose:#C77893;
+  --rose-soft:#3B2830;
+  --sky:#B3A0C6;
+  --sky-soft:#322A3A;
+  --line:#3D3538;
+  --shadow-sm:0 0 0 rgba(0,0,0,0);
+  --shadow-md:0 10px 28px rgba(0,0,0,.35);
+  --shadow-lg:0 18px 48px rgba(0,0,0,.45);
 }
 
 /* ============================================================
@@ -83,7 +84,7 @@ body::before{
   opacity:.55;
   transition:opacity var(--dur) var(--ease);
 }
-button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;touch-action:manipulation;}
 input,textarea,select{font-family:var(--font-body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s;width:100%;}
 input:focus,textarea:focus,select:focus{border-color:var(--gold);box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 18%,transparent);}
 textarea{resize:vertical;min-height:76px;line-height:1.6;}
@@ -111,7 +112,10 @@ body.authed .app{display:flex;}
 .brand h1{font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:-.02em;display:flex;align-items:center;gap:9px;}
 .brand h1 .logo-dot{width:26px;height:26px;border-radius:9px;background:linear-gradient(135deg,var(--gold),var(--rose));display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;box-shadow:var(--shadow-sm);}
 .brand p{font-family:var(--font-ui);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-top:7px;padding-left:35px;}
-.nav-group{font-family:var(--font-ui);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);padding:11px 12px 5px;}
+.nav-group{font-family:var(--font-ui);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);padding:11px 12px 5px;display:flex;align-items:center;justify-content:space-between;}
+.group-add{display:none;width:18px;height:18px;border-radius:6px;background:var(--surface-2);color:var(--ink-2);font-size:13px;line-height:1;align-items:center;justify-content:center;transition:background .2s,color .2s;}
+.group-add:hover{background:var(--gold-soft);color:var(--gold);}
+body.custom-work .group-add{display:inline-flex;}
 .nav-btn{
   display:flex;align-items:center;gap:11px;width:100%;padding:8px 12px;border-radius:var(--r-sm);
   font-size:13.5px;font-weight:600;color:var(--ink-2);text-align:left;
@@ -361,43 +365,44 @@ body.no-fab .fab{display:none;}
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:99;}
 
 /* ============================================================
-   Auth screen + loading overlay
+   Auth screen + loading overlay — styled in the WEBSITE's palette
+   (ivory / ink / gold, Fraunces + Inter). Profile colours only
+   take over after login.
    ============================================================ */
 .auth-screen{
   position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;
-  padding:24px;background:var(--bg);
-}
-.auth-screen::before{
-  content:'';position:absolute;inset:0;pointer-events:none;
-  background:
-    radial-gradient(900px 500px at 85% -10%, var(--gold-soft), transparent 60%),
-    radial-gradient(700px 480px at -10% 110%, var(--sage-soft), transparent 60%);
-  opacity:.55;
+  padding:24px;background:#F7F3EE;
 }
 body.authed .auth-screen{display:none;}
-.auth-card{width:min(380px,94vw);padding:38px 34px 30px;position:relative;text-align:center;}
-.auth-logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,var(--gold),var(--rose));display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:20px;font-weight:700;font-family:var(--font-display);box-shadow:var(--shadow-md);margin-bottom:16px;}
-.auth-card h1{font-family:var(--font-display);font-size:23px;font-weight:600;letter-spacing:-.02em;margin-bottom:5px;}
-.auth-card .auth-sub{font-size:13px;color:var(--ink-2);margin-bottom:26px;}
+.auth-card{width:min(400px,94vw);background:#FFFFFF;border:1px solid rgba(44,44,44,.08);padding:52px 44px 44px;position:relative;text-align:center;}
+.auth-card::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:40px;height:2px;background:#B89355;}
+.auth-eyebrow{font-family:'Inter',sans-serif;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#B89355;margin-bottom:16px;}
+.auth-card h1{font-family:'Fraunces',serif;font-size:28px;font-weight:400;color:#2C2C2C;letter-spacing:0;margin-bottom:6px;}
+.auth-card h1 em{font-style:italic;color:#7A9E7E;}
+.auth-card .auth-sub{font-family:'Inter',sans-serif;font-size:13px;color:#7A7A7A;margin-bottom:30px;}
 .auth-card form{text-align:left;}
+.auth-card .field label{font-family:'Inter',sans-serif;color:#7A7A7A;}
+.auth-card input{background:#F7F3EE;border:1px solid rgba(44,44,44,.15);border-radius:0;color:#2C2C2C;font-family:'Inter',sans-serif;}
+.auth-card input:focus{border-color:#B89355;box-shadow:none;}
+.auth-card ::placeholder{color:#B9B2A6;}
 .auth-btn{
-  width:100%;padding:13px;border-radius:14px;margin-top:6px;
-  background:linear-gradient(135deg,var(--gold),var(--rose));color:#fff;
-  font-size:14px;font-weight:700;font-family:var(--font-body);
-  box-shadow:var(--shadow-md);transition:transform .15s var(--ease),box-shadow .2s,opacity .2s;
+  width:100%;padding:15px;margin-top:8px;border-radius:0;
+  background:#2C2C2C;color:#F7F3EE;
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;
+  transition:background .3s,transform .2s,opacity .2s;
 }
-.auth-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-lg);}
+.auth-btn:hover{background:#4A4A4A;transform:translateY(-1px);}
 .auth-btn:disabled{opacity:.6;cursor:wait;transform:none;}
-.auth-err{display:none;margin-top:14px;font-size:12.5px;color:var(--rose);text-align:center;line-height:1.5;}
+.auth-err{display:none;margin-top:14px;font-family:'Inter',sans-serif;font-size:12.5px;color:#B85C5C;text-align:center;line-height:1.5;}
 .auth-err.show{display:block;}
 .load-screen{
   position:fixed;inset:0;z-index:85;display:none;align-items:center;justify-content:center;flex-direction:column;gap:18px;
-  background:var(--bg);
+  background:#F7F3EE;
 }
 .load-screen.show{display:flex;}
-.spinner{width:34px;height:34px;border-radius:50%;border:3px solid var(--surface-2);border-top-color:var(--gold);animation:spin .8s linear infinite;}
+.spinner{width:34px;height:34px;border-radius:50%;border:3px solid #EDE8E0;border-top-color:#B89355;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.load-screen p{font-family:var(--font-ui);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);}
+.load-screen p{font-family:'Inter',sans-serif;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#7A7A7A;}
 
 /* Admin */
 .admin-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;}
@@ -420,15 +425,32 @@ body.authed .auth-screen{display:none;}
   .hydration-wrap{grid-template-columns:1fr;}
 }
 @media(max-width:760px){
-  .sidebar{transform:translateX(-100%);}
-  .sidebar.open{transform:none;box-shadow:var(--shadow-lg);background:var(--surface);}
+  /* Solid drawer on mobile: no backdrop-filter (buggy with fixed+transform
+     on iOS Safari) and explicit translateX values for the slide */
+  .sidebar{transform:translateX(-100%);background:var(--surface);backdrop-filter:none;-webkit-backdrop-filter:none;}
+  .sidebar.open{transform:translateX(0);box-shadow:var(--shadow-lg);}
   .scrim.show{display:block;}
-  body.authed .menu-btn{display:inline-flex;background:var(--surface-glass);backdrop-filter:blur(12px);}
+  body.authed .menu-btn{display:inline-flex;background:var(--surface);}
   .main{margin-left:0;padding:70px 18px 120px;}
   .grid-3,.grid-2,.field-row{grid-template-columns:1fr;}
   .view-head h2{font-size:25px;}
   .quote-card{padding:22px;}
+  /* 16px inputs stop iOS Safari from auto-zooming on focus */
+  input,textarea,select{font-size:16px;}
+  .builder-row{flex-wrap:wrap;}
+  .builder-row input[type="time"],.builder-row .b-time-text{width:100%;}
+  .hydration-wrap{grid-template-columns:1fr;}
 }
+
+/* ============================================================
+   HCL skin — square geometry & serif headings, matching the site
+   ============================================================ */
+.brand h1 .logo-dot,.icon-btn,.check,.seg,.seg button,.stepper button,.goal-icon,.tag,.toast,.fab,.group-add,.edit-toggle,.builder-actions button,.kb-move button{border-radius:0;}
+.view-head h2,.greeting,.brand h1,.card-title,.b3-card h3,.focus-card h3,.quote-card blockquote,.hydro-pct,.stepper .stp-val{font-weight:500;}
+.view-head h2{letter-spacing:0;}
+.greeting{letter-spacing:-.01em;}
+.card{border-color:rgba(44,44,44,.08);}
+[data-theme="dark"] .card{border-color:var(--line);}
 </style>
 <style id="profileTheme"></style>
 </head>
@@ -441,9 +463,9 @@ body.authed .auth-screen{display:none;}
 
 <!-- ============ AUTH ============ -->
 <div class="auth-screen" id="authScreen">
-  <div class="card auth-card">
-    <span class="auth-logo">✦</span>
-    <h1>Welcome back</h1>
+  <div class="auth-card">
+    <p class="auth-eyebrow">High Conscious Life</p>
+    <h1>Welcome <em>back</em></h1>
     <p class="auth-sub">Sign in to open your OS</p>
     <form id="loginForm">
       <div class="field"><label for="loginName">Name</label><input id="loginName" placeholder="your name" autocomplete="username" autocapitalize="none" /></div>
@@ -469,7 +491,7 @@ body.authed .auth-screen{display:none;}
   </div>
   <div class="nav-group">Day</div>
   <nav id="navDay"></nav>
-  <div class="nav-group" id="workGroupLabel">Work</div>
+  <div class="nav-group" id="workGroupLabel"><span>Work</span><button class="group-add" id="addWorkTabBtn" title="Add a work tab" aria-label="Add a work tab">+</button></div>
   <nav id="navWork"></nav>
   <div class="nav-group">Reflect</div>
   <nav id="navReflect"></nav>
@@ -875,6 +897,8 @@ const PROFILES={
     palette:null,
     sections:['home','ritual','blocks','big3','water','gym','trading','veylara','hcl','room','nightritual','night','weekly','vision','admin'],
     editable:false,
+    customWork:true,
+    seedWork:[],
     focusCards:[
       {emoji:'💰',title:'Income',desc:'Trading study, client invoices and one task that earns today.',accent:'var(--gold)',go:'trading'},
       {emoji:'🚀',title:'Veylara',desc:'Templates, client work, websites and outreach that move the agency.',accent:'var(--sky)',go:'veylara'},
@@ -904,30 +928,33 @@ const PROFILES={
     name:'Hariny', logo:'H', brand:'Hariny OS', tag:'Plan · Focus · Grow',
     title:'Hariny OS',
     palette:{
+      /* Same HCL ivory base as the site — accents shift to purple */
       light:{
-        'bg':'#F6F2FB','surface':'#FDFBFF','surface-2':'#EFE7F8','surface-glass':'rgba(253,251,255,.9)',
-        'ink':'#31263F','ink-2':'#7E6F95','ink-3':'#AC9CC6',
-        'gold':'#8E6BC9','gold-soft':'#E9DFF7','sage':'#93A48B','sage-soft':'#E7EDE1',
-        'rose':'#7350A8','rose-soft':'#E4D9F3','sky':'#9B8CCB','sky-soft':'#ECE6F7','line':'#E7DDF3',
-        'shadow-sm':'0 1px 2px rgba(76,42,95,.05),0 2px 8px rgba(76,42,95,.05)',
-        'shadow-md':'0 2px 6px rgba(76,42,95,.06),0 10px 28px rgba(76,42,95,.09)',
-        'shadow-lg':'0 6px 18px rgba(76,42,95,.09),0 24px 56px rgba(76,42,95,.13)'
+        'bg':'#F7F3EE','surface':'#FFFFFF','surface-2':'#EFE9F5','surface-glass':'rgba(255,255,255,.92)',
+        'ink':'#2C2C2C','ink-2':'#6E6575','ink-3':'#A79DB2',
+        'gold':'#8E6BC9','gold-soft':'#EBE2F6','sage':'#7A9E7E','sage-soft':'#E9EFE5',
+        'rose':'#7350A8','rose-soft':'#E5DBF1','sky':'#9B8CCB','sky-soft':'#ECE7F5','line':'#E3DCE0',
+        'shadow-sm':'0 0 0 rgba(0,0,0,0)',
+        'shadow-md':'0 10px 28px rgba(44,44,44,.07)',
+        'shadow-lg':'0 18px 48px rgba(44,44,44,.12)'
       },
       dark:{
-        'bg':'#191221','surface':'#221930','surface-2':'#2D2142','surface-glass':'rgba(34,25,48,.9)',
-        'ink':'#EFE8F8','ink-2':'#AC94C8','ink-3':'#6F5C8B',
-        'gold':'#AF8FE3','gold-soft':'#372550','sage':'#9DB393','sage-soft':'#283122',
-        'rose':'#9F7ED6','rose-soft':'#35264E','sky':'#AB9DDB','sky-soft':'#2C2347','line':'#3A2B52',
-        'shadow-sm':'0 1px 2px rgba(0,0,0,.25),0 2px 8px rgba(0,0,0,.25)',
-        'shadow-md':'0 2px 6px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35)',
-        'shadow-lg':'0 6px 18px rgba(0,0,0,.35),0 24px 56px rgba(0,0,0,.45)'
+        'bg':'#1D1924','surface':'#262031','surface-2':'#2F2840','surface-glass':'rgba(38,32,49,.92)',
+        'ink':'#EFEAF6','ink-2':'#AFA1C6','ink-3':'#77688F',
+        'gold':'#AF8FE3','gold-soft':'#342647','sage':'#93AC8E','sage-soft':'#2A3226',
+        'rose':'#9F7ED6','rose-soft':'#33264A','sky':'#AB9DDB','sky-soft':'#2C2443','line':'#382F4C',
+        'shadow-sm':'0 0 0 rgba(0,0,0,0)',
+        'shadow-md':'0 10px 28px rgba(0,0,0,.35)',
+        'shadow-lg':'0 18px 48px rgba(0,0,0,.45)'
       }
     },
-    sections:['home','ritual','blocks','big3','water','gym','trading','room','nightritual','night','weekly','vision','admin'],
+    sections:['home','ritual','blocks','big3','water','gym','room','nightritual','night','weekly','vision','admin'],
     editable:true,
+    customWork:true,
+    seedWork:['Bank of America'],
     focusCards:[
-      {emoji:'💰',title:'Income',desc:'Study, invoices and one task that earns today.',accent:'var(--gold)',go:'trading'},
-      {emoji:'🗂️',title:'Work',desc:'Your protected deep-work blocks for the day.',accent:'var(--sky)',go:'blocks'},
+      {emoji:'💼',title:'Work',desc:'Your board and notes for the workday.',accent:'var(--sky)',go:'@work'},
+      {emoji:'💰',title:'Income',desc:'One task today that earns or saves money.',accent:'var(--gold)',go:'big3'},
       {emoji:'🌱',title:'Personal Growth',desc:'The goals everything else serves — read them daily.',accent:'var(--sage)',go:'vision'}
     ],
     b3:[
@@ -981,7 +1008,8 @@ const defaults=()=>({
   weekly:{wins:'',mistakes:'',habits:''},
   vision:{income:'',fitness:'',business:'',youtube:'',instagram:'',workshop:''},
   history:[],
-  defs:P&&P.editable?exampleDefs():undefined
+  defs:P&&P.editable?exampleDefs():undefined,
+  workTabs:P&&P.customWork?(P.seedWork||[]).map(n=>({id:newId(),name:n,focus:'',board:{todo:[],doing:[],done:[]},notes:''})):undefined
 });
 
 /* Storage wrapper (localStorage or in-memory fallback) */
@@ -996,6 +1024,10 @@ function mergeDefaults(){
   for(const k in base){ if(base[k]!==undefined&&S[k]===undefined) S[k]=base[k]; }
   if(!S.daily.nightRitual) S.daily.nightRitual={};
   if(P.editable&&!S.defs) S.defs=exampleDefs();
+  if(P.customWork){
+    if(!Array.isArray(S.workTabs)) S.workTabs=(P.seedWork||[]).map(n=>({id:newId(),name:n,focus:'',board:{todo:[],doing:[],done:[]},notes:''}));
+    S.workTabs.forEach(t=>{ if(!t.board)t.board={todo:[],doing:[],done:[]}; ['todo','doing','done'].forEach(k=>{if(!Array.isArray(t.board[k]))t.board[k]=[];}); });
+  }
 }
 function rollover(){
   if(S.date!==todayStr()){
@@ -1130,16 +1162,22 @@ const NAV_ALL=[
   {id:'admin',label:'Admin',group:'navAccount',icon:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>'}
 ];
 let NAV=[];
+const WORK_ICON='<rect x="3" y="7" width="18" height="13" rx="3"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>';
 function buildNav(){
   NAV=NAV_ALL.filter(n=>P.sections.includes(n.id));
+  if(P.customWork){
+    const items=(S.workTabs||[]).map(t=>({id:'wt-'+t.id,label:t.name,group:'navWork',icon:WORK_ICON}));
+    const idx=NAV.findIndex(n=>n.group==='navReflect');
+    NAV.splice(idx<0?NAV.length:idx,0,...items);
+  }
   ['navDay','navWork','navReflect','navAccount'].forEach(g=>{$('#'+g).innerHTML='';});
   NAV.forEach(n=>{
-    const b=el('button','nav-btn',`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${n.icon}</svg><span>${n.label}</span>`);
+    const b=el('button','nav-btn',`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${n.icon}</svg><span>${esc(n.label)}</span>`);
     b.dataset.view=n.id;
     b.addEventListener('click',()=>go(n.id));
     $('#'+n.group).appendChild(b);
   });
-  if(!NAV.some(n=>n.group==='navWork'))$('#workGroupLabel').style.display='none';
+  $('#workGroupLabel').style.display=(NAV.some(n=>n.group==='navWork')||P.customWork)?'':'none';
 }
 function go(id){
   document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.dataset.view===id));
@@ -1153,7 +1191,10 @@ function go(id){
 
 /* Mobile sidebar */
 const sidebar=$('#sidebar'),scrim=$('#scrim');
-$('#menuBtn').addEventListener('click',()=>{sidebar.classList.add('open');scrim.classList.add('show');});
+$('#menuBtn').addEventListener('click',()=>{
+  const open=sidebar.classList.toggle('open');
+  scrim.classList.toggle('show',open);
+});
 function closeSidebar(){sidebar.classList.remove('open');scrim.classList.remove('show');}
 scrim.addEventListener('click',closeSidebar);
 
@@ -1171,6 +1212,7 @@ function applyProfile(){
   $('#waterStop2').setAttribute('stop-color',P.water[1]);
   document.body.classList.toggle('no-fab',!P.fab);
   document.body.classList.toggle('editable-rituals',P.editable);
+  document.body.classList.toggle('custom-work',!!P.customWork);
   NAV_ALL.filter(n=>!P.sections.includes(n.id)).forEach(n=>{
     const v=document.querySelector(`.view[data-view="${n.id}"]`); if(v)v.remove();
   });
@@ -1181,7 +1223,11 @@ function applyProfile(){
       `<span class="f-emoji">${c.emoji}</span><h3>${esc(c.title)}</h3><p>${esc(c.desc)}</p>
        <svg class="f-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg>`);
     card.style.setProperty('--accent',c.accent);
-    card.addEventListener('click',()=>go(c.go));
+    card.addEventListener('click',()=>{
+      let target=c.go;
+      if(target==='@work')target=(S.workTabs&&S.workTabs[0])?'wt-'+S.workTabs[0].id:'blocks';
+      go(target);
+    });
     fg.appendChild(card);
   });
 }
@@ -1374,15 +1420,15 @@ function initTrading(){
   paint();
 }
 
-/* ---------- Veylara Kanban ---------- */
+/* ---------- Kanban (shared board renderer) ---------- */
 const KB_COLS=[['todo','To do','var(--ink-3)'],['doing','Doing','var(--gold)'],['done','Done','var(--sage)']];
-function renderKanban(){
-  const wrap=$('#kanban');if(!wrap)return;
+function renderBoard(wrap,board,capTitle,capPh){
   wrap.innerHTML='';
+  const rerender=()=>renderBoard(wrap,board,capTitle,capPh);
   KB_COLS.forEach(([key,label,dot],ci)=>{
     const col=el('div','kb-col');
-    col.appendChild(el('div','kb-head',`<span class="kb-dot" style="background:${dot}"></span>${label}<span class="kb-count">${S.veylara[key].length}</span>`));
-    S.veylara[key].forEach((text,i)=>{
+    col.appendChild(el('div','kb-head',`<span class="kb-dot" style="background:${dot}"></span>${label}<span class="kb-count">${board[key].length}</span>`));
+    board[key].forEach((text,i)=>{
       const card=el('div','kb-card'+(key==='done'?' kb-done':''),
         `<span class="kb-text">${esc(text)}</span>
          <span class="kb-move">
@@ -1390,28 +1436,83 @@ function renderKanban(){
            ${ci<2?'<button title="Move right" aria-label="Move right">›</button>':''}
            <button title="Delete" aria-label="Delete">✕</button>
          </span>`);
+      const move=to=>{
+        const [item]=board[key].splice(i,1);
+        board[to].push(item);save();rerender();
+        if(to==='done'){toast('✅ Shipped: '+item);burst(40);}
+      };
       const btns=card.querySelectorAll('.kb-move button');
       let bi=0;
-      if(ci>0){btns[bi++].addEventListener('click',()=>moveKb(key,i,KB_COLS[ci-1][0]));}
-      if(ci<2){btns[bi++].addEventListener('click',()=>moveKb(key,i,KB_COLS[ci+1][0]));}
-      btns[bi].addEventListener('click',()=>{S.veylara[key].splice(i,1);save();renderKanban();});
+      if(ci>0){btns[bi++].addEventListener('click',()=>move(KB_COLS[ci-1][0]));}
+      if(ci<2){btns[bi++].addEventListener('click',()=>move(KB_COLS[ci+1][0]));}
+      btns[bi].addEventListener('click',()=>{board[key].splice(i,1);save();rerender();});
       col.appendChild(card);
     });
     const add=el('button','kb-add','+ Add task');
     add.addEventListener('click',()=>{
-      capture('New Veylara task','Templates, website, automation, portfolio, outreach…',t=>{
-        S.veylara[key].push(t);save();renderKanban();
-      });
+      capture(capTitle,capPh,t=>{board[key].push(t);save();rerender();});
     });
     col.appendChild(add);
     wrap.appendChild(col);
   });
 }
-function moveKb(from,i,to){
-  const [item]=S.veylara[from].splice(i,1);
-  S.veylara[to].push(item);save();renderKanban();
-  if(to==='done'){toast('✅ Shipped: '+item);burst(40);}
+function renderKanban(){
+  const wrap=$('#kanban');if(!wrap)return;
+  renderBoard(wrap,S.veylara,'New Veylara task','Templates, website, automation, portfolio, outreach…');
 }
+
+/* ---------- Custom work tabs (hariny) ---------- */
+function buildWorkViews(){
+  if(!P.customWork)return;
+  document.querySelectorAll('.view[data-view^="wt-"]').forEach(v=>v.remove());
+  const main=$('#main');
+  (S.workTabs||[]).forEach(tab=>{
+    const sec=el('section','view');
+    sec.dataset.view='wt-'+tab.id;
+    sec.innerHTML=`
+      <div class="view-head">
+        <div class="eyebrow">Work</div>
+        <h2 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;"><span class="wt-name">${esc(tab.name)}</span>
+          <button class="icon-btn wt-rename" style="width:30px;height:30px;border-radius:9px;" title="Rename this tab" aria-label="Rename this tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:13px;height:13px;"><path d="M17 3l4 4L8 20l-5 1 1-5z"/></svg></button>
+          <button class="icon-btn wt-delete" style="width:30px;height:30px;border-radius:9px;" title="Delete this tab" aria-label="Delete this tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:13px;height:13px;"><path d="M4 7h16M9 7V5h6v2M6 7l1 13h10l1-13"/></svg></button>
+        </h2>
+        <p class="sub">A board and notes for everything moving here.</p>
+      </div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title">🎯 Today's focus</div>
+        <input class="wt-focus" placeholder="The one thing that matters most here today" style="margin-top:6px;" />
+      </div>
+      <div class="kanban wt-board"></div>
+      <div class="card" style="margin-top:16px;"><div class="card-title">🗒️ Notes</div><textarea class="wt-notes" placeholder="Meetings, reminders, anything worth keeping…"></textarea></div>`;
+    main.appendChild(sec);
+    const focusInp=sec.querySelector('.wt-focus');
+    focusInp.value=tab.focus||'';
+    focusInp.addEventListener('input',()=>{tab.focus=focusInp.value;save();});
+    const notes=sec.querySelector('.wt-notes');
+    notes.value=tab.notes||'';
+    notes.addEventListener('input',()=>{tab.notes=notes.value;save();});
+    renderBoard(sec.querySelector('.wt-board'),tab.board,'New '+tab.name+' task','What\'s moving at '+tab.name+'?');
+    sec.querySelector('.wt-rename').addEventListener('click',()=>{
+      capture('Rename this tab','e.g. Bank of America',v=>{tab.name=v;save();rebuildWork('wt-'+tab.id);},tab.name);
+    });
+    sec.querySelector('.wt-delete').addEventListener('click',()=>{
+      capture('⚠️ Delete "'+tab.name+'"?','Type YES to delete this tab and its board',v=>{
+        if(v.trim().toUpperCase()!=='YES'){toast('Kept it.');return;}
+        S.workTabs=S.workTabs.filter(t=>t.id!==tab.id);
+        save();rebuildWork('home');toast('Tab deleted');
+      });
+    });
+  });
+}
+function rebuildWork(activeId){
+  buildWorkViews();buildNav();buildCommands();go(activeId||'home');
+}
+$('#addWorkTabBtn').addEventListener('click',()=>{
+  capture('New work tab','e.g. Bank of America, Freelance, Studies…',name=>{
+    const tab={id:newId(),name,focus:'',board:{todo:[],doing:[],done:[]},notes:''};
+    S.workTabs.push(tab);save();rebuildWork('wt-'+tab.id);toast('💼 '+name+' added');
+  });
+});
 
 /* ---------- Room Reset ---------- */
 function renderRoom(){
@@ -1576,7 +1677,7 @@ addEventListener('keydown',e=>{
   if(!document.body.classList.contains('authed'))return;
   const typing=/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();overlay.classList.contains('open')?closePal():openPal();return;}
-  if(e.key==='Escape')closePal();
+  if(e.key==='Escape'){closePal();closeSidebar();}
   if(typing||overlay.classList.contains('open'))return;
   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='d'){e.preventDefault();toggleTheme();return;}
   const n=parseInt(e.key);
@@ -1671,6 +1772,7 @@ async function enter(session){
   loadScreen.classList.add('show');
   await loadState();
   applyProfile();
+  buildWorkViews();
   buildNav();
   buildCommands();
   applyTheme();
