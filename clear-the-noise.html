@@ -346,6 +346,19 @@
       color: var(--ink-muted);
     }
 
+    .postponed-banner {
+      max-width: 620px;
+      margin: 0 auto 22px;
+      background: var(--gold-light);
+      border: 1px solid rgba(184,147,85,0.35);
+      color: var(--ink-soft);
+      font-size: 14px;
+      line-height: 1.7;
+      padding: 14px 20px;
+      border-radius: 2px;
+    }
+    .postponed-banner strong { color: var(--ink); }
+
     @media (max-width: 860px) {
       .page-hero { padding: 130px 28px 60px; }
       .event-strip { padding: 24px 28px; gap: 32px; }
@@ -578,6 +591,11 @@
        ============================================================ -->
   <script>
     window.CONFIG = {
+      // POSTPONED: set true to close booking and show "postponed / new date soon".
+      // Buttons become "Notify Me of the New Date" (saves to the waitlist). Takes
+      // precedence over soldOut. Set back to false when the new date is live.
+      postponed: true,
+
       // Set to true ONLY when the workshop is full. While false, the waitlist
       // is completely hidden and registration stays open.
       soldOut: false,
@@ -625,14 +643,15 @@
   <div class="page-hero fade-up">
     <div class="hero-aura" aria-hidden="true"></div>
     <p class="breadcrumb"><a href="/experiences">Experiences</a> &nbsp;/&nbsp; Experience 01</p>
-    <span class="hero-tag">Experience 01 · Now Open</span>
+    <span class="hero-tag" id="heroTag">Experience 01 · Now Open</span>
+    <p class="postponed-banner" id="postponedBanner" style="display:none"><strong>This workshop has been postponed.</strong> A new date will be announced soon — leave your details below and you'll be the first to know.</p>
     <h1>Clear<br /><em>The Noise</em></h1>
     <p>A 3-hour evening workshop to quiet your busy mind. Slow down, understand what's really been draining you, and walk out feeling calm, clear, and like yourself again.</p>
   </div>
 
   <!-- EVENT STRIP -->
   <div class="event-strip fade-up stagger">
-    <div class="event-item"><span class="e-label">Date</span><span class="e-val">July 18, 2026</span></div>
+    <div class="event-item"><span class="e-label">Date</span><span class="e-val" id="dateVal">July 18, 2026</span></div>
     <div class="event-item"><span class="e-label">Time</span><span class="e-val">5:00 PM – 8:00 PM</span></div>
     <div class="event-item"><span class="e-label">Duration</span><span class="e-val">3 Hours</span></div>
     <div class="event-item"><span class="e-label">Price · Early Bird</span><span class="e-val">₹799 <span class="old-price">₹1,999</span></span></div>
@@ -770,7 +789,7 @@
   <section class="register-section fade-up" id="register">
     <span class="section-label">Reserve Your Seat</span>
     <h2>One evening.<br />A real shift.</h2>
-    <p>July 18, 2026 · 5:00 PM – 8:00 PM · Snacks + all materials included</p>
+    <p id="regDetails">July 18, 2026 · 5:00 PM – 8:00 PM · Snacks + all materials included</p>
     <p class="register-venue">📍 Khee Coworks, Trichy — <a href="https://maps.app.goo.gl/n6J3d548MCUz4Y4c7?g_st=ic" target="_blank" rel="noopener">View on map</a></p>
     <div class="price-row">
       <span class="price-original">₹1,999</span>
@@ -842,8 +861,8 @@
   <div class="modal-overlay" id="waitlistModal" onclick="handleWlOverlay(event)">
     <div class="modal">
       <button class="modal-close" onclick="closeWaitlist()">✕</button>
-      <h3>Join the Waitlist</h3>
-      <p class="modal-sub">This round is full. Leave your details and you'll be the first to know when the next Clear The Noise opens.</p>
+      <h3 id="wlTitle">Join the Waitlist</h3>
+      <p class="modal-sub" id="wlSub">This round is full. Leave your details and you'll be the first to know when the next Clear The Noise opens.</p>
       <div class="form-group">
         <label>Your Name</label>
         <input type="text" id="wlName" placeholder="Priya Sharma" />
@@ -989,6 +1008,25 @@
             else { it.classList.add('open'); body.style.maxHeight = body.scrollHeight + 'px'; }
           });
         });
+      }
+
+      // POSTPONED takes precedence over everything: close booking, capture interest.
+      if (C.postponed === true) {
+        if (el('registerMagic')) el('registerMagic').style.display = 'none';
+        if (el('stickyMagic')) el('stickyMagic').style.display = 'none';
+        if (el('waitlistBtn')) { el('waitlistBtn').style.display = 'inline-block'; el('waitlistBtn').textContent = 'Notify Me of the New Date'; }
+        if (el('stickyWaitlist')) { el('stickyWaitlist').style.display = 'inline-block'; el('stickyWaitlist').textContent = 'Notify Me'; }
+        var pNote = document.querySelector('.register-note'); if (pNote) pNote.textContent = 'This workshop has been postponed. A new date will be announced soon.';
+        if (el('stickyText')) el('stickyText').innerHTML = '<strong>Clear The Noise</strong> &nbsp;·&nbsp; Postponed — new date soon';
+        if (el('heroTag')) el('heroTag').textContent = 'Experience 01 · Postponed';
+        if (el('dateVal')) el('dateVal').textContent = 'To be announced';
+        if (el('regDetails')) el('regDetails').textContent = 'New date announced soon · Khee Coworks, Trichy';
+        if (el('seatsVal')) el('seatsVal').textContent = 'Paused';
+        if (el('seatsLeft')) el('seatsLeft').style.display = 'none';
+        if (el('postponedBanner')) el('postponedBanner').style.display = 'block';
+        if (el('wlTitle')) el('wlTitle').textContent = 'Get notified of the new date';
+        if (el('wlSub')) el('wlSub').textContent = "This workshop has been postponed. Leave your details and you'll be the first to know the new date.";
+        return;
       }
 
       // Seats + registration / waitlist state (waitlist ONLY when soldOut === true)
