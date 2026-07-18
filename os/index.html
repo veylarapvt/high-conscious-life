@@ -892,6 +892,19 @@ const NIGHTR_P=[
   ['11:00','Sleep — dream big, wake fresh 😴']
 ];
 
+/* Seed defs: prathy starts from her existing fixed lists (same ids, so
+   today's checkmarks survive the switch to editable); hariny from a
+   fresh template */
+function prathySeedDefs(){
+  const pad=t=>{const p=String(t).split(':');return p.length===2?p[0].padStart(2,'0')+':'+p[1]:t;};
+  return {
+    ritual:RITUAL_P.map(([time,label],i)=>({id:i,time:pad(time),label})),
+    night:NIGHTR_P.map(([time,label],i)=>({id:i,time:pad(time),label})),
+    blocks:BLOCKS_P.map(b=>({id:b.id,time:b.time,title:b.title,note:b.note,tags:b.tags}))
+  };
+}
+function harinySeedDefs(){return exampleDefs();}
+
 /* ---------- Profiles ---------- */
 const PROFILES={
   prathy:{
@@ -899,7 +912,8 @@ const PROFILES={
     title:'Pradhishta OS — Build. Learn. Inspire.',
     palette:null,
     sections:['home','ritual','blocks','big3','water','gym','trading','veylara','hcl','room','nightritual','night','weekly','vision','admin'],
-    editable:false,
+    editable:true,
+    seedDefs:prathySeedDefs,
     customWork:true,
     seedWork:[],
     focusCards:[
@@ -953,6 +967,7 @@ const PROFILES={
     },
     sections:['home','ritual','blocks','big3','water','gym','room','nightritual','night','weekly','vision','admin'],
     editable:true,
+    seedDefs:harinySeedDefs,
     customWork:true,
     seedWork:['Bank of America'],
     focusCards:[
@@ -1011,7 +1026,7 @@ const defaults=()=>({
   weekly:{wins:'',mistakes:'',habits:''},
   vision:{income:'',fitness:'',business:'',youtube:'',instagram:'',workshop:''},
   history:[],
-  defs:P&&P.editable?exampleDefs():undefined,
+  defs:P&&P.editable?(P.seedDefs?P.seedDefs():exampleDefs()):undefined,
   workTabs:P&&P.customWork?(P.seedWork||[]).map(n=>({id:newId(),name:n,focus:'',board:{todo:[],doing:[],done:[]},notes:''})):undefined
 });
 
@@ -1026,7 +1041,7 @@ function mergeDefaults(){
   const base=defaults();
   for(const k in base){ if(base[k]!==undefined&&S[k]===undefined) S[k]=base[k]; }
   if(!S.daily.nightRitual) S.daily.nightRitual={};
-  if(P.editable&&!S.defs) S.defs=exampleDefs();
+  if(P.editable&&!S.defs) S.defs=P.seedDefs?P.seedDefs():exampleDefs();
   if(P.customWork){
     if(!Array.isArray(S.workTabs)) S.workTabs=(P.seedWork||[]).map(n=>({id:newId(),name:n,focus:'',board:{todo:[],doing:[],done:[]},notes:''}));
     S.workTabs.forEach(t=>{ if(!t.board)t.board={todo:[],doing:[],done:[]}; ['todo','doing','done'].forEach(k=>{if(!Array.isArray(t.board[k]))t.board[k]=[];}); });
@@ -1125,7 +1140,7 @@ function nightItems(){
 }
 function blockItems(){
   if(!P.editable) return BLOCKS_P.map(b=>({key:b.id,time:b.time,title:b.title,note:b.note,tags:b.tags}));
-  return (S.defs.blocks||[]).map(d=>({key:d.id,time:d.time,title:d.title,note:d.note,tags:[]}));
+  return (S.defs.blocks||[]).map(d=>({key:d.id,time:d.time,title:d.title,note:d.note,tags:d.tags||[]}));
 }
 
 /* ---------- Day completion ---------- */
@@ -1632,6 +1647,27 @@ function tick(){
    On Veylara or a work tab it adds a task to that board's To do;
    anywhere else it captures to the HCL brain dump. */
 $('#fab').addEventListener('click',()=>{
+  if(P.editable&&currentView==='blocks'){
+    capture('➕ New time block','e.g. Movie night 🎬',title=>{
+      S.defs.blocks.push({id:newId(),time:'',title,note:''});
+      save();renderTimeline('blocks');toast('Added — tap ✎ to set its time');
+    });
+    return;
+  }
+  if(P.editable&&currentView==='ritual'){
+    capture('➕ New ritual step','e.g. Evening walk',label=>{
+      S.defs.ritual.push({id:newId(),time:'',label});
+      save();renderTimeline('ritual');toast('Added — tap ✎ to set its time');
+    });
+    return;
+  }
+  if(P.editable&&currentView==='nightritual'){
+    capture('➕ New night ritual step','e.g. Read 10 pages',label=>{
+      S.defs.night.push({id:newId(),time:'',label});
+      save();renderTimeline('night');toast('Added — tap ✎ to set its time');
+    });
+    return;
+  }
   if(currentView==='veylara'){
     capture('➕ New Veylara task','Goes to the To do column…',t=>{
       S.veylara.todo.push(t);save();renderKanban();toast('Added to Veylara · To do');
