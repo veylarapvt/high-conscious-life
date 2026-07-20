@@ -416,6 +416,34 @@ body.authed .auth-screen{display:none;}
 .admin-btn.danger{color:var(--rose);border-color:var(--rose-soft);}
 .sync-meta{font-size:12.5px;color:var(--ink-2);}
 
+/* Calendar */
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.cal-title{font-family:var(--font-display);font-size:18px;font-weight:500;}
+.cal-nav{display:flex;gap:6px;}
+.cal-nav button{width:32px;height:32px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);font-size:15px;display:inline-flex;align-items:center;justify-content:center;transition:color .2s,border-color .2s;}
+.cal-nav button:hover{color:var(--gold);border-color:var(--gold);}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+.cal-dow{font-family:var(--font-ui);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);text-align:center;padding:6px 0;}
+.cal-cell{aspect-ratio:1;border:1px solid var(--line);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-family:var(--font-ui);font-size:12.5px;color:var(--ink-2);transition:border-color .2s,transform .15s;position:relative;}
+.cal-cell.empty{border:none;background:transparent;}
+.cal-cell.has-data{cursor:pointer;font-weight:600;color:var(--ink);}
+.cal-cell.has-data:hover{border-color:var(--gold);transform:translateY(-1px);}
+.cal-cell.today{box-shadow:inset 0 0 0 1.5px var(--gold);}
+.cal-cell.sel{background:var(--gold-soft);}
+.cal-pct{width:70%;height:3px;background:var(--surface-2);overflow:hidden;}
+.cal-pct span{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--rose));}
+.cal-cell .cal-full{position:absolute;top:3px;right:5px;font-size:9px;color:var(--sage);}
+.cal-detail h3{font-family:var(--font-display);font-size:17px;font-weight:500;margin-bottom:4px;}
+.cal-detail .cd-sub{font-size:12.5px;color:var(--ink-2);margin-bottom:16px;}
+.cd-group{margin-bottom:16px;}
+.cd-group h4{font-family:var(--font-ui);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px;}
+.cd-row{display:flex;gap:10px;align-items:baseline;padding:5px 0;border-bottom:1px dashed var(--line);font-size:13.5px;}
+.cd-row:last-child{border-bottom:none;}
+.cd-row .cd-time{font-family:var(--font-ui);font-size:11px;color:var(--gold);width:52px;flex-shrink:0;}
+.cd-row.done .cd-text{text-decoration:line-through;color:var(--ink-3);}
+.cd-row .cd-mark{width:16px;flex-shrink:0;color:var(--sage);}
+.cd-note{font-size:13px;color:var(--ink-2);white-space:pre-wrap;line-height:1.7;}
+
 /* Mobile */
 .menu-btn{display:none;position:fixed;top:16px;left:16px;z-index:60;}
 .scrim{display:none;position:fixed;inset:0;background:rgba(30,25,18,.3);z-index:35;}
@@ -751,6 +779,19 @@ body.authed .auth-screen{display:none;}
     </div>
   </section>
 
+  <!-- CALENDAR -->
+  <section class="view" data-view="calendar">
+    <div class="view-head"><div class="eyebrow">Section 14</div><h2>Calendar</h2><p class="sub">Every day leaves a trace. Tap a date to revisit it.</p></div>
+    <div class="card">
+      <div class="cal-head">
+        <span class="cal-title" id="calTitle"></span>
+        <div class="cal-nav"><button id="calPrev" aria-label="Previous month">‹</button><button id="calNext" aria-label="Next month">›</button></div>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+    <div class="card cal-detail" id="calDetail" style="display:none;margin-top:16px;"></div>
+  </section>
+
   <!-- ADMIN -->
   <section class="view" data-view="admin">
     <div class="view-head"><div class="eyebrow">Account</div><h2>Admin</h2><p class="sub">Your account, your sync, your data.</p></div>
@@ -911,7 +952,7 @@ const PROFILES={
     name:'Pradhishta', logo:'P', brand:'Pradhishta OS', tag:'Build · Learn · Inspire',
     title:'Pradhishta OS — Build. Learn. Inspire.',
     palette:null,
-    sections:['home','ritual','blocks','big3','water','gym','trading','veylara','hcl','room','nightritual','night','weekly','vision','admin'],
+    sections:['home','ritual','blocks','big3','water','gym','trading','veylara','hcl','room','nightritual','night','weekly','calendar','vision','admin'],
     editable:true,
     seedDefs:prathySeedDefs,
     customWork:true,
@@ -965,7 +1006,7 @@ const PROFILES={
         'shadow-lg':'0 18px 48px rgba(0,0,0,.45)'
       }
     },
-    sections:['home','ritual','blocks','big3','water','gym','room','nightritual','night','weekly','vision','admin'],
+    sections:['home','ritual','blocks','big3','water','gym','room','nightritual','night','weekly','calendar','vision','admin'],
     editable:true,
     seedDefs:harinySeedDefs,
     customWork:true,
@@ -1026,6 +1067,7 @@ const defaults=()=>({
   weekly:{wins:'',mistakes:'',habits:''},
   vision:{income:'',fitness:'',business:'',youtube:'',instagram:'',workshop:''},
   history:[],
+  archive:{},
   defs:P&&P.editable?(P.seedDefs?P.seedDefs():exampleDefs()):undefined,
   workTabs:P&&P.customWork?(P.seedWork||[]).map(n=>({id:newId(),name:n,focus:'',board:{todo:[],doing:[],done:[]},notes:''})):undefined
 });
@@ -1049,11 +1091,32 @@ function mergeDefaults(){
 }
 function rollover(){
   if(S.date!==todayStr()){
-    S.history.push({date:S.date,pct:dayPct()});
+    const pct=dayPct();
+    if(!S.archive)S.archive={};
+    S.archive[S.date]={pct,sections:dailySnapshot()};
+    const keys=Object.keys(S.archive).sort();
+    while(keys.length>90){delete S.archive[keys.shift()];}
+    S.history.push({date:S.date,pct});
     S.history=S.history.slice(-14);
     S.date=todayStr();
     S.daily=freshDaily();
   }
+}
+/* Full snapshot of the current day, self-contained (labels resolved now,
+   so later edits to ritual/block definitions can't corrupt old logs) */
+function dailySnapshot(){
+  const d=S.daily;
+  return {
+    ritual:ritualItems().map(it=>({time:it.time,label:it.label,done:!!d.ritual[it.key]})),
+    blocks:blockItems().map(it=>({time:it.time,label:it.title,done:!!d.blocks[it.key]})),
+    nightR:nightItems().map(it=>({time:it.time,label:it.label,done:!!d.nightRitual[it.key]})),
+    room:ROOM.map((label,i)=>({label,done:!!d.room[i]})),
+    big3:d.big3.map(x=>({text:x.text,done:x.done})),
+    water:d.water,
+    gym:{...d.gym},
+    trading:{...d.trading},
+    night:{...d.night}
+  };
 }
 
 /* ---------- Sync engine ---------- */
@@ -1176,6 +1239,7 @@ const NAV_ALL=[
   {id:'nightritual',label:'Night Ritual',group:'navReflect',icon:'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/><path d="M17 4l.7 1.8L19.5 6.5l-1.8.7L17 9l-.7-1.8-1.8-.7 1.8-.7z"/>'},
   {id:'night',label:'Night Reflection',group:'navReflect',icon:'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>'},
   {id:'weekly',label:'Weekly Review',group:'navReflect',icon:'<rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4M3 9h18"/>'},
+  {id:'calendar',label:'Calendar',group:'navReflect',icon:'<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 9h18M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01"/>'},
   {id:'vision',label:'Vision',group:'navReflect',icon:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/>'},
   {id:'admin',label:'Admin',group:'navAccount',icon:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>'}
 ];
@@ -1204,6 +1268,7 @@ function go(id){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===id));
   if(id==='home')renderGlance();
   if(id==='weekly')renderChart();
+  if(id==='calendar')renderCalendar();
   if(id==='admin')renderSyncMeta();
   window.scrollTo({top:0});
   closeSidebar();
@@ -1593,6 +1658,69 @@ function initVision(){
     row.querySelector('input').addEventListener('input',e=>{S.vision[k]=e.target.value;save();});
     wrap.appendChild(row);
   });
+}
+
+/* ---------- Calendar ---------- */
+let calMonth=null,calSel=null;
+function calYmd(y,m,day){const z=x=>String(x).padStart(2,'0');return y+'-'+z(m+1)+'-'+z(day);}
+function calFmt(ds){return new Date(ds+'T00:00').toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});}
+function renderCalendar(){
+  if(!calMonth){const p=S.date.split('-').map(Number);calMonth=new Date(p[0],p[1]-1,1);}
+  $('#calTitle').textContent=calMonth.toLocaleDateString('en-IN',{month:'long',year:'numeric'});
+  const grid=$('#calGrid');grid.innerHTML='';
+  ['S','M','T','W','T','F','S'].forEach(d=>grid.appendChild(el('div','cal-dow',d)));
+  const y=calMonth.getFullYear(),m=calMonth.getMonth();
+  const firstDow=new Date(y,m,1).getDay();
+  const days=new Date(y,m+1,0).getDate();
+  for(let i=0;i<firstDow;i++)grid.appendChild(el('div','cal-cell empty'));
+  for(let day=1;day<=days;day++){
+    const ds=calYmd(y,m,day);
+    const isToday=ds===S.date;
+    const arch=S.archive&&S.archive[ds];
+    const hist=(S.history||[]).find(h=>h.date===ds);
+    const pct=isToday?dayPct():(arch?arch.pct:(hist?hist.pct:null));
+    const has=isToday||!!arch||!!hist;
+    const cell=el('div','cal-cell'+(has?' has-data':'')+(isToday?' today':'')+(calSel===ds?' sel':''));
+    cell.innerHTML=`<span>${day}</span>`
+      +(pct!==null?`<span class="cal-pct"><span style="width:${pct}%"></span></span>`:'')
+      +(pct===100?'<span class="cal-full">●</span>':'');
+    if(has)cell.addEventListener('click',()=>{calSel=ds;renderCalendar();renderCalDetail(ds);});
+    grid.appendChild(cell);
+  }
+}
+$('#calPrev').addEventListener('click',()=>{if(calMonth){calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()-1,1);renderCalendar();}});
+$('#calNext').addEventListener('click',()=>{if(calMonth){calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()+1,1);renderCalendar();}});
+function renderCalDetail(ds){
+  const box=$('#calDetail');box.style.display='block';
+  const isToday=ds===S.date;
+  const snap=isToday?{pct:dayPct(),sections:dailySnapshot()}:(S.archive&&S.archive[ds]);
+  if(!snap){
+    const hist=(S.history||[]).find(h=>h.date===ds);
+    box.innerHTML=`<h3>${calFmt(ds)}</h3><p class="cd-sub">Day ${hist?hist.pct:0}% complete. No detailed log — full daily logs began when the calendar shipped; older days kept only their score.</p>`;
+    return;
+  }
+  const s=snap.sections;
+  const list=(items,withTime)=>items.map(it=>`<div class="cd-row${it.done?' done':''}"><span class="cd-mark">${it.done?'✓':'·'}</span>${withTime?`<span class="cd-time">${esc(it.time||'')}</span>`:''}<span class="cd-text">${esc(it.label!==undefined?it.label:it.text)}</span></div>`).join('');
+  let html=`<h3>${calFmt(ds)}</h3><p class="cd-sub">Day ${snap.pct}% complete${isToday?' — today, still in motion':''}</p>`;
+  if(s.ritual&&s.ritual.length)html+=`<div class="cd-group"><h4>Morning ritual</h4>${list(s.ritual,true)}</div>`;
+  if(s.blocks&&s.blocks.length)html+=`<div class="cd-group"><h4>Time blocks</h4>${list(s.blocks,true)}</div>`;
+  const b3=(s.big3||[]).filter(x=>x.text||x.done);
+  if(b3.length)html+=`<div class="cd-group"><h4>Big three</h4>${list(b3,false)}</div>`;
+  html+=`<div class="cd-group"><h4>Hydration</h4><p class="cd-note">${s.water||0} / 8 glasses</p></div>`;
+  if(s.gym&&(s.gym.done||s.gym.duration))html+=`<div class="cd-group"><h4>Gym</h4><p class="cd-note">${esc(s.gym.done||'')}${s.gym.duration?' · '+s.gym.duration+' min':''}${s.gym.split?' · '+esc(s.gym.split):''}${s.gym.notes?'\n'+esc(s.gym.notes):''}</p></div>`;
+  if(s.trading&&(s.trading.h||s.trading.m||s.trading.concepts))html+=`<div class="cd-group"><h4>Trading</h4><p class="cd-note">${s.trading.h||0}h ${s.trading.m||0}m${s.trading.concepts?'\n'+esc(s.trading.concepts):''}</p></div>`;
+  if(s.room&&s.room.some(r=>r.done))html+=`<div class="cd-group"><h4>Room reset</h4>${list(s.room,false)}</div>`;
+  if(s.nightR&&s.nightR.length)html+=`<div class="cd-group"><h4>Night ritual</h4>${list(s.nightR,true)}</div>`;
+  const n=s.night||{};
+  const parts=[];
+  if(n.wins)parts.push('Wins: '+n.wins);
+  if(n.gratitude)parts.push('Gratitude: '+n.gratitude);
+  if(n.lessons)parts.push('Lessons: '+n.lessons);
+  if(n.tomorrow)parts.push('Tomorrow: '+n.tomorrow);
+  if(n.mood)parts.push('Mood: '+['😞','😕','🙂','😊','🤩'][(n.mood||3)-1]);
+  if(n.sleep)parts.push('Sleep: '+n.sleep);
+  if(parts.length)html+=`<div class="cd-group"><h4>Night reflection</h4><p class="cd-note">${esc(parts.join('\n'))}</p></div>`;
+  box.innerHTML=html;
 }
 
 /* ---------- Nav percentages ---------- */
