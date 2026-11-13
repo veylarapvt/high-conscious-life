@@ -960,7 +960,101 @@ body.no-italic .auth-card h1{font-family:'Inter',sans-serif;font-weight:500;}
 /* ---------- Supabase ---------- */
 const SUPA_URL='https://mewacoirynzkbvsqxlhh.supabase.co';
 const SUPA_KEY='sb_publishable_m-khzeZ6_Z3YeKL0JSkG5w_QslyGqeS';
-const sb=window.supabase.createClient(SUPA_URL,SUPA_KEY);
+const supa=window.supabase.createClient(SUPA_URL,SUPA_KEY);
+
+/* ---------- Neon (login + data for the profiles in NEON_USERS) ----------
+   A small adapter with the same shape as the Supabase client calls this
+   app makes, so the rest of the code talks to `sb` either way. The login
+   session is a cookie on the Neon auth host; data calls use a short-lived
+   token fetched with it. */
+const NEON_AUTH='https://ep-flat-night-aoqu1miw.neonauth.c-2.ap-southeast-1.aws.neon.tech/neondb/auth';
+const NEON_REST='https://ep-flat-night-aoqu1miw.apirest.c-2.ap-southeast-1.aws.neon.tech/neondb/rest/v1';
+const NEON_USERS=['preetha'];
+const neon=(()=>{
+  const USER_KEY='os-neon-user';
+  let jwt=null,jwtExp=0,signInPw=null;
+  const authFetch=(path,opt={})=>fetch(NEON_AUTH+path,{credentials:'include',...opt,headers:{'Content-Type':'application/json',...(opt.headers||{})}});
+  const cached=()=>{try{return JSON.parse(localStorage.getItem(USER_KEY));}catch(e){return null;}};
+  const remember=u=>{try{u?localStorage.setItem(USER_KEY,JSON.stringify(u)):localStorage.removeItem(USER_KEY);}catch(e){}};
+  async function token(){
+    if(jwt&&Date.now()<jwtExp-60000)return jwt;
+    const r=await authFetch('/token');
+    if(!r.ok){jwt=null;return null;}
+    jwt=(await r.json()).token;
+    jwtExp=JSON.parse(atob(jwt.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))).exp*1000;
+    return jwt;
+  }
+  const authErr={message:'Not signed in'};
+  return {
+    auth:{
+      async getSession(){
+        let d;
+        try{
+          const r=await authFetch('/get-session');
+          d=r.ok?await r.json():null;
+        }catch(e){
+          /* offline: open from the device cache; sync resumes when back */
+          const u=cached();
+          return {data:{session:u?{user:u}:null}};
+        }
+        const u=d&&d.user?{id:d.user.id,email:d.user.email}:null;
+        remember(u);
+        return {data:{session:u?{user:u}:null}};
+      },
+      async signInWithPassword({email,password}){
+        let r,d;
+        try{
+          r=await authFetch('/sign-in/email',{method:'POST',body:JSON.stringify({email,password})});
+          d=await r.json();
+        }catch(e){return {data:{},error:{message:'Couldn\'t reach the server. Check your connection and try again.'}};}
+        if(!r.ok||!d||!d.user)return {data:{},error:{message:d&&d.code==='INVALID_EMAIL_OR_PASSWORD'?'Invalid login credentials':((d&&d.message)||'Sign-in failed')}};
+        jwt=null;
+        if(!(await token().catch(()=>null)))return {data:{},error:{message:'Signed in, but this browser blocked the login cookie. Allow cookies for this site (or try Chrome) and sign in again.'}};
+        const u={id:d.user.id,email:d.user.email};
+        remember(u);signInPw=password;
+        return {data:{session:{user:u}},error:null};
+      },
+      async signOut(){
+        try{await authFetch('/sign-out',{method:'POST',body:'{}'});}catch(e){}
+        jwt=null;signInPw=null;remember(null);
+        return {error:null};
+      },
+      async updateUser({password}){
+        /* Neon needs the current password; ask if this session was restored */
+        if(!signInPw)signInPw=await new Promise(res=>{
+          const inp=document.getElementById('capInput');
+          inp.type='password';
+          capture('Enter your current password','Current password',v=>{inp.type='text';res(v);});
+        });
+        try{
+          const r=await authFetch('/change-password',{method:'POST',body:JSON.stringify({currentPassword:signInPw,newPassword:password,revokeOtherSessions:false})});
+          if(!r.ok){const d=await r.json().catch(()=>null);signInPw=null;return {error:{message:(d&&d.message)||'try again'}};}
+        }catch(e){return {error:{message:'no connection'}};}
+        signInPw=password;
+        return {error:null};
+      }
+    },
+    from:table=>({
+      select:cols=>({eq:(col,val)=>({maybeSingle:async()=>{
+        const j=await token();
+        if(!j)return {data:null,error:authErr};
+        const r=await fetch(`${NEON_REST}/${table}?select=${cols}&${col}=eq.${encodeURIComponent(val)}`,{headers:{Authorization:'Bearer '+j}});
+        if(!r.ok)return {data:null,error:{message:'HTTP '+r.status}};
+        const rows=await r.json();
+        return {data:rows[0]||null,error:null};
+      }})}),
+      upsert:async row=>{
+        const j=await token();
+        if(!j)return {error:authErr};
+        const r=await fetch(`${NEON_REST}/${table}?on_conflict=user_id`,{method:'POST',
+          headers:{Authorization:'Bearer '+j,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},
+          body:JSON.stringify(row)});
+        return {error:r.ok?null:{message:'HTTP '+r.status}};
+      }
+    })
+  };
+})();
+let sb=supa;
 const EMAILS={prathy:'prathy@highconsciouslife.in',hariny:'hariny@highconsciouslife.in',preetha:'preetha@highconsciouslife.in'};
 
 /* ---------- Shared content ---------- */
@@ -2317,6 +2411,9 @@ loginForm.addEventListener('submit',async e=>{
   const email=name.includes('@')?name:EMAILS[name];
   if(!email){showLoginError('Hmm, that name isn\'t on this OS. Check the spelling and try again.');return;}
   if(!pw){showLoginError('Enter your password.');return;}
+  const useNeon=NEON_USERS.includes(email.split('@')[0]);
+  sb=useNeon?neon:supa;
+  storage.set('os-backend',useNeon?'neon':'supa');
   loginBtn.disabled=true;loginBtn.textContent='Signing in…';
   const {data,error}=await sb.auth.signInWithPassword({email,password:pw});
   loginBtn.disabled=false;loginBtn.textContent='Sign in';
@@ -2372,6 +2469,7 @@ async function enter(session){
 })();
 
 (async function boot(){
+  if(storage.get('os-backend')==='neon')sb=neon;
   try{
     const {data:{session}}=await sb.auth.getSession();
     if(session)enter(session);
