@@ -447,6 +447,44 @@ body.authed .auth-screen{display:none;}
 /* Mobile */
 .menu-btn{display:none;position:fixed;top:16px;left:16px;z-index:60;}
 .scrim{display:none;position:fixed;inset:0;background:rgba(30,25,18,.3);z-index:35;}
+/* Planner profile — to-do, habits, goals, affirmations */
+body.no-italic{--font-display:'Inter',sans-serif;}
+body.no-italic *{font-style:normal!important;}
+body.no-italic .auth-card h1{font-family:'Inter',sans-serif;font-weight:500;}
+.add-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;}
+.add-row input{flex:1 1 180px;min-width:0;}
+.add-row select{width:auto;flex:0 0 auto;}
+.add-row button{flex:0 0 auto;padding:10px 20px;border-radius:var(--r-sm);background:var(--gold);color:var(--surface);font-weight:600;font-size:13px;transition:opacity .2s;}
+.add-row button:hover{opacity:.88;}
+.td-meta{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.td-meta .bar{flex:1;}
+.td-item{--pc:var(--line);display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:8px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--pc);border-radius:var(--r-md);}
+.td-item.p1,.pri.p1{--pc:#C2564B;}
+.td-item.p2,.pri.p2{--pc:#B8862F;}
+.td-item.p3,.pri.p3{--pc:var(--sage);}
+.td-item.done{opacity:.62;}
+.td-text{flex:1;min-width:0;font-size:14px;font-weight:500;line-height:1.45;overflow-wrap:anywhere;}
+.done > .td-text{text-decoration:line-through;color:var(--ink-3);}
+.pri{font-family:var(--font-ui);font-size:10.5px;font-weight:600;padding:4px 10px;border-radius:99px;flex-shrink:0;color:var(--pc);background:color-mix(in srgb,var(--pc) 14%,transparent);}
+.x-btn{width:28px;height:28px;border-radius:8px;color:var(--ink-3);font-size:12px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;transition:background .15s,color .15s;}
+.x-btn:hover{background:var(--surface-2);color:var(--ink);}
+.empty-note{padding:22px;text-align:center;color:var(--ink-3);font-size:13px;line-height:1.6;border:1.5px dashed var(--line);border-radius:var(--r-md);}
+.hb-row{padding:16px 0;border-bottom:1px dashed var(--line);}
+.hb-row:last-child{border-bottom:none;padding-bottom:0;}
+.hb-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.hb-name{flex:1;min-width:0;font-weight:600;font-size:14px;overflow-wrap:anywhere;}
+.hb-streak{font-family:var(--font-ui);font-size:11.5px;color:var(--ink-2);flex-shrink:0;}
+.hb-days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+.hb-day{display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 0;border:1px solid var(--line);border-radius:var(--r-sm);font-family:var(--font-ui);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);transition:background .2s,border-color .2s,color .2s;}
+.hb-day b{font-size:13px;font-weight:600;color:var(--ink-2);letter-spacing:0;}
+.hb-day.today{box-shadow:inset 0 0 0 1.5px var(--gold);}
+.hb-day.on,.hb-day.on b{background:var(--sage);border-color:var(--sage);color:#fff;}
+.gl-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);}
+.aff-big{padding:40px 30px;text-align:center;background:linear-gradient(135deg,var(--surface),var(--surface-2));}
+.aff-big p{font-family:var(--font-display);font-size:clamp(20px,3.2vw,27px);font-weight:500;line-height:1.45;max-width:620px;margin:0 auto 22px;}
+.aff-big button{padding:9px 18px;border:1px solid var(--line);border-radius:99px;font-size:12.5px;font-weight:600;color:var(--ink-2);background:var(--surface);}
+.aff-big button:hover{border-color:var(--gold);color:var(--gold);}
+.cal-plan{width:5px;height:5px;border-radius:50%;background:var(--gold);}
 @media(max-width:960px){
   .grid-3{grid-template-columns:1fr 1fr;}
   .kanban{grid-template-columns:1fr;}
@@ -524,7 +562,7 @@ body.authed .auth-screen{display:none;}
   <nav id="navDay"></nav>
   <div class="nav-group" id="workGroupLabel"><span>Work</span><button class="group-add" id="addWorkTabBtn" title="Add a work tab" aria-label="Add a work tab">+</button></div>
   <nav id="navWork"></nav>
-  <div class="nav-group">Reflect</div>
+  <div class="nav-group" id="reflectLabel">Reflect</div>
   <nav id="navReflect"></nav>
   <div class="nav-group">Account</div>
   <nav id="navAccount"></nav>
@@ -547,7 +585,7 @@ body.authed .auth-screen{display:none;}
     <div class="date-line"><span id="dateLine"></span><span class="dot"></span><span id="dayProgress"></span></div>
     <div class="focus-label">Today's Focus</div>
     <div class="grid grid-3" id="focusGrid"></div>
-    <div class="focus-label">Today's Quote</div>
+    <div class="focus-label" id="quoteLabel">Today's Quote</div>
     <div class="card quote-card">
       <span class="quote-mark">“</span>
       <div><blockquote id="quoteText"></blockquote><cite id="quoteBy"></cite></div>
@@ -792,6 +830,53 @@ body.authed .auth-screen{display:none;}
     <div class="card cal-detail" id="calDetail" style="display:none;margin-top:16px;"></div>
   </section>
 
+  <!-- TO-DO (planner profile) -->
+  <section class="view" data-view="todo">
+    <div class="view-head"><div class="eyebrow">Today</div><h2>To-do List</h2><p class="sub">Everything for today, most important first. Anything unfinished moves to tomorrow.</p></div>
+    <div class="card">
+      <div class="add-row">
+        <input id="tdInput" placeholder="Add a task…" autocomplete="off" aria-label="New task" />
+        <select id="tdPri" aria-label="Priority"><option value="1">High priority</option><option value="2" selected>Medium</option><option value="3">Low</option></select>
+        <button id="tdAdd">Add</button>
+      </div>
+      <div class="td-meta"><div class="bar sage"><span id="tdBar"></span></div><span class="pct-label" id="tdPct"></span></div>
+      <div id="tdList"></div>
+    </div>
+  </section>
+
+  <!-- HABITS (planner profile) -->
+  <section class="view" data-view="habits">
+    <div class="view-head"><div class="eyebrow">Daily</div><h2>Habit Tracker</h2><p class="sub">Tap a day to mark a habit done. The last seven days stay open, so you can fill in one you forgot.</p></div>
+    <div class="card">
+      <div class="add-row">
+        <input id="hbInput" placeholder="Add a habit, e.g. Walk for 20 minutes" autocomplete="off" aria-label="New habit" />
+        <button id="hbAdd">Add</button>
+      </div>
+      <div id="hbList"></div>
+    </div>
+  </section>
+
+  <!-- AFFIRMATIONS (planner profile) -->
+  <section class="view" data-view="affirm">
+    <div class="view-head"><div class="eyebrow">Daily</div><h2>Affirmations</h2><p class="sub">One for each day. Read it slowly, out loud if you can.</p></div>
+    <div class="card aff-big"><p id="affText"></p><button id="affNext">Show another</button></div>
+    <div class="card" style="margin-top:16px;">
+      <div class="card-title">My affirmations</div>
+      <div class="card-sub">Add your own. They join the daily rotation.</div>
+      <div class="add-row">
+        <input id="affInput" placeholder="Write it in the present tense, e.g. I am calm and capable" autocomplete="off" aria-label="New affirmation" />
+        <button id="affAdd">Add</button>
+      </div>
+      <div id="affList"></div>
+    </div>
+  </section>
+
+  <!-- GOALS (planner profile) -->
+  <section class="view" data-view="goals">
+    <div class="view-head"><div class="eyebrow">Plan</div><h2>Goals</h2><p class="sub">From this month to this year. Tick each one off when it is done.</p></div>
+    <div class="grid grid-2" id="goalCards"></div>
+  </section>
+
   <!-- ADMIN -->
   <section class="view" data-view="admin">
     <div class="view-head"><div class="eyebrow">Account</div><h2>Admin</h2><p class="sub">Your account, your sync, your data.</p></div>
@@ -876,7 +961,7 @@ body.authed .auth-screen{display:none;}
 const SUPA_URL='https://mewacoirynzkbvsqxlhh.supabase.co';
 const SUPA_KEY='sb_publishable_m-khzeZ6_Z3YeKL0JSkG5w_QslyGqeS';
 const sb=window.supabase.createClient(SUPA_URL,SUPA_KEY);
-const EMAILS={prathy:'prathy@highconsciouslife.in',hariny:'hariny@highconsciouslife.in'};
+const EMAILS={prathy:'prathy@highconsciouslife.in',hariny:'hariny@highconsciouslife.in',preetha:'preetha@highconsciouslife.in'};
 
 /* ---------- Shared content ---------- */
 const QUOTES=[
@@ -1035,8 +1120,50 @@ const PROFILES={
     water:['#A9A3D8','#C0A3D6'],
     fab:false,
     perfectDay:'🌟 A perfect day, Hariny. Everything done!'
+  },
+  /* Planner profile: to-do with priorities, habits, goals, calendar,
+     daily affirmations. Sans-serif throughout, no italics. */
+  preetha:{
+    name:'Preetha', logo:'P', brand:'Preetha OS', tag:'Plan · Focus · Grow',
+    title:'Preetha OS',
+    palette:{
+      light:{
+        'bg':'#F7F3EE','surface':'#FFFFFF','surface-2':'#E8F1EF','surface-glass':'rgba(255,255,255,.92)',
+        'ink':'#2C2C2C','ink-2':'#5F7370','ink-3':'#93A6A3',
+        'gold':'#267D72','gold-soft':'#DDEFEC','sage':'#5E9468','sage-soft':'#E6F0E6',
+        'rose':'#1F6F7A','rose-soft':'#D6E8EA','sky':'#6FA8B5','sky-soft':'#E3F0F2','line':'#DCE5E3',
+        'shadow-sm':'0 0 0 rgba(0,0,0,0)',
+        'shadow-md':'0 10px 28px rgba(44,44,44,.07)',
+        'shadow-lg':'0 18px 48px rgba(44,44,44,.12)'
+      },
+      dark:{
+        'bg':'#141D1D','surface':'#1C2828','surface-2':'#243333','surface-glass':'rgba(28,40,40,.92)',
+        'ink':'#E8F2F0','ink-2':'#9FB8B4','ink-3':'#66807C',
+        'gold':'#5CC0B2','gold-soft':'#1F3A37','sage':'#7FB088','sage-soft':'#24332A',
+        'rose':'#4FA3B0','rose-soft':'#1F3539','sky':'#7FB6C2','sky-soft':'#203338','line':'#2C3E3D',
+        'shadow-sm':'0 0 0 rgba(0,0,0,0)',
+        'shadow-md':'0 10px 28px rgba(0,0,0,.35)',
+        'shadow-lg':'0 18px 48px rgba(0,0,0,.45)'
+      }
+    },
+    sections:['home','todo','habits','affirm','goals','calendar','admin'],
+    planner:true, noItalic:true, homeAffirm:true, reflectLabel:'Plan',
+    editable:false,
+    customWork:false,
+    focusCards:[
+      {emoji:'✅',title:'To-do List',desc:'Today\'s tasks, with the important ones on top.',accent:'var(--gold)',go:'todo'},
+      {emoji:'🌱',title:'Habits',desc:'Small things done daily. Keep the streak going.',accent:'var(--sage)',go:'habits'},
+      {emoji:'🎯',title:'Goals',desc:'This month, 3 months, 6 months and the year.',accent:'var(--sky)',go:'goals'}
+    ],
+    b3:[], goals:[], quotes:QUOTES, affirmations:AFFIRMATIONS,
+    confetti:['#267D72','#8FCFC5','#1F6F7A','#6FA8B5','#DDEFEC'],
+    water:['#8FCFC5','#6FA8B5'],
+    fab:true,
+    perfectDay:'🌟 A perfect day, Preetha. Everything done!'
   }
 };
+const hasSec=id=>!!P&&P.sections.includes(id);
+const dayOffset=(ds,n)=>{const d=new Date(ds+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10);};
 
 /* ---------- State ---------- */
 const todayStr=()=>new Date().toISOString().slice(0,10);
@@ -1050,6 +1177,7 @@ const freshDaily=()=>({
   trading:{h:0,m:0,concepts:'',questions:''},
   room:{}, nightRitual:{},
   night:{wins:'',gratitude:'',lessons:'',tomorrow:'',mood:3,sleep:''},
+  todos:[],
   celebrated:false
 });
 const newId=()=>(crypto.randomUUID?crypto.randomUUID():'id'+Date.now()+Math.random().toString(36).slice(2,8));
@@ -1068,6 +1196,9 @@ const defaults=()=>({
   vision:{income:'',fitness:'',business:'',youtube:'',instagram:'',workshop:''},
   history:[],
   archive:{},
+  habits:[], habitLog:{},
+  horizons:{m1:[],m3:[],m6:[],y1:[]},
+  planned:{}, myAffirmations:[],
   defs:P&&P.editable?(P.seedDefs?P.seedDefs():exampleDefs()):undefined,
   workTabs:P&&P.customWork?(P.seedWork||[]).map(n=>({id:newId(),name:n,focus:'',board:{todo:[],doing:[],done:[]},notes:''})):undefined
 });
@@ -1083,6 +1214,8 @@ function mergeDefaults(){
   const base=defaults();
   for(const k in base){ if(base[k]!==undefined&&S[k]===undefined) S[k]=base[k]; }
   if(!S.daily.nightRitual) S.daily.nightRitual={};
+  if(!Array.isArray(S.daily.todos)) S.daily.todos=[];
+  ['m1','m3','m6','y1'].forEach(k=>{ if(!Array.isArray(S.horizons[k])) S.horizons[k]=[]; });
   if(P.editable&&!S.defs) S.defs=P.seedDefs?P.seedDefs():exampleDefs();
   if(P.customWork){
     if(!Array.isArray(S.workTabs)) S.workTabs=(P.seedWork||[]).map(n=>({id:newId(),name:n,focus:'',board:{todo:[],doing:[],done:[]},notes:''}));
@@ -1098,14 +1231,28 @@ function rollover(){
     while(keys.length>90){delete S.archive[keys.shift()];}
     S.history.push({date:S.date,pct});
     S.history=S.history.slice(-14);
+    const prev=S.daily;
     S.date=todayStr();
     S.daily=freshDaily();
+    if(P.planner){
+      /* unfinished tasks carry over; tasks planned on the calendar arrive */
+      S.daily.todos=(prev.todos||[]).filter(x=>!x.done).map(x=>({...x}));
+      Object.keys(S.planned).sort().forEach(k=>{
+        if(k<=S.date){
+          S.planned[k].forEach(p=>S.daily.todos.push({id:newId(),text:p.text,pri:p.pri,done:false}));
+          delete S.planned[k];
+        }
+      });
+      const cutoff=dayOffset(S.date,-370);
+      Object.keys(S.habitLog).forEach(k=>{ if(k<cutoff) delete S.habitLog[k]; });
+    }
   }
 }
 /* Full snapshot of the current day, self-contained (labels resolved now,
    so later edits to ritual/block definitions can't corrupt old logs) */
 function dailySnapshot(){
   const d=S.daily;
+  if(P.planner) return {todos:(d.todos||[]).map(x=>({text:x.text,pri:x.pri,done:x.done}))};
   return {
     ritual:ritualItems().map(it=>({time:it.time,label:it.label,done:!!d.ritual[it.key]})),
     blocks:blockItems().map(it=>({time:it.time,label:it.title,done:!!d.blocks[it.key]})),
@@ -1208,17 +1355,19 @@ function blockItems(){
 
 /* ---------- Day completion ---------- */
 function sectionPcts(){
-  const d=S.daily;
-  const rit=ritualItems(),blk=blockItems(),nit=nightItems();
-  return {
-    ritual: rit.length?pct(rit.filter(it=>d.ritual[it.key]).length,rit.length):null,
-    blocks: blk.length?pct(blk.filter(it=>d.blocks[it.key]).length,blk.length):null,
-    big3: pct(d.big3.filter(x=>x.done).length,3),
-    water: pct(d.water,8),
-    room: pct(ROOM.filter((_,i)=>d.room[i]).length,ROOM.length),
-    nightR: nit.length?pct(nit.filter(it=>d.nightRitual[it.key]).length,nit.length):null
-  };
+  const d=S.daily,o={};
+  const of=(items,isDone)=>items.length?pct(items.filter(isDone).length,items.length):null;
+  if(hasSec('ritual')) o.ritual=of(ritualItems(),it=>d.ritual[it.key]);
+  if(hasSec('blocks')) o.blocks=of(blockItems(),it=>d.blocks[it.key]);
+  if(hasSec('big3')) o.big3=pct(d.big3.filter(x=>x.done).length,3);
+  if(hasSec('water')) o.water=pct(d.water,8);
+  if(hasSec('room')) o.room=pct(ROOM.filter((_,i)=>d.room[i]).length,ROOM.length);
+  if(hasSec('nightritual')) o.nightR=of(nightItems(),it=>d.nightRitual[it.key]);
+  if(hasSec('todo')) o.todo=of(d.todos||[],x=>x.done);
+  if(hasSec('habits')) o.habits=of(S.habits||[],h=>habitDone(h.id,S.date));
+  return o;
 }
+const SECTION_NAMES={ritual:'Morning ritual',blocks:'Time blocks',big3:'Big Three',water:'Hydration',room:'Room reset',nightR:'Night ritual',todo:'To-do list',habits:'Habits'};
 function dayPct(){
   const v=Object.values(sectionPcts()).filter(x=>x!==null);
   return v.length?Math.round(v.reduce((a,b)=>a+b,0)/v.length):0;
@@ -1232,6 +1381,10 @@ const NAV_ALL=[
   {id:'big3',label:'Big Three',group:'navDay',icon:'<path d="M12 2l2.6 6.6L21 9.3l-5 4.4 1.6 6.6L12 16.8 6.4 20.3 8 13.7 3 9.3l6.4-.7z"/>'},
   {id:'water',label:'Hydration',group:'navDay',icon:'<path d="M12 2s6 6.5 6 12a6 6 0 0 1-12 0c0-5.5 6-12 6-12z"/>'},
   {id:'gym',label:'Gym',group:'navDay',icon:'<path d="M6.5 6.5l11 11M2 12l4-4M22 12l-4 4M8 2l4 4M16 22l-4-4"/>'},
+  {id:'todo',label:'To-do List',group:'navDay',icon:'<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/>'},
+  {id:'habits',label:'Habits',group:'navDay',icon:'<circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/>'},
+  {id:'affirm',label:'Affirmations',group:'navDay',icon:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.600-7 10-7 10z"/>'},
+  {id:'goals',label:'Goals',group:'navReflect',icon:'<path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/>'},
   {id:'trading',label:'Trading',group:'navWork',icon:'<path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/>'},
   {id:'veylara',label:'Veylara',group:'navWork',icon:'<path d="M4.5 16.5L3 21l4.5-1.5M14 4l6 6-9.5 9.5L5 14z"/>'},
   {id:'hcl',label:'High Conscious Life',group:'navWork',icon:'<circle cx="12" cy="12" r="9"/><path d="M8 12c1.5-2.5 6.5-2.5 8 0-1.5 2.5-6.5 2.5-8 0z"/>'},
@@ -1298,6 +1451,16 @@ function applyProfile(){
   document.body.classList.toggle('no-fab',!P.fab);
   document.body.classList.toggle('editable-rituals',P.editable);
   document.body.classList.toggle('custom-work',!!P.customWork);
+  document.body.classList.toggle('no-italic',!!P.noItalic);
+  storage.set('os-noitalic',P.noItalic?'1':'0');
+  if(P.reflectLabel)$('#reflectLabel').textContent=P.reflectLabel;
+  if(P.homeAffirm){$('#quoteLabel').textContent='Today\'s Affirmation';$('#quoteBy').style.display='none';}
+  if(P.planner){
+    $('#fab').title='Quick add a task';$('#fab').setAttribute('aria-label','Quick add a task');
+    const cal=document.querySelector('.view[data-view="calendar"] .view-head');
+    cal.querySelector('.eyebrow').textContent='Plan';
+    cal.querySelector('.sub').textContent='Tap a past day to see what you did, or a future day to plan it.';
+  }
   NAV_ALL.filter(n=>!P.sections.includes(n.id)).forEach(n=>{
     const v=document.querySelector(`.view[data-view="${n.id}"]`); if(v)v.remove();
   });
@@ -1324,12 +1487,13 @@ function renderHome(){
   const emo=h<5?'🌙':h<12?'🌞':h<17?'🌤️':'🌆';
   $('#greeting').innerHTML=`${word}, <em>${esc(P.name)}</em> ${emo}`;
   $('#dateLine').textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  if(P.homeAffirm){$('#quoteText').textContent=todaysAffirmation();return;}
   const q=P.quotes[Math.floor(Math.random()*P.quotes.length)];
   $('#quoteText').textContent=q[0];$('#quoteBy').textContent='— '+q[1];
 }
 function renderGlance(){
   const p=sectionPcts();
-  const rows=[['Morning ritual',p.ritual],['Time blocks',p.blocks],['Big Three',p.big3],['Hydration',p.water],['Room reset',p.room],['Night ritual',p.nightR]];
+  const rows=Object.entries(p).map(([k,v])=>[SECTION_NAMES[k],v]);
   $('#glanceRows').innerHTML=rows.map(([n,v])=>{
     if(v===null)return `<div class="stat-row"><span class="s-name">${n}</span><div class="bar"><span style="width:0%"></span></div><span class="pct-label">—</span></div>`;
     return `<div class="stat-row"><span class="s-name">${n}</span><div class="bar${v===100?' sage':''}"><span style="width:${v}%"></span></div><span class="pct-label">${v}%</span></div>`;
@@ -1679,11 +1843,13 @@ function renderCalendar(){
     const arch=S.archive&&S.archive[ds];
     const hist=(S.history||[]).find(h=>h.date===ds);
     const pct=isToday?dayPct():(arch?arch.pct:(hist?hist.pct:null));
-    const has=isToday||!!arch||!!hist;
+    const plan=P.planner&&S.planned[ds]&&S.planned[ds].length;
+    const has=isToday||!!arch||!!hist||!!P.planner;
     const cell=el('div','cal-cell'+(has?' has-data':'')+(isToday?' today':'')+(calSel===ds?' sel':''));
     cell.innerHTML=`<span>${day}</span>`
       +(pct!==null?`<span class="cal-pct"><span style="width:${pct}%"></span></span>`:'')
-      +(pct===100?'<span class="cal-full">●</span>':'');
+      +(pct===100?'<span class="cal-full">●</span>':'')
+      +(plan?'<span class="cal-plan"></span>':'');
     if(has)cell.addEventListener('click',()=>{calSel=ds;renderCalendar();renderCalDetail(ds);});
     grid.appendChild(cell);
   }
@@ -1693,7 +1859,12 @@ $('#calNext').addEventListener('click',()=>{if(calMonth){calMonth=new Date(calMo
 function renderCalDetail(ds){
   const box=$('#calDetail');box.style.display='block';
   const isToday=ds===S.date;
+  if(P.planner&&ds>S.date){renderPlanDetail(box,ds);return;}
   const snap=isToday?{pct:dayPct(),sections:dailySnapshot()}:(S.archive&&S.archive[ds]);
+  if(!snap&&P.planner){
+    box.innerHTML=`<h3>${calFmt(ds)}</h3><p class="cd-sub">Nothing was logged on this day.</p>`;
+    return;
+  }
   if(!snap){
     const hist=(S.history||[]).find(h=>h.date===ds);
     box.innerHTML=`<h3>${calFmt(ds)}</h3><p class="cd-sub">Day ${hist?hist.pct:0}% complete. No detailed log — full daily logs began when the calendar shipped; older days kept only their score.</p>`;
@@ -1706,7 +1877,12 @@ function renderCalDetail(ds){
   if(s.blocks&&s.blocks.length)html+=`<div class="cd-group"><h4>Time blocks</h4>${list(s.blocks,true)}</div>`;
   const b3=(s.big3||[]).filter(x=>x.text||x.done);
   if(b3.length)html+=`<div class="cd-group"><h4>Big three</h4>${list(b3,false)}</div>`;
-  html+=`<div class="cd-group"><h4>Hydration</h4><p class="cd-note">${s.water||0} / 8 glasses</p></div>`;
+  if(s.todos){
+    html+=s.todos.length?`<div class="cd-group"><h4>To-do list</h4>${list(s.todos.map(t=>({text:t.text+(t.pri===1?'  · High':''),done:t.done})),false)}</div>`
+      :`<div class="cd-group"><h4>To-do list</h4><p class="cd-note">No tasks.</p></div>`;
+    if(S.habits.length)html+=`<div class="cd-group"><h4>Habits</h4>${list(S.habits.map(h=>({text:h.label,done:habitDone(h.id,ds)})),false)}</div>`;
+  }
+  if(s.water!==undefined)html+=`<div class="cd-group"><h4>Hydration</h4><p class="cd-note">${s.water||0} / 8 glasses</p></div>`;
   if(s.gym&&(s.gym.done||s.gym.duration))html+=`<div class="cd-group"><h4>Gym</h4><p class="cd-note">${esc(s.gym.done||'')}${s.gym.duration?' · '+s.gym.duration+' min':''}${s.gym.split?' · '+esc(s.gym.split):''}${s.gym.notes?'\n'+esc(s.gym.notes):''}</p></div>`;
   if(s.trading&&(s.trading.h||s.trading.m||s.trading.concepts))html+=`<div class="cd-group"><h4>Trading</h4><p class="cd-note">${s.trading.h||0}h ${s.trading.m||0}m${s.trading.concepts?'\n'+esc(s.trading.concepts):''}</p></div>`;
   if(s.room&&s.room.some(r=>r.done))html+=`<div class="cd-group"><h4>Room reset</h4>${list(s.room,false)}</div>`;
@@ -1723,10 +1899,202 @@ function renderCalDetail(ds){
   box.innerHTML=html;
 }
 
+/* Future date on the planner calendar: tasks that land in the to-do list that day */
+function renderPlanDetail(box,ds){
+  const items=S.planned[ds]||[];
+  box.innerHTML=`<h3>${calFmt(ds)}</h3><p class="cd-sub">Plan ahead. These tasks appear in your to-do list on this day.</p>
+    <div class="add-row"><input placeholder="Add a task for this day…" autocomplete="off" aria-label="New planned task" />
+    <select aria-label="Priority"><option value="1">High priority</option><option value="2" selected>Medium</option><option value="3">Low</option></select><button>Add</button></div><div></div>`;
+  const inp=box.querySelector('input'),sel=box.querySelector('select'),list=box.lastElementChild;
+  const again=()=>{renderCalendar();renderCalDetail(ds);};
+  const add=()=>{
+    const v=inp.value.trim();if(!v)return;
+    (S.planned[ds]||(S.planned[ds]=[])).push({text:v,pri:+sel.value});
+    save();again();const n=$('#calDetail input');if(n)n.focus();
+  };
+  box.querySelector('.add-row button').addEventListener('click',add);
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')add();});
+  if(!items.length)list.appendChild(el('div','empty-note','Nothing planned for this day yet.'));
+  items.forEach((it,i)=>{
+    const row=el('div','td-item p'+it.pri,`<span class="td-text">${esc(it.text)}</span><span class="pri p${it.pri}">${PRI[it.pri]}</span><button class="x-btn" aria-label="Remove task">✕</button>`);
+    row.querySelector('.x-btn').addEventListener('click',()=>{
+      items.splice(i,1);if(!items.length)delete S.planned[ds];
+      save();again();
+    });
+    list.appendChild(row);
+  });
+}
+
+/* ---------- Planner: to-do list ---------- */
+const PRI={1:'High',2:'Medium',3:'Low'};
+function renderTodo(){
+  const list=$('#tdList');if(!list)return;
+  const t=S.daily.todos,done=t.filter(x=>x.done).length;
+  $('#tdPct').textContent=t.length?`${done} of ${t.length} done`:'';
+  $('#tdBar').style.width=pct(done,t.length)+'%';
+  list.innerHTML='';
+  if(!t.length)list.appendChild(el('div','empty-note','No tasks yet. Add your first one above and pick its priority.'));
+  [...t].sort((a,b)=>(a.done-b.done)||(a.pri-b.pri)).forEach(item=>{
+    const row=el('div','td-item p'+item.pri+(item.done?' done':''),
+      `${checkHTML}<span class="td-text">${esc(item.text)}</span><button class="pri p${item.pri}" title="Tap to change priority" aria-label="Priority ${PRI[item.pri]}, tap to change">${PRI[item.pri]}</button><button class="x-btn" aria-label="Delete task">✕</button>`);
+    row.querySelector('.check').addEventListener('click',()=>{item.done=!item.done;save();renderTodo();if(item.done)maybeCelebrate('todo');});
+    row.querySelector('.pri').addEventListener('click',()=>{item.pri=item.pri%3+1;save();renderTodo();});
+    row.querySelector('.x-btn').addEventListener('click',()=>{S.daily.todos=S.daily.todos.filter(x=>x!==item);save();renderTodo();});
+    list.appendChild(row);
+  });
+  refreshNavPct();
+}
+function addTodo(text,pri){S.daily.todos.push({id:newId(),text,pri:pri||2,done:false});save();renderTodo();}
+function initTodo(){
+  const inp=$('#tdInput');if(!inp)return;
+  const add=()=>{const v=inp.value.trim();if(!v)return;addTodo(v,+$('#tdPri').value);inp.value='';inp.focus();};
+  $('#tdAdd').addEventListener('click',add);
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')add();});
+  renderTodo();
+}
+
+/* ---------- Planner: habit tracker ---------- */
+function habitDone(id,ds){return !!(S.habitLog&&S.habitLog[ds]&&S.habitLog[ds][id]);}
+function habitStreak(id){
+  let n=0,ds=S.date;
+  if(!habitDone(id,ds))ds=dayOffset(ds,-1);   // today still open: count up to yesterday
+  while(habitDone(id,ds)){n++;ds=dayOffset(ds,-1);}
+  return n;
+}
+function renderHabits(){
+  const wrap=$('#hbList');if(!wrap)return;
+  wrap.innerHTML='';
+  if(!S.habits.length)wrap.appendChild(el('div','empty-note','No habits yet. Add one above. Start with something small.'));
+  const days=[];for(let i=6;i>=0;i--)days.push(dayOffset(S.date,-i));
+  S.habits.forEach(h=>{
+    const st=habitStreak(h.id);
+    const row=el('div','hb-row',`<div class="hb-top"><span class="hb-name">${esc(h.label)}</span><span class="hb-streak">${st?`🔥 ${st} day${st>1?'s':''}`:'No streak yet'}</span><button class="x-btn" aria-label="Delete habit">✕</button></div><div class="hb-days"></div>`);
+    const grid=row.querySelector('.hb-days');
+    days.forEach(ds=>{
+      const d=new Date(ds+'T12:00:00Z'),on=habitDone(h.id,ds);
+      const b=el('button','hb-day'+(on?' on':'')+(ds===S.date?' today':''),`${d.toLocaleDateString('en-IN',{weekday:'short',timeZone:'UTC'})}<b>${d.getUTCDate()}</b>`);
+      b.setAttribute('aria-pressed',on);
+      b.addEventListener('click',()=>{
+        const log=S.habitLog[ds]||(S.habitLog[ds]={});
+        if(log[h.id])delete log[h.id];else log[h.id]=true;
+        save();renderHabits();
+        if(ds===S.date&&log[h.id])maybeCelebrate('habits');
+      });
+      grid.appendChild(b);
+    });
+    row.querySelector('.x-btn').addEventListener('click',()=>{
+      capture('Delete "'+h.label+'"?','Type YES to delete this habit and its history',v=>{
+        if(v.trim().toUpperCase()!=='YES'){toast('Kept it.');return;}
+        S.habits=S.habits.filter(x=>x!==h);
+        Object.values(S.habitLog).forEach(log=>{delete log[h.id];});
+        save();renderHabits();
+      });
+    });
+    wrap.appendChild(row);
+  });
+  refreshNavPct();
+}
+function initHabits(){
+  const inp=$('#hbInput');if(!inp)return;
+  const add=()=>{const v=inp.value.trim();if(!v)return;S.habits.push({id:newId(),label:v});save();inp.value='';renderHabits();inp.focus();};
+  $('#hbAdd').addEventListener('click',add);
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')add();});
+  renderHabits();
+}
+
+/* ---------- Planner: goals by horizon ---------- */
+const HORIZONS=[
+  ['m1','Monthly goals','What do you want done by the end of this month?'],
+  ['m3','3-month goals','Where do you want to be three months from now?'],
+  ['m6','6-month goals','The bigger shifts that need half a year.'],
+  ['y1','Yearly goals','What would make this year one to remember?']
+];
+function renderGoals(focusKey){
+  const wrap=$('#goalCards');if(!wrap)return;
+  wrap.innerHTML='';
+  HORIZONS.forEach(([k,title,hint])=>{
+    const items=S.horizons[k],done=items.filter(x=>x.done).length;
+    const card=el('div','card',`<div class="card-title">${title}</div><div class="card-sub">${items.length?`${done} of ${items.length} achieved`:hint}</div><div></div>
+      <div class="add-row" style="margin:14px 0 0;"><input placeholder="Add a goal…" autocomplete="off" aria-label="New goal: ${title}" /><button>Add</button></div>`);
+    const list=card.children[2],inp=card.querySelector('input');
+    items.forEach(g=>{
+      const row=el('div','gl-item'+(g.done?' done':''),`${checkHTML}<span class="td-text">${esc(g.text)}</span><button class="x-btn" aria-label="Delete goal">✕</button>`);
+      row.querySelector('.check').addEventListener('click',()=>{g.done=!g.done;save();renderGoals();if(g.done){toast('🎯 Goal achieved!');burst(60);}});
+      row.querySelector('.x-btn').addEventListener('click',()=>{S.horizons[k]=items.filter(x=>x!==g);save();renderGoals();});
+      list.appendChild(row);
+    });
+    const add=()=>{const v=inp.value.trim();if(!v)return;items.push({id:newId(),text:v,done:false});save();renderGoals(k);};
+    card.querySelector('.add-row button').addEventListener('click',add);
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter')add();});
+    wrap.appendChild(card);
+    if(focusKey===k)inp.focus();
+  });
+}
+
+/* ---------- Planner: daily affirmations ---------- */
+const DAY_AFFIRMATIONS=[
+  'I am calm, capable and ready for today.',
+  'I do one thing at a time, and I do it well.',
+  'I am allowed to take up space and ask for what I need.',
+  'Small steps taken every day carry me a long way.',
+  'I trust myself to handle whatever today brings.',
+  'My effort matters, even when no one is watching.',
+  'I choose progress over perfection.',
+  'I am becoming stronger, wiser and kinder with myself.',
+  'I have everything I need to begin.',
+  'I finish what I start, gently and steadily.',
+  'My peace is more important than being right.',
+  'I am proud of how far I have come.',
+  'Good things are finding their way to me.',
+  'I give my best energy to what matters most.',
+  'I am worthy of rest, joy and success.',
+  'I let go of what I cannot control.',
+  'Today I keep the promises I make to myself.',
+  'I am learning, and that is enough for today.',
+  'My habits are building the life I want.',
+  'I speak to myself the way I would speak to someone I love.',
+  'I am focused, patient and consistent.',
+  'Every day I get a little closer to my goals.',
+  'I welcome new opportunities with an open mind.',
+  'I am grateful for this day and what it will teach me.',
+  'My health, my time and my energy deserve care.',
+  'I can do difficult things.',
+  'I release yesterday and begin again.',
+  'I am surrounded by people who want the best for me.',
+  'What I do today is a gift to my future self.',
+  'I am exactly where I need to be to take the next step.',
+  'I believe in the person I am becoming.'
+];
+let affShift=0;
+function todaysAffirmation(){
+  const A=[...DAY_AFFIRMATIONS,...((S&&S.myAffirmations)||[])];
+  const day=Math.floor(new Date().setHours(0,0,0,0)/86400000);
+  return A[(day+affShift)%A.length];
+}
+function renderAffirm(){
+  const t=$('#affText');if(!t)return;
+  t.textContent=todaysAffirmation();
+  const list=$('#affList');list.innerHTML='';
+  if(!S.myAffirmations.length)list.appendChild(el('div','empty-note','None of your own yet.'));
+  S.myAffirmations.forEach((a,i)=>{
+    const row=el('div','gl-item',`<span class="td-text">${esc(a)}</span><button class="x-btn" aria-label="Delete affirmation">✕</button>`);
+    row.querySelector('.x-btn').addEventListener('click',()=>{S.myAffirmations.splice(i,1);save();renderAffirm();});
+    list.appendChild(row);
+  });
+}
+function initAffirm(){
+  const inp=$('#affInput');if(!inp)return;
+  $('#affNext').addEventListener('click',()=>{affShift++;renderAffirm();});
+  const add=()=>{const v=inp.value.trim();if(!v)return;S.myAffirmations.push(v);save();inp.value='';renderAffirm();inp.focus();};
+  $('#affAdd').addEventListener('click',add);
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')add();});
+  renderAffirm();
+}
+
 /* ---------- Nav percentages ---------- */
 function refreshNavPct(){
   const p=sectionPcts();
-  const map={ritual:p.ritual,blocks:p.blocks,big3:p.big3,water:p.water,room:p.room,nightritual:p.nightR};
+  const map={ritual:p.ritual,blocks:p.blocks,big3:p.big3,water:p.water,room:p.room,nightritual:p.nightR,todo:p.todo,habits:p.habits};
   document.querySelectorAll('.nav-btn').forEach(b=>{
     const v=map[b.dataset.view];
     let tag=b.querySelector('.nav-pct');
@@ -1742,7 +2110,7 @@ function refreshNavPct(){
 function popCheck(scope){const c=scope.querySelector('.check');if(c){c.classList.remove('pop');void c.offsetWidth;c.classList.add('pop');}}
 function maybeCelebrate(section){
   const p=sectionPcts();
-  if(p[section]===100){const names={ritual:'Morning ritual',blocks:'All time blocks',big3:'Big Three',water:'Hydration',room:'Room reset',nightR:'Night ritual — sleep well'};toast(`🎉 ${names[section]} complete!`);burst(50);}
+  if(p[section]===100){const names={ritual:'Morning ritual',blocks:'All time blocks',big3:'Big Three',water:'Hydration',room:'Room reset',nightR:'Night ritual — sleep well',todo:'To-do list',habits:'All habits'};toast(`🎉 ${names[section]} complete!`);burst(50);}
   if(dayPct()===100&&!S.daily.celebrated){S.daily.celebrated=true;save();toast(P.perfectDay);burst(220);}
 }
 
@@ -1775,6 +2143,10 @@ function tick(){
    On Veylara or a work tab it adds a task to that board's To do;
    anywhere else it captures to the HCL brain dump. */
 $('#fab').addEventListener('click',()=>{
+  if(P.planner){
+    capture('➕ New task','Goes to today\'s to-do list…',t=>{addTodo(t,2);toast('Added to today\'s to-do list');});
+    return;
+  }
   if(P.editable&&currentView==='blocks'){
     capture('➕ New time block','e.g. Movie night 🎬',title=>{
       S.defs.blocks.push({id:newId(),time:'',title,note:''});
@@ -1828,9 +2200,10 @@ function buildCommands(){
   COMMANDS=[
     ...NAV.map(n=>({label:'Go to '+n.label,icon:n.icon,run:()=>go(n.id),keys:n.label})),
     {label:'Toggle dark mode',icon:'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',run:toggleTheme,keys:'dark light theme'},
-    {label:'Add a glass of water',icon:'<path d="M12 2s6 6.5 6 12a6 6 0 0 1-12 0c0-5.5 6-12 6-12z"/>',run:()=>{if(S.daily.water<8){S.daily.water++;save();renderWater();toast('💧 +1 glass');}},keys:'water hydration drink'}
   ];
-  if(P.fab)COMMANDS.push({label:'Quick capture idea',icon:'<path d="M12 5v14M5 12h14"/>',run:()=>$('#fab').click(),keys:'idea capture note dump'});
+  if(hasSec('water'))COMMANDS.push({label:'Add a glass of water',icon:'<path d="M12 2s6 6.5 6 12a6 6 0 0 1-12 0c0-5.5 6-12 6-12z"/>',run:()=>{if(S.daily.water<8){S.daily.water++;save();renderWater();toast('💧 +1 glass');}},keys:'water hydration drink'});
+  if(P.planner)COMMANDS.push({label:'Add a task',icon:'<path d="M12 5v14M5 12h14"/>',run:()=>$('#fab').click(),keys:'task todo add new'});
+  else if(P.fab)COMMANDS.push({label:'Quick capture idea',icon:'<path d="M12 5v14M5 12h14"/>',run:()=>$('#fab').click(),keys:'idea capture note dump'});
   if(P.sections.includes('veylara'))COMMANDS.push({label:'New Veylara task',icon:'<path d="M4.5 16.5L3 21l4.5-1.5M14 4l6 6-9.5 9.5L5 14z"/>',run:()=>{go('veylara');setTimeout(()=>{const b=$('.kb-add');if(b)b.click();},50);},keys:'task veylara client'});
 }
 let palSel=0,palItems=[];
@@ -1871,7 +2244,7 @@ addEventListener('keydown',e=>{
   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='d'){e.preventDefault();toggleTheme();return;}
   const n=parseInt(e.key);
   if(n>=1&&n<=9&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&NAV[n-1])go(NAV[n-1].id);
-  if(e.key==='0')go('vision');
+  if(e.key==='0'&&hasSec('vision'))go('vision');
 });
 
 /* ---------- Theme ---------- */
@@ -1942,7 +2315,7 @@ loginForm.addEventListener('submit',async e=>{
   const name=$('#loginName').value.trim().toLowerCase();
   const pw=$('#loginPw').value;
   const email=name.includes('@')?name:EMAILS[name];
-  if(!email){showLoginError('Hmm, that name isn\'t on this OS. Try "prathy" or "hariny".');return;}
+  if(!email){showLoginError('Hmm, that name isn\'t on this OS. Check the spelling and try again.');return;}
   if(!pw){showLoginError('Enter your password.');return;}
   loginBtn.disabled=true;loginBtn.textContent='Signing in…';
   const {data,error}=await sb.auth.signInWithPassword({email,password:pw});
@@ -1966,19 +2339,37 @@ async function enter(session){
   buildCommands();
   applyTheme();
   renderHome();
-  renderTimeline('ritual');renderTimeline('blocks');renderTimeline('night');
-  renderBig3();renderWater();renderRoom();
+  if(hasSec('ritual'))renderTimeline('ritual');
+  if(hasSec('blocks'))renderTimeline('blocks');
+  if(hasSec('nightritual'))renderTimeline('night');
+  if(hasSec('big3'))renderBig3();
+  if(hasSec('water'))renderWater();
+  if(hasSec('room'))renderRoom();
   if(P.sections.includes('veylara')){renderKanban();bindText('#veyClient',()=>S.veylara.client,v=>S.veylara.client=v);}
   if(P.sections.includes('hcl')){
     [['#hclContent','content'],['#hclVideo','video'],['#hclProducts','products'],['#hclPrograms','programs'],['#hclWorkshops','workshops'],['#hclDump','dump']]
       .forEach(([id,k])=>bindText(id,()=>S.hcl[k],v=>S.hcl[k]=v));
   }
-  initGym();initTrading();initAffirmations();initNight();initWeekly();initVision();initAdmin();
+  if(hasSec('gym'))initGym();
+  initTrading();
+  if(hasSec('nightritual'))initAffirmations();
+  if(hasSec('night'))initNight();
+  if(hasSec('weekly'))initWeekly();
+  if(hasSec('vision'))initVision();
+  initTodo();initHabits();renderGoals();initAffirm();
+  initAdmin();
   renderSyncMeta();
   go('home');
   loadScreen.classList.remove('show');
   document.body.classList.add('authed');
 }
+
+/* /os?u=name prefills the login; planner profiles keep their plain type on the login screen too */
+(function prefill(){
+  const u=(new URLSearchParams(location.search).get('u')||'').toLowerCase();
+  if(EMAILS[u])$('#loginName').value=u;
+  if((PROFILES[u]&&PROFILES[u].noItalic)||(!u&&storage.get('os-noitalic')==='1'))document.body.classList.add('no-italic');
+})();
 
 (async function boot(){
   try{
