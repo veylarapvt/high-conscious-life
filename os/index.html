@@ -7,7 +7,7 @@
 <title>OS — High Conscious Life</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
 <style>
 /* ============================================================
    OS — Design Tokens (default = prathy pink; hariny's purple set
@@ -447,44 +447,112 @@ body.authed .auth-screen{display:none;}
 /* Mobile */
 .menu-btn{display:none;position:fixed;top:16px;left:16px;z-index:60;}
 .scrim{display:none;position:fixed;inset:0;background:rgba(30,25,18,.3);z-index:35;}
-/* Planner profile — to-do, habits, goals, affirmations */
-body.no-italic{--font-display:'Inter',sans-serif;}
+/* ============================================================
+   Planner profile — app-style shell: home with priorities + to-do,
+   habits, goals, calendar; floating tab bar; no sidebar
+   ============================================================ */
 body.no-italic *{font-style:normal!important;}
-body.no-italic .auth-card h1{font-family:'Inter',sans-serif;font-weight:500;}
-.add-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;}
-.add-row input{flex:1 1 180px;min-width:0;}
-.add-row select{width:auto;flex:0 0 auto;}
-.add-row button{flex:0 0 auto;padding:10px 20px;border-radius:var(--r-sm);background:var(--gold);color:var(--surface);font-weight:600;font-size:13px;transition:opacity .2s;}
-.add-row button:hover{opacity:.88;}
-.td-meta{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
-.td-meta .bar{flex:1;}
-.td-item{--pc:var(--line);display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:8px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--pc);border-radius:var(--r-md);}
-.td-item.p1,.pri.p1{--pc:#C2564B;}
-.td-item.p2,.pri.p2{--pc:#B8862F;}
-.td-item.p3,.pri.p3{--pc:var(--sage);}
-.td-item.done{opacity:.62;}
-.td-text{flex:1;min-width:0;font-size:14px;font-weight:500;line-height:1.45;overflow-wrap:anywhere;}
-.done > .td-text{text-decoration:line-through;color:var(--ink-3);}
-.pri{font-family:var(--font-ui);font-size:10.5px;font-weight:600;padding:4px 10px;border-radius:99px;flex-shrink:0;color:var(--pc);background:color-mix(in srgb,var(--pc) 14%,transparent);}
-.x-btn{width:28px;height:28px;border-radius:8px;color:var(--ink-3);font-size:12px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;transition:background .15s,color .15s;}
-.x-btn:hover{background:var(--surface-2);color:var(--ink);}
-.empty-note{padding:22px;text-align:center;color:var(--ink-3);font-size:13px;line-height:1.6;border:1.5px dashed var(--line);border-radius:var(--r-md);}
-.hb-row{padding:16px 0;border-bottom:1px dashed var(--line);}
-.hb-row:last-child{border-bottom:none;padding-bottom:0;}
-.hb-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.hb-name{flex:1;min-width:0;font-weight:600;font-size:14px;overflow-wrap:anywhere;}
-.hb-streak{font-family:var(--font-ui);font-size:11.5px;color:var(--ink-2);flex-shrink:0;}
-.hb-days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
-.hb-day{display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 0;border:1px solid var(--line);border-radius:var(--r-sm);font-family:var(--font-ui);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);transition:background .2s,border-color .2s,color .2s;}
-.hb-day b{font-size:13px;font-weight:600;color:var(--ink-2);letter-spacing:0;}
-.hb-day.today{box-shadow:inset 0 0 0 1.5px var(--gold);}
-.hb-day.on,.hb-day.on b{background:var(--sage);border-color:var(--sage);color:#fff;}
-.gl-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);}
-.aff-big{padding:40px 30px;text-align:center;background:linear-gradient(135deg,var(--surface),var(--surface-2));}
-.aff-big p{font-family:var(--font-display);font-size:clamp(20px,3.2vw,27px);font-weight:500;line-height:1.45;max-width:620px;margin:0 auto 22px;}
-.aff-big button{padding:9px 18px;border:1px solid var(--line);border-radius:99px;font-size:12.5px;font-weight:600;color:var(--ink-2);background:var(--surface);}
-.aff-big button:hover{border-color:var(--gold);color:var(--gold);}
+body.no-italic .auth-card h1{font-family:'Playfair Display',serif;font-weight:600;}
+body.planner{--font-display:'Playfair Display',serif;--r-sm:12px;--r-md:16px;--r-lg:24px;--r-xl:28px;}
+body.planner .sidebar,body.planner .menu-btn,body.planner .scrim{display:none!important;}
+body.planner .main{margin:0 auto;max-width:600px;padding:30px 20px 150px;}
+body.planner .view-head h2{font-weight:600;}
+body.planner .card{box-shadow:var(--shadow-md);}
+body.planner .toast{bottom:118px;opacity:0;border-radius:22px;max-width:calc(100vw - 48px);text-align:center;transition:transform .4s var(--ease),opacity .3s;}
+body.planner .toast.show{opacity:1;}
+body.planner .cal-cell{border-radius:12px;}
+body.planner .cal-nav button{border-radius:50%;}
+body.planner .admin-btn{border-radius:99px;}
 .cal-plan{width:5px;height:5px;border-radius:50%;background:var(--gold);}
+.x-btn{width:28px;height:28px;border-radius:50%;color:var(--ink-3);font-size:11px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;opacity:.55;transition:background .15s,color .15s,opacity .15s;}
+.x-btn:hover{background:var(--surface-2);color:var(--ink);opacity:1;}
+
+/* Home header */
+.ph-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:22px;}
+.ph-date{font-family:var(--font-ui);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px;}
+.ph-greet{font-family:var(--font-display);font-size:clamp(30px,8vw,40px);font-weight:600;line-height:1.14;letter-spacing:-.01em;}
+.ph-greet span{background:linear-gradient(100deg,var(--gold),var(--sky));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.ph-line{margin-top:12px;font-size:14.5px;color:var(--ink-2);padding-left:12px;border-left:2px solid var(--rose);line-height:1.5;}
+.ph-actions{display:flex;gap:8px;flex-shrink:0;}
+.ph-ic{width:42px;height:42px;border-radius:50%;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow-md);font-size:16px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:600;color:var(--gold);transition:transform .15s var(--ease);}
+.ph-ic:active{transform:scale(.92);}
+
+/* Affirmation card */
+.aff-card{position:relative;overflow:hidden;border-radius:26px;padding:24px 24px 22px;margin-bottom:18px;background:linear-gradient(135deg,var(--gold-soft),var(--sky-soft));box-shadow:var(--shadow-md);}
+.aff-eyebrow{font-family:var(--font-ui);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--gold);margin-bottom:12px;}
+.aff-card p{position:relative;z-index:1;font-family:var(--font-display);font-size:clamp(19px,5.4vw,23px);line-height:1.42;font-weight:500;margin-bottom:18px;}
+.aff-btns{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:8px;}
+.aff-btns button{padding:9px 16px;border-radius:99px;background:var(--surface);font-size:13px;font-weight:600;color:var(--ink);box-shadow:0 2px 0 color-mix(in srgb,var(--gold) 24%,transparent);transition:transform .15s var(--ease),color .2s;}
+.aff-btns button:active{transform:translateY(2px);box-shadow:none;}
+.aff-btns button.on{color:var(--gold);}
+.spark{position:absolute;color:var(--gold);font-size:12px;pointer-events:none;animation:twinkle 3.2s ease-in-out infinite;}
+.spark.s1{top:18px;right:26px;font-size:16px;}
+.spark.s2{top:54px;right:72px;animation-delay:.9s;}
+.spark.s3{bottom:24px;right:34px;font-size:10px;animation-delay:1.7s;}
+@keyframes twinkle{0%,100%{opacity:.2;transform:scale(.8) rotate(0);}50%{opacity:.85;transform:scale(1.15) rotate(20deg);}}
+
+/* Cards + checklist */
+.pl-card{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:20px 20px 14px;margin-bottom:16px;box-shadow:var(--shadow-md);}
+.pl-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;}
+.pl-head h3{font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:-.005em;}
+.pl-count{font-family:var(--font-ui);font-size:11.5px;font-weight:600;color:var(--gold);background:var(--gold-soft);padding:4px 10px;border-radius:99px;flex-shrink:0;}
+.pl-count:empty{display:none;}
+.pl-hint{font-size:12.5px;color:var(--ink-2);margin-bottom:6px;line-height:1.5;}
+.ck-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);animation:cardIn .3s var(--ease);}
+.ck-row:last-child{border-bottom:none;}
+.ck-box{width:26px;height:26px;border-radius:9px;border:1.8px solid var(--ink-3);background:var(--surface);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;transition:background .25s var(--ease),border-color .25s,transform .15s var(--ease);}
+.ck-box:active{transform:scale(.88);}
+.ck-box svg{width:14px;height:14px;opacity:0;color:#fff;fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:22;stroke-dashoffset:22;transition:stroke-dashoffset .3s var(--ease) .05s;}
+.done > .ck-box{background:linear-gradient(135deg,var(--gold),var(--rose));border-color:transparent;animation:pop .35s var(--ease);}
+.done > .ck-box svg{stroke-dashoffset:0;opacity:1;}
+.ck-text{flex:1;min-width:0;font-size:15px;font-weight:500;line-height:1.42;overflow-wrap:anywhere;text-decoration:line-through;text-decoration-color:transparent;text-decoration-thickness:1.5px;transition:color .35s,text-decoration-color .35s;}
+.done > .ck-text{color:var(--ink-3);text-decoration-color:var(--gold);}
+.ck-dot{width:8px;height:8px;border-radius:50%;background:var(--rose);flex-shrink:0;margin:0 4px;}
+.ck-empty{padding:14px 0 12px;color:var(--ink-3);font-size:13.5px;line-height:1.55;}
+.star{position:relative;width:32px;height:32px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;color:var(--ink-3);}
+.star svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round;transition:fill .2s,stroke .2s;}
+.star.on svg{fill:#F5B83D;stroke:#F5B83D;filter:drop-shadow(0 0 5px rgba(245,184,61,.6));animation:starGlow 2.8s ease-in-out infinite;}
+.star.burst svg{animation:starPop .6s var(--ease);}
+.star.burst::before,.star.burst::after{content:'✦';position:absolute;color:#F5B83D;font-size:10px;pointer-events:none;animation:sparkOut .65s ease-out forwards;}
+.star.burst::before{--dx:-17px;--dy:-14px;}
+.star.burst::after{--dx:17px;--dy:-9px;animation-delay:.06s;}
+@keyframes starPop{0%{transform:scale(.4) rotate(-40deg);}55%{transform:scale(1.5) rotate(12deg);}100%{transform:scale(1) rotate(0);}}
+@keyframes sparkOut{0%{opacity:1;transform:translate(0,0) scale(.4);}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.4);}}
+@keyframes starGlow{0%,100%{transform:scale(1) rotate(0);}50%{transform:scale(1.13) rotate(7deg);}}
+.td-add{display:flex;align-items:center;gap:6px;margin-top:8px;padding:5px 5px 5px 16px;background:var(--surface-2);border-radius:99px;}
+.td-add input{flex:1;min-width:0;border:none;background:transparent;padding:9px 0;font-size:15px;border-radius:0;}
+.td-add input:focus{box-shadow:none;}
+.td-send{width:38px;height:38px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--gold),var(--rose));color:#fff;font-size:20px;line-height:1;display:inline-flex;align-items:center;justify-content:center;transition:transform .15s var(--ease);}
+.td-send:active{transform:scale(.9);}
+
+/* Habits */
+.hb-top{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.hb-name{flex:1;min-width:0;font-weight:600;font-size:15px;overflow-wrap:anywhere;}
+.hb-streak{font-family:var(--font-ui);font-size:11.5px;font-weight:600;color:var(--gold);background:var(--gold-soft);padding:4px 10px;border-radius:99px;flex-shrink:0;}
+.hb-streak.none{color:var(--ink-3);background:var(--surface-2);}
+.hb-days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;padding-bottom:6px;}
+.hb-day{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0;border:1px solid var(--line);border-radius:14px;font-family:var(--font-ui);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);transition:background .2s,border-color .2s,color .2s,transform .15s var(--ease);}
+.hb-day:active{transform:scale(.92);}
+.hb-day b{font-size:13.5px;font-weight:600;color:var(--ink-2);letter-spacing:0;}
+.hb-day.today{border-color:var(--gold);}
+.hb-day.on{background:linear-gradient(135deg,var(--gold),var(--rose));border-color:transparent;color:#fff;}
+.hb-day.on b{color:#fff;}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
+.chip{padding:9px 14px;border-radius:99px;background:var(--surface);border:1px dashed var(--ink-3);font-size:13px;font-weight:500;color:var(--ink-2);transition:border-color .2s,color .2s;}
+.chip:hover{border-color:var(--gold);color:var(--gold);}
+.sec-label{font-family:var(--font-ui);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:22px 0 12px;}
+
+/* Tab bar */
+.tabbar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:60;width:min(440px,calc(100vw - 28px));display:none;align-items:center;padding:8px 8px;background:var(--surface-glass);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:99px;box-shadow:var(--shadow-lg);}
+body.planner.authed .tabbar{display:flex;}
+.tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 0 3px;font-family:var(--font-ui);font-size:11px;font-weight:600;color:var(--ink-3);}
+.tab-btn .ti{font-size:19px;line-height:1.1;filter:grayscale(1);opacity:.55;transition:filter .2s,opacity .2s,transform .2s var(--ease);}
+.tab-btn::after{content:'';width:4px;height:4px;border-radius:50%;background:transparent;}
+.tab-btn.active{color:var(--ink);}
+.tab-btn.active .ti{filter:none;opacity:1;transform:translateY(-1px) scale(1.12);}
+.tab-btn.active::after{background:var(--gold);}
+.tab-plus{flex:0 0 auto;width:58px;height:58px;margin:-28px 4px 0;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--rose));color:#fff;font-size:30px;font-weight:300;line-height:1;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 8px 20px color-mix(in srgb,var(--gold) 42%,transparent),0 0 0 5px var(--bg);transition:transform .2s var(--ease);}
+.tab-plus:active{transform:scale(.92) rotate(90deg);}
 @media(max-width:960px){
   .grid-3{grid-template-columns:1fr 1fr;}
   .kanban{grid-template-columns:1fr;}
@@ -830,51 +898,26 @@ body.no-italic .auth-card h1{font-family:'Inter',sans-serif;font-weight:500;}
     <div class="card cal-detail" id="calDetail" style="display:none;margin-top:16px;"></div>
   </section>
 
-  <!-- TO-DO (planner profile) -->
-  <section class="view" data-view="todo">
-    <div class="view-head"><div class="eyebrow">Today</div><h2>To-do List</h2><p class="sub">Everything for today, most important first. Anything unfinished moves to tomorrow.</p></div>
-    <div class="card">
-      <div class="add-row">
-        <input id="tdInput" placeholder="Add a task…" autocomplete="off" aria-label="New task" />
-        <select id="tdPri" aria-label="Priority"><option value="1">High priority</option><option value="2" selected>Medium</option><option value="3">Low</option></select>
-        <button id="tdAdd">Add</button>
-      </div>
-      <div class="td-meta"><div class="bar sage"><span id="tdBar"></span></div><span class="pct-label" id="tdPct"></span></div>
-      <div id="tdList"></div>
-    </div>
-  </section>
-
   <!-- HABITS (planner profile) -->
   <section class="view" data-view="habits">
-    <div class="view-head"><div class="eyebrow">Daily</div><h2>Habit Tracker</h2><p class="sub">Tap a day to mark a habit done. The last seven days stay open, so you can fill in one you forgot.</p></div>
-    <div class="card">
-      <div class="add-row">
-        <input id="hbInput" placeholder="Add a habit, e.g. Walk for 20 minutes" autocomplete="off" aria-label="New habit" />
-        <button id="hbAdd">Add</button>
-      </div>
-      <div id="hbList"></div>
-    </div>
-  </section>
-
-  <!-- AFFIRMATIONS (planner profile) -->
-  <section class="view" data-view="affirm">
-    <div class="view-head"><div class="eyebrow">Daily</div><h2>Affirmations</h2><p class="sub">One for each day. Read it slowly, out loud if you can.</p></div>
-    <div class="card aff-big"><p id="affText"></p><button id="affNext">Show another</button></div>
-    <div class="card" style="margin-top:16px;">
-      <div class="card-title">My affirmations</div>
-      <div class="card-sub">Add your own. They join the daily rotation.</div>
-      <div class="add-row">
-        <input id="affInput" placeholder="Write it in the present tense, e.g. I am calm and capable" autocomplete="off" aria-label="New affirmation" />
-        <button id="affAdd">Add</button>
-      </div>
-      <div id="affList"></div>
-    </div>
+    <div class="view-head"><div class="eyebrow">Daily</div><h2>Habits 🌱</h2><p class="sub">Small things, done daily, change everything. Tap a day to mark it done.</p></div>
+    <div class="td-add" style="margin:0 0 18px;"><input id="hbInput" placeholder="Add a habit…" autocomplete="off" aria-label="New habit" /><button class="td-send" id="hbAdd" aria-label="Add habit">+</button></div>
+    <div id="hbList"></div>
   </section>
 
   <!-- GOALS (planner profile) -->
   <section class="view" data-view="goals">
-    <div class="view-head"><div class="eyebrow">Plan</div><h2>Goals</h2><p class="sub">From this month to this year. Tick each one off when it is done.</p></div>
-    <div class="grid grid-2" id="goalCards"></div>
+    <div class="view-head"><div class="eyebrow">Dream big</div><h2>Goals 🎯</h2><p class="sub">Write them down, then go and get them. Tick each one off when it is yours.</p></div>
+    <div id="goalCards"></div>
+  </section>
+
+  <!-- AFFIRMATIONS (planner profile) -->
+  <section class="view" data-view="affirm">
+    <div class="view-head"><div class="eyebrow">Daily</div><h2>My affirmations 💗</h2><p class="sub">Words you want to hear every day. Yours join the daily rotation.</p></div>
+    <div class="pl-card">
+      <div id="affList"></div>
+      <div class="td-add"><input id="affInput" placeholder="I am…" autocomplete="off" aria-label="New affirmation" /><button class="td-send" id="affAdd" aria-label="Add affirmation">+</button></div>
+    </div>
   </section>
 
   <!-- ADMIN -->
@@ -1218,41 +1261,37 @@ const PROFILES={
   /* Planner profile: to-do with priorities, habits, goals, calendar,
      daily affirmations. Sans-serif throughout, no italics. */
   preetha:{
-    name:'Preetha', logo:'P', brand:'Preetha OS', tag:'Plan · Focus · Grow',
-    title:'Preetha OS',
+    name:'Preetha', logo:'P', brand:'Preetha OS', tag:'Plan · Focus · Glow',
+    title:'Preetha — My Day',
     palette:{
       light:{
-        'bg':'#F7F3EE','surface':'#FFFFFF','surface-2':'#E8F1EF','surface-glass':'rgba(255,255,255,.92)',
-        'ink':'#2C2C2C','ink-2':'#5F7370','ink-3':'#93A6A3',
-        'gold':'#267D72','gold-soft':'#DDEFEC','sage':'#5E9468','sage-soft':'#E6F0E6',
-        'rose':'#1F6F7A','rose-soft':'#D6E8EA','sky':'#6FA8B5','sky-soft':'#E3F0F2','line':'#DCE5E3',
-        'shadow-sm':'0 0 0 rgba(0,0,0,0)',
-        'shadow-md':'0 10px 28px rgba(44,44,44,.07)',
-        'shadow-lg':'0 18px 48px rgba(44,44,44,.12)'
+        'bg':'#FFF8F5','surface':'#FFFFFF','surface-2':'#FDEEF1','surface-glass':'rgba(255,255,255,.9)',
+        'ink':'#3A2A30','ink-2':'#8A6B76','ink-3':'#C2A9B1',
+        'gold':'#B84E72','gold-soft':'#FCE4EC','sage':'#B84E72','sage-soft':'#FCE4EC',
+        'rose':'#F0A3B8','rose-soft':'#FDEBF0','sky':'#A284D6','sky-soft':'#F1E9FB','line':'#F5E1E6',
+        'shadow-sm':'0 1px 3px rgba(184,78,114,.06)',
+        'shadow-md':'0 8px 24px rgba(184,78,114,.09)',
+        'shadow-lg':'0 16px 44px rgba(184,78,114,.18)'
       },
       dark:{
-        'bg':'#141D1D','surface':'#1C2828','surface-2':'#243333','surface-glass':'rgba(28,40,40,.92)',
-        'ink':'#E8F2F0','ink-2':'#9FB8B4','ink-3':'#66807C',
-        'gold':'#5CC0B2','gold-soft':'#1F3A37','sage':'#7FB088','sage-soft':'#24332A',
-        'rose':'#4FA3B0','rose-soft':'#1F3539','sky':'#7FB6C2','sky-soft':'#203338','line':'#2C3E3D',
-        'shadow-sm':'0 0 0 rgba(0,0,0,0)',
-        'shadow-md':'0 10px 28px rgba(0,0,0,.35)',
-        'shadow-lg':'0 18px 48px rgba(0,0,0,.45)'
+        'bg':'#1B1418','surface':'#271C22','surface-2':'#33252D','surface-glass':'rgba(39,28,34,.9)',
+        'ink':'#FAEEF1','ink-2':'#CDAAB6','ink-3':'#8E6C79',
+        'gold':'#F493B3','gold-soft':'#4A2637','sage':'#F493B3','sage-soft':'#4A2637',
+        'rose':'#F7B9CB','rose-soft':'#48293A','sky':'#C6ACEB','sky-soft':'#35284A','line':'#3F2C36',
+        'shadow-sm':'0 1px 3px rgba(0,0,0,.2)',
+        'shadow-md':'0 8px 24px rgba(0,0,0,.32)',
+        'shadow-lg':'0 16px 44px rgba(0,0,0,.5)'
       }
     },
-    sections:['home','todo','habits','affirm','goals','calendar','admin'],
-    planner:true, noItalic:true, homeAffirm:true, reflectLabel:'Plan',
+    sections:['home','habits','goals','calendar','affirm','admin'],
+    planner:true, noItalic:true,
     editable:false,
     customWork:false,
-    focusCards:[
-      {emoji:'✅',title:'To-do List',desc:'Today\'s tasks, with the important ones on top.',accent:'var(--gold)',go:'todo'},
-      {emoji:'🌱',title:'Habits',desc:'Small things done daily. Keep the streak going.',accent:'var(--sage)',go:'habits'},
-      {emoji:'🎯',title:'Goals',desc:'This month, 3 months, 6 months and the year.',accent:'var(--sky)',go:'goals'}
-    ],
+    focusCards:[],
     b3:[], goals:[], quotes:QUOTES, affirmations:AFFIRMATIONS,
-    confetti:['#267D72','#8FCFC5','#1F6F7A','#6FA8B5','#DDEFEC'],
-    water:['#8FCFC5','#6FA8B5'],
-    fab:true,
+    confetti:['#B84E72','#F0A3B8','#F5B83D','#A284D6','#FCE4EC'],
+    water:['#F0A3B8','#A284D6'],
+    fab:false,
     perfectDay:'🌟 A perfect day, Preetha. Everything done!'
   }
 };
@@ -1457,7 +1496,7 @@ function sectionPcts(){
   if(hasSec('water')) o.water=pct(d.water,8);
   if(hasSec('room')) o.room=pct(ROOM.filter((_,i)=>d.room[i]).length,ROOM.length);
   if(hasSec('nightritual')) o.nightR=of(nightItems(),it=>d.nightRitual[it.key]);
-  if(hasSec('todo')) o.todo=of(d.todos||[],x=>x.done);
+  if(P.planner) o.todo=of(d.todos||[],x=>x.done);
   if(hasSec('habits')) o.habits=of(S.habits||[],h=>habitDone(h.id,S.date));
   return o;
 }
@@ -1475,7 +1514,6 @@ const NAV_ALL=[
   {id:'big3',label:'Big Three',group:'navDay',icon:'<path d="M12 2l2.6 6.6L21 9.3l-5 4.4 1.6 6.6L12 16.8 6.4 20.3 8 13.7 3 9.3l6.4-.7z"/>'},
   {id:'water',label:'Hydration',group:'navDay',icon:'<path d="M12 2s6 6.5 6 12a6 6 0 0 1-12 0c0-5.5 6-12 6-12z"/>'},
   {id:'gym',label:'Gym',group:'navDay',icon:'<path d="M6.5 6.5l11 11M2 12l4-4M22 12l-4 4M8 2l4 4M16 22l-4-4"/>'},
-  {id:'todo',label:'To-do List',group:'navDay',icon:'<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/>'},
   {id:'habits',label:'Habits',group:'navDay',icon:'<circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/>'},
   {id:'affirm',label:'Affirmations',group:'navDay',icon:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.600-7 10-7 10z"/>'},
   {id:'goals',label:'Goals',group:'navReflect',icon:'<path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/>'},
@@ -1513,6 +1551,7 @@ function go(id){
   currentView=id;
   document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.dataset.view===id));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===id));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===id));
   if(id==='home')renderGlance();
   if(id==='weekly')renderChart();
   if(id==='calendar')renderCalendar();
@@ -1533,6 +1572,7 @@ scrim.addEventListener('click',closeSidebar);
 /* ---------- Profile application ---------- */
 function applyProfile(){
   document.title=P.title;
+  if(P.planner)buildPlannerShell();
   $('#logoDot').textContent=P.logo;
   $('#brandName').textContent=P.brand;
   $('#brandTag').textContent=P.tag;
@@ -1548,19 +1588,18 @@ function applyProfile(){
   document.body.classList.toggle('no-italic',!!P.noItalic);
   storage.set('os-noitalic',P.noItalic?'1':'0');
   if(P.reflectLabel)$('#reflectLabel').textContent=P.reflectLabel;
-  if(P.homeAffirm){$('#quoteLabel').textContent='Today\'s Affirmation';$('#quoteBy').style.display='none';}
   if(P.planner){
-    $('#fab').title='Quick add a task';$('#fab').setAttribute('aria-label','Quick add a task');
     const cal=document.querySelector('.view[data-view="calendar"] .view-head');
     cal.querySelector('.eyebrow').textContent='Plan';
+    cal.querySelector('h2').textContent='Calendar 🗓️';
     cal.querySelector('.sub').textContent='Tap a past day to see what you did, or a future day to plan it.';
   }
   NAV_ALL.filter(n=>!P.sections.includes(n.id)).forEach(n=>{
     const v=document.querySelector(`.view[data-view="${n.id}"]`); if(v)v.remove();
   });
   /* focus cards */
-  const fg=$('#focusGrid');fg.innerHTML='';
-  P.focusCards.forEach(c=>{
+  const fg=$('#focusGrid');if(fg)fg.innerHTML='';
+  if(fg)P.focusCards.forEach(c=>{
     const card=el('div','card focus-card',
       `<span class="f-emoji">${c.emoji}</span><h3>${esc(c.title)}</h3><p>${esc(c.desc)}</p>
        <svg class="f-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg>`);
@@ -1576,16 +1615,17 @@ function applyProfile(){
 
 /* ---------- Home ---------- */
 function renderHome(){
+  if(P.planner){renderPlannerHome();return;}
   const h=new Date().getHours();
   const word=h<5?'Good Night':h<12?'Good Morning':h<17?'Good Afternoon':'Good Evening';
   const emo=h<5?'🌙':h<12?'🌞':h<17?'🌤️':'🌆';
   $('#greeting').innerHTML=`${word}, <em>${esc(P.name)}</em> ${emo}`;
   $('#dateLine').textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  if(P.homeAffirm){$('#quoteText').textContent=todaysAffirmation();return;}
   const q=P.quotes[Math.floor(Math.random()*P.quotes.length)];
   $('#quoteText').textContent=q[0];$('#quoteBy').textContent='— '+q[1];
 }
 function renderGlance(){
+  if(P.planner){plannerLine();return;}
   const p=sectionPcts();
   const rows=Object.entries(p).map(([k,v])=>[SECTION_NAMES[k],v]);
   $('#glanceRows').innerHTML=rows.map(([n,v])=>{
@@ -1972,7 +2012,7 @@ function renderCalDetail(ds){
   const b3=(s.big3||[]).filter(x=>x.text||x.done);
   if(b3.length)html+=`<div class="cd-group"><h4>Big three</h4>${list(b3,false)}</div>`;
   if(s.todos){
-    html+=s.todos.length?`<div class="cd-group"><h4>To-do list</h4>${list(s.todos.map(t=>({text:t.text+(t.pri===1?'  · High':''),done:t.done})),false)}</div>`
+    html+=s.todos.length?`<div class="cd-group"><h4>To-do list</h4>${list(s.todos.map(t=>({text:(t.pri===1?'⭐ ':'')+t.text,done:t.done})),false)}</div>`
       :`<div class="cd-group"><h4>To-do list</h4><p class="cd-note">No tasks.</p></div>`;
     if(S.habits.length)html+=`<div class="cd-group"><h4>Habits</h4>${list(S.habits.map(h=>({text:h.label,done:habitDone(h.id,ds)})),false)}</div>`;
   }
@@ -1993,61 +2033,128 @@ function renderCalDetail(ds){
   box.innerHTML=html;
 }
 
-/* Future date on the planner calendar: tasks that land in the to-do list that day */
-function renderPlanDetail(box,ds){
-  const items=S.planned[ds]||[];
-  box.innerHTML=`<h3>${calFmt(ds)}</h3><p class="cd-sub">Plan ahead. These tasks appear in your to-do list on this day.</p>
-    <div class="add-row"><input placeholder="Add a task for this day…" autocomplete="off" aria-label="New planned task" />
-    <select aria-label="Priority"><option value="1">High priority</option><option value="2" selected>Medium</option><option value="3">Low</option></select><button>Add</button></div><div></div>`;
-  const inp=box.querySelector('input'),sel=box.querySelector('select'),list=box.lastElementChild;
-  const again=()=>{renderCalendar();renderCalDetail(ds);};
-  const add=()=>{
-    const v=inp.value.trim();if(!v)return;
-    (S.planned[ds]||(S.planned[ds]=[])).push({text:v,pri:+sel.value});
-    save();again();const n=$('#calDetail input');if(n)n.focus();
-  };
-  box.querySelector('.add-row button').addEventListener('click',add);
-  inp.addEventListener('keydown',e=>{if(e.key==='Enter')add();});
-  if(!items.length)list.appendChild(el('div','empty-note','Nothing planned for this day yet.'));
-  items.forEach((it,i)=>{
-    const row=el('div','td-item p'+it.pri,`<span class="td-text">${esc(it.text)}</span><span class="pri p${it.pri}">${PRI[it.pri]}</span><button class="x-btn" aria-label="Remove task">✕</button>`);
-    row.querySelector('.x-btn').addEventListener('click',()=>{
-      items.splice(i,1);if(!items.length)delete S.planned[ds];
-      save();again();
-    });
-    list.appendChild(row);
+/* ============================================================
+   Planner profile
+   ============================================================ */
+const STAR_SVG='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.85 6.1 6.65.8-4.9 4.6 1.3 6.600L12 17.400l-5.900 3.300 1.300-6.600-4.900-4.600 6.650-.8z"/></svg>';
+const laterT={};
+const later=(key,fn)=>{clearTimeout(laterT[key]);laterT[key]=setTimeout(fn,520);};
+
+/* Home markup + tab bar replace the shared dashboard and the sidebar */
+function buildPlannerShell(){
+  document.body.classList.add('planner');
+  document.querySelector('.view[data-view="home"]').innerHTML=`
+    <header class="ph-head">
+      <div><div class="ph-date" id="phDate"></div><h2 class="ph-greet" id="greeting"></h2><p class="ph-line" id="phLine"></p></div>
+      <div class="ph-actions">
+        <button class="ph-ic" id="phTheme" aria-label="Switch light or dark">🌙</button>
+        <button class="ph-ic" id="phMe" aria-label="My account">${esc(P.logo)}</button>
+      </div>
+    </header>
+    <div class="aff-card">
+      <span class="spark s1">✦</span><span class="spark s2">✦</span><span class="spark s3">✦</span>
+      <div class="aff-eyebrow">✨ Today's affirmation</div>
+      <p id="quoteText"></p>
+      <div class="aff-btns"><button id="affSave">♡ Save</button><button id="affNext">↻ Another</button><button id="affMine">✎ My own</button></div>
+    </div>
+    <div class="pl-card">
+      <div class="pl-head"><h3>⭐ Priorities</h3><span class="pl-count" id="prCount"></span></div>
+      <div id="prList"></div>
+    </div>
+    <div class="pl-card">
+      <div class="pl-head"><h3>📝 To-do list</h3><span class="pl-count" id="tdCount"></span></div>
+      <div id="tdList"></div>
+      <div class="td-add">
+        <input id="tdInput" placeholder="Add a task…" autocomplete="off" aria-label="New task" />
+        <button class="star" id="tdStar" aria-label="Make it a priority" aria-pressed="false">${STAR_SVG}</button>
+        <button class="td-send" id="tdSend" aria-label="Add task">+</button>
+      </div>
+    </div>`;
+  const bar=el('nav','tabbar');
+  bar.setAttribute('aria-label','Sections');
+  [['home','✦','Home'],['habits','🌱','Habits'],null,['goals','🎯','Goals'],['calendar','🗓️','Calendar']].forEach(t=>{
+    if(!t){
+      const plus=el('button','tab-plus','+');
+      plus.setAttribute('aria-label','Add a task');
+      plus.addEventListener('click',()=>$('#fab').click());
+      bar.appendChild(plus);return;
+    }
+    const b=el('button','tab-btn',`<span class="ti">${t[1]}</span>${t[2]}`);
+    b.dataset.view=t[0];
+    b.addEventListener('click',()=>go(t[0]));
+    bar.appendChild(b);
   });
+  document.body.appendChild(bar);
+  $('#phTheme').addEventListener('click',toggleTheme);
+  $('#phMe').addEventListener('click',()=>go('admin'));
+}
+function renderPlannerHome(){
+  const h=new Date().getHours();
+  const word=h<5?'Good night':h<12?'Good morning':h<17?'Good afternoon':'Good evening';
+  $('#greeting').innerHTML=`${word}, <span>${esc(P.name)}</span>.`;
+  $('#phDate').textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'});
+  plannerLine();
+}
+function plannerLine(){
+  const n=$('#phLine');if(!n)return;
+  const t=S.daily.todos,left=t.filter(x=>!x.done).length;
+  n.textContent=!t.length?'A fresh page. Write the day you want 🌸'
+    :left?`${left} to go today. You've got this 💪`
+    :'Everything done. You are glowing today ✨';
 }
 
-/* ---------- Planner: to-do list ---------- */
-const PRI={1:'High',2:'Medium',3:'Low'};
+/* One checklist row: tick box with strike-through, optional priority star, delete */
+function ckRow(text,done,o){
+  const row=el('div','ck-row'+(done?' done':''),
+    `<button class="ck-box" aria-label="Mark done" aria-pressed="${!!done}"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></button><span class="ck-text">${esc(text)}</span>`
+    +(o.onStar?`<button class="star${o.star?' on':''}" aria-label="Priority" aria-pressed="${!!o.star}">${STAR_SVG}</button>`:'')
+    +'<button class="x-btn" aria-label="Delete">✕</button>');
+  row.querySelector('.ck-box').addEventListener('click',()=>{row.classList.toggle('done');o.onToggle();});
+  const st=row.querySelector('.star');
+  if(st)st.addEventListener('click',()=>{if(st.classList.toggle('on'))st.classList.add('burst');o.onStar();});
+  row.querySelector('.x-btn').addEventListener('click',o.onDelete);
+  return row;
+}
+/* Input pill: Enter or the round button adds */
+function bindAdd(inp,btn,add){
+  const run=()=>{const v=inp.value.trim();if(!v)return;inp.value='';add(v);};
+  btn.addEventListener('click',()=>{run();inp.focus();});
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')run();});
+}
+
+/* ---------- Planner: priorities + to-do (home) ---------- */
 function renderTodo(){
-  const list=$('#tdList');if(!list)return;
-  const t=S.daily.todos,done=t.filter(x=>x.done).length;
-  $('#tdPct').textContent=t.length?`${done} of ${t.length} done`:'';
-  $('#tdBar').style.width=pct(done,t.length)+'%';
-  list.innerHTML='';
-  if(!t.length)list.appendChild(el('div','empty-note','No tasks yet. Add your first one above and pick its priority.'));
-  [...t].sort((a,b)=>(a.done-b.done)||(a.pri-b.pri)).forEach(item=>{
-    const row=el('div','td-item p'+item.pri+(item.done?' done':''),
-      `${checkHTML}<span class="td-text">${esc(item.text)}</span><button class="pri p${item.pri}" title="Tap to change priority" aria-label="Priority ${PRI[item.pri]}, tap to change">${PRI[item.pri]}</button><button class="x-btn" aria-label="Delete task">✕</button>`);
-    row.querySelector('.check').addEventListener('click',()=>{item.done=!item.done;save();renderTodo();if(item.done)maybeCelebrate('todo');});
-    row.querySelector('.pri').addEventListener('click',()=>{item.pri=item.pri%3+1;save();renderTodo();});
-    row.querySelector('.x-btn').addEventListener('click',()=>{S.daily.todos=S.daily.todos.filter(x=>x!==item);save();renderTodo();});
-    list.appendChild(row);
-  });
-  refreshNavPct();
+  const pr=$('#prList'),td=$('#tdList');if(!td)return;
+  const t=S.daily.todos;
+  const mk=item=>ckRow(item.text,item.done,{star:item.pri===1,
+    onToggle:()=>{item.done=!item.done;save();plannerLine();later('todo',renderTodo);if(item.done)maybeCelebrate('todo');},
+    onStar:()=>{item.pri=item.pri===1?2:1;save();later('todo',renderTodo);},
+    onDelete:()=>{S.daily.todos=S.daily.todos.filter(x=>x!==item);save();renderTodo();}});
+  const order=l=>[...l].sort((a,b)=>a.done-b.done);
+  const top=order(t.filter(x=>x.pri===1)),rest=order(t.filter(x=>x.pri!==1));
+  const count=l=>l.length?`${l.filter(x=>x.done).length} / ${l.length}`:'';
+  pr.innerHTML='';td.innerHTML='';
+  $('#prCount').textContent=count(top);$('#tdCount').textContent=count(rest);
+  if(!top.length)pr.appendChild(el('div','ck-empty','Tap the star on any task to make it a priority ✨'));
+  top.forEach(i=>pr.appendChild(mk(i)));
+  if(!rest.length)td.appendChild(el('div','ck-empty',t.length?'All sorted. Anything else on your mind? 💭':'What would make today feel good? Add your first task 🌸'));
+  rest.forEach(i=>td.appendChild(mk(i)));
+  plannerLine();
 }
 function addTodo(text,pri){S.daily.todos.push({id:newId(),text,pri:pri||2,done:false});save();renderTodo();}
 function initTodo(){
   const inp=$('#tdInput');if(!inp)return;
-  const add=()=>{const v=inp.value.trim();if(!v)return;addTodo(v,+$('#tdPri').value);inp.value='';inp.focus();};
-  $('#tdAdd').addEventListener('click',add);
-  inp.addEventListener('keydown',e=>{if(e.key==='Enter')add();});
+  const star=$('#tdStar');
+  star.addEventListener('click',()=>{const on=star.classList.toggle('on');star.classList.toggle('burst',on);star.setAttribute('aria-pressed',on);});
+  bindAdd(inp,$('#tdSend'),v=>{
+    addTodo(v,star.classList.contains('on')?1:2);
+    star.classList.remove('on','burst');star.setAttribute('aria-pressed','false');
+  });
   renderTodo();
 }
 
 /* ---------- Planner: habit tracker ---------- */
+const HABIT_IDEAS=['💧 Drink 2 litres of water','🧘‍♀️ Meditate for 10 minutes','📖 Read 10 pages','🚶‍♀️ Walk for 20 minutes','📝 Journal','😴 Sleep by 11'];
 function habitDone(id,ds){return !!(S.habitLog&&S.habitLog[ds]&&S.habitLog[ds][id]);}
 function habitStreak(id){
   let n=0,ds=S.date;
@@ -2055,15 +2162,15 @@ function habitStreak(id){
   while(habitDone(id,ds)){n++;ds=dayOffset(ds,-1);}
   return n;
 }
+function addHabit(label){S.habits.push({id:newId(),label});save();renderHabits();}
 function renderHabits(){
   const wrap=$('#hbList');if(!wrap)return;
   wrap.innerHTML='';
-  if(!S.habits.length)wrap.appendChild(el('div','empty-note','No habits yet. Add one above. Start with something small.'));
   const days=[];for(let i=6;i>=0;i--)days.push(dayOffset(S.date,-i));
   S.habits.forEach(h=>{
     const st=habitStreak(h.id);
-    const row=el('div','hb-row',`<div class="hb-top"><span class="hb-name">${esc(h.label)}</span><span class="hb-streak">${st?`🔥 ${st} day${st>1?'s':''}`:'No streak yet'}</span><button class="x-btn" aria-label="Delete habit">✕</button></div><div class="hb-days"></div>`);
-    const grid=row.querySelector('.hb-days');
+    const card=el('div','pl-card',`<div class="hb-top"><span class="hb-name">${esc(h.label)}</span><span class="hb-streak${st?'':' none'}">${st?`🔥 ${st} day${st>1?'s':''}`:'Start today'}</span><button class="x-btn" aria-label="Delete habit">✕</button></div><div class="hb-days"></div>`);
+    const grid=card.querySelector('.hb-days');
     days.forEach(ds=>{
       const d=new Date(ds+'T12:00:00Z'),on=habitDone(h.id,ds);
       const b=el('button','hb-day'+(on?' on':'')+(ds===S.date?' today':''),`${d.toLocaleDateString('en-IN',{weekday:'short',timeZone:'UTC'})}<b>${d.getUTCDate()}</b>`);
@@ -2076,7 +2183,7 @@ function renderHabits(){
       });
       grid.appendChild(b);
     });
-    row.querySelector('.x-btn').addEventListener('click',()=>{
+    card.querySelector('.x-btn').addEventListener('click',()=>{
       capture('Delete "'+h.label+'"?','Type YES to delete this habit and its history',v=>{
         if(v.trim().toUpperCase()!=='YES'){toast('Kept it.');return;}
         S.habits=S.habits.filter(x=>x!==h);
@@ -2084,44 +2191,69 @@ function renderHabits(){
         save();renderHabits();
       });
     });
-    wrap.appendChild(row);
+    wrap.appendChild(card);
   });
+  const ideas=HABIT_IDEAS.filter(i=>!S.habits.some(h=>h.label===i));
+  if(ideas.length){
+    wrap.appendChild(el('div','sec-label',S.habits.length?'More ideas':'Ideas to start with'));
+    const chips=el('div','chips');
+    ideas.forEach(i=>{const c=el('button','chip',esc(i));c.addEventListener('click',()=>addHabit(i));chips.appendChild(c);});
+    wrap.appendChild(chips);
+  }
   refreshNavPct();
 }
 function initHabits(){
   const inp=$('#hbInput');if(!inp)return;
-  const add=()=>{const v=inp.value.trim();if(!v)return;S.habits.push({id:newId(),label:v});save();inp.value='';renderHabits();inp.focus();};
-  $('#hbAdd').addEventListener('click',add);
-  inp.addEventListener('keydown',e=>{if(e.key==='Enter')add();});
+  bindAdd(inp,$('#hbAdd'),addHabit);
   renderHabits();
 }
 
 /* ---------- Planner: goals by horizon ---------- */
 const HORIZONS=[
-  ['m1','Monthly goals','What do you want done by the end of this month?'],
-  ['m3','3-month goals','Where do you want to be three months from now?'],
-  ['m6','6-month goals','The bigger shifts that need half a year.'],
-  ['y1','Yearly goals','What would make this year one to remember?']
+  ['m1','🌙 This month','What do you want done by the end of this month?'],
+  ['m3','🌸 Next 3 months','Where do you want to be three months from now?'],
+  ['m6','🌷 Next 6 months','The bigger shifts that need half a year.'],
+  ['y1','👑 This year','What would make this year one to remember?']
 ];
 function renderGoals(focusKey){
   const wrap=$('#goalCards');if(!wrap)return;
   wrap.innerHTML='';
   HORIZONS.forEach(([k,title,hint])=>{
     const items=S.horizons[k],done=items.filter(x=>x.done).length;
-    const card=el('div','card',`<div class="card-title">${title}</div><div class="card-sub">${items.length?`${done} of ${items.length} achieved`:hint}</div><div></div>
-      <div class="add-row" style="margin:14px 0 0;"><input placeholder="Add a goal…" autocomplete="off" aria-label="New goal: ${title}" /><button>Add</button></div>`);
-    const list=card.children[2],inp=card.querySelector('input');
-    items.forEach(g=>{
-      const row=el('div','gl-item'+(g.done?' done':''),`${checkHTML}<span class="td-text">${esc(g.text)}</span><button class="x-btn" aria-label="Delete goal">✕</button>`);
-      row.querySelector('.check').addEventListener('click',()=>{g.done=!g.done;save();renderGoals();if(g.done){toast('🎯 Goal achieved!');burst(60);}});
-      row.querySelector('.x-btn').addEventListener('click',()=>{S.horizons[k]=items.filter(x=>x!==g);save();renderGoals();});
-      list.appendChild(row);
-    });
-    const add=()=>{const v=inp.value.trim();if(!v)return;items.push({id:newId(),text:v,done:false});save();renderGoals(k);};
-    card.querySelector('.add-row button').addEventListener('click',add);
-    inp.addEventListener('keydown',e=>{if(e.key==='Enter')add();});
+    const card=el('div','pl-card',`<div class="pl-head"><h3>${title}</h3><span class="pl-count">${items.length?`${done} / ${items.length}`:''}</span></div>
+      ${items.length?'':`<div class="pl-hint">${hint}</div>`}<div></div>
+      <div class="td-add"><input placeholder="Add a goal…" autocomplete="off" aria-label="New goal, ${esc(title)}" /><button class="td-send" aria-label="Add goal">+</button></div>`);
+    const list=card.querySelector('.td-add').previousElementSibling;
+    items.forEach(g=>list.appendChild(ckRow(g.text,g.done,{
+      onToggle:()=>{g.done=!g.done;save();later('goals',()=>renderGoals());if(g.done){toast('🎯 Goal achieved. So proud of you!');burst(70);}},
+      onDelete:()=>{S.horizons[k]=items.filter(x=>x!==g);save();renderGoals();}})));
+    bindAdd(card.querySelector('input'),card.querySelector('.td-send'),v=>{items.push({id:newId(),text:v,done:false});save();renderGoals(k);});
     wrap.appendChild(card);
-    if(focusKey===k)inp.focus();
+    if(focusKey===k)card.querySelector('input').focus();
+  });
+}
+
+/* Future date on the planner calendar: tasks that land in the to-do list that day */
+function renderPlanDetail(box,ds){
+  const items=S.planned[ds]||[];
+  box.innerHTML=`<h3>${calFmt(ds)}</h3><p class="cd-sub">Plan ahead. These tasks appear in your to-do list on this day.</p><div></div>
+    <div class="td-add"><input placeholder="Add a task for this day…" autocomplete="off" aria-label="New planned task" />
+    <button class="star" aria-label="Make it a priority" aria-pressed="false">${STAR_SVG}</button><button class="td-send" aria-label="Add task">+</button></div>`;
+  const list=box.querySelector('.td-add').previousElementSibling,star=box.querySelector('.td-add .star');
+  const again=()=>{renderCalendar();renderCalDetail(ds);};
+  star.addEventListener('click',()=>{const on=star.classList.toggle('on');star.classList.toggle('burst',on);star.setAttribute('aria-pressed',on);});
+  bindAdd(box.querySelector('input'),box.querySelector('.td-send'),v=>{
+    (S.planned[ds]||(S.planned[ds]=[])).push({text:v,pri:star.classList.contains('on')?1:2});
+    save();again();const n=$('#calDetail input');if(n)n.focus();
+  });
+  if(!items.length)list.appendChild(el('div','ck-empty','Nothing planned for this day yet.'));
+  items.forEach((it,i)=>{
+    const row=el('div','ck-row',`<span class="ck-dot"></span><span class="ck-text">${esc(it.text)}</span>${it.pri===1?`<span class="star on">${STAR_SVG}</span>`:''}<button class="x-btn" aria-label="Remove task">✕</button>`);
+    row.querySelector('.x-btn').addEventListener('click',()=>{
+      items.splice(i,1);if(!items.length)delete S.planned[ds];
+      save();again();
+    });
+    list.appendChild(row);
   });
 }
 
@@ -2161,17 +2293,20 @@ const DAY_AFFIRMATIONS=[
 ];
 let affShift=0;
 function todaysAffirmation(){
-  const A=[...DAY_AFFIRMATIONS,...((S&&S.myAffirmations)||[])];
+  const A=[...DAY_AFFIRMATIONS,...((S&&S.myAffirmations)||[]).filter(x=>!DAY_AFFIRMATIONS.includes(x))];
   const day=Math.floor(new Date().setHours(0,0,0,0)/86400000);
   return A[(day+affShift)%A.length];
 }
 function renderAffirm(){
-  const t=$('#affText');if(!t)return;
-  t.textContent=todaysAffirmation();
+  const t=$('#quoteText');if(!t)return;
+  const a=todaysAffirmation(),saved=S.myAffirmations.includes(a);
+  t.textContent=a;
+  const sv=$('#affSave');
+  sv.textContent=saved?'♥ Saved':'♡ Save';sv.classList.toggle('on',saved);
   const list=$('#affList');list.innerHTML='';
-  if(!S.myAffirmations.length)list.appendChild(el('div','empty-note','None of your own yet.'));
-  S.myAffirmations.forEach((a,i)=>{
-    const row=el('div','gl-item',`<span class="td-text">${esc(a)}</span><button class="x-btn" aria-label="Delete affirmation">✕</button>`);
+  if(!S.myAffirmations.length)list.appendChild(el('div','ck-empty','Nothing saved yet. Write one below, or tap Save on the home card 💗'));
+  S.myAffirmations.forEach((x,i)=>{
+    const row=el('div','ck-row',`<span class="ck-dot"></span><span class="ck-text">${esc(x)}</span><button class="x-btn" aria-label="Delete affirmation">✕</button>`);
     row.querySelector('.x-btn').addEventListener('click',()=>{S.myAffirmations.splice(i,1);save();renderAffirm();});
     list.appendChild(row);
   });
@@ -2179,9 +2314,13 @@ function renderAffirm(){
 function initAffirm(){
   const inp=$('#affInput');if(!inp)return;
   $('#affNext').addEventListener('click',()=>{affShift++;renderAffirm();});
-  const add=()=>{const v=inp.value.trim();if(!v)return;S.myAffirmations.push(v);save();inp.value='';renderAffirm();inp.focus();};
-  $('#affAdd').addEventListener('click',add);
-  inp.addEventListener('keydown',e=>{if(e.key==='Enter')add();});
+  $('#affMine').addEventListener('click',()=>go('affirm'));
+  $('#affSave').addEventListener('click',()=>{
+    const a=todaysAffirmation(),i=S.myAffirmations.indexOf(a);
+    if(i<0){S.myAffirmations.push(a);toast('💗 Saved to your affirmations');}else S.myAffirmations.splice(i,1);
+    save();renderAffirm();
+  });
+  bindAdd(inp,$('#affAdd'),v=>{S.myAffirmations.push(v);save();renderAffirm();});
   renderAffirm();
 }
 
@@ -2238,7 +2377,7 @@ function tick(){
    anywhere else it captures to the HCL brain dump. */
 $('#fab').addEventListener('click',()=>{
   if(P.planner){
-    capture('➕ New task','Goes to today\'s to-do list…',t=>{addTodo(t,2);toast('Added to today\'s to-do list');});
+    capture('✨ New task','What do you want to get done?',t=>{addTodo(t,2);go('home');toast('Added to your to-do list ✨');});
     return;
   }
   if(P.editable&&currentView==='blocks'){
@@ -2345,6 +2484,7 @@ addEventListener('keydown',e=>{
 function applyTheme(){
   document.documentElement.dataset.theme=S.theme;
   $('#iconSun').style.display=S.theme==='light'?'block':'none';
+  const pt=$('#phTheme');if(pt)pt.textContent=S.theme==='light'?'🌙':'☀️';
   $('#iconMoon').style.display=S.theme==='dark'?'block':'none';
 }
 function toggleTheme(){S.theme=S.theme==='light'?'dark':'light';save();applyTheme();}
