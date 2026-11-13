@@ -1012,7 +1012,7 @@ const supa=window.supabase.createClient(SUPA_URL,SUPA_KEY);
    token fetched with it. */
 const NEON_AUTH='https://ep-flat-night-aoqu1miw.neonauth.c-2.ap-southeast-1.aws.neon.tech/neondb/auth';
 const NEON_REST='https://ep-flat-night-aoqu1miw.apirest.c-2.ap-southeast-1.aws.neon.tech/neondb/rest/v1';
-const NEON_USERS=['preetha'];
+const NEON_USERS=['prathy','hariny','preetha'];
 const neon=(()=>{
   const USER_KEY='os-neon-user';
   let jwt=null,jwtExp=0,signInPw=null;
@@ -1169,131 +1169,45 @@ function prathySeedDefs(){
 function harinySeedDefs(){return exampleDefs();}
 
 /* ---------- Profiles ---------- */
-const PROFILES={
-  prathy:{
-    name:'Pradhishta', logo:'P', brand:'Pradhishta OS', tag:'Build · Learn · Inspire',
-    title:'Pradhishta OS — Build. Learn. Inspire.',
-    palette:null,
-    sections:['home','ritual','blocks','big3','water','gym','trading','veylara','hcl','room','nightritual','night','weekly','calendar','vision','admin'],
-    editable:true,
-    seedDefs:prathySeedDefs,
-    customWork:true,
-    seedWork:[],
-    focusCards:[
-      {emoji:'💰',title:'Income',desc:'Trading study, client invoices and one task that earns today.',accent:'var(--gold)',go:'trading'},
-      {emoji:'🚀',title:'Veylara',desc:'Templates, client work, websites and outreach that move the agency.',accent:'var(--sky)',go:'veylara'},
-      {emoji:'🎥',title:'High Conscious Life',desc:'One piece of filming, editing or product work for the brand.',accent:'var(--sage)',go:'hcl'}
-    ],
-    b3:[
-      {kind:'Money',accent:'var(--gold)',title:'One task that earns income',ph:'e.g. Send the Surfers Café invoice'},
-      {kind:'Business',accent:'var(--sky)',title:'One task for Veylara',ph:'e.g. Finish the CRM dashboard template'},
-      {kind:'Brand',accent:'var(--sage)',title:'One task for High Conscious Life',ph:'e.g. Film the intuition reel'}
-    ],
-    goals:[
-      ['income','💰','Income goal','e.g. ₹1L/month by December'],
-      ['fitness','💪','Fitness goal','e.g. Gym 5×/week, 55 kg strong'],
-      ['business','🚀','Business goal','e.g. 5 retainer clients for Veylara'],
-      ['youtube','📺','YouTube goal','e.g. 52 videos this year'],
-      ['instagram','📸','Instagram goal','e.g. 10k on @pradhishtaa'],
-      ['workshop','🪷','Workshop goal','e.g. Sold-out Break The Pattern']
-    ],
-    quotes:QUOTES,
-    affirmations:AFFIRMATIONS,
-    confetti:['#C96B8F','#E9B4C9','#B75D7E','#A08CB4','#F6D9E4'],
-    water:['#A9C3D8','#C69FB9'],
-    fab:true,
-    perfectDay:'🌟 A perfect day, Pradhishta. Everything done!'
+/* Everyone gets the same planner: priorities + to-do, habits, goals,
+   calendar, daily affirmations. Serif display face, upright only. */
+const PLANNER_PALETTE={
+  light:{
+    'bg':'#FFF8F5','surface':'#FFFFFF','surface-2':'#FDEEF1','surface-glass':'rgba(255,255,255,.9)',
+    'ink':'#3A2A30','ink-2':'#8A6B76','ink-3':'#C2A9B1',
+    'gold':'#B84E72','gold-soft':'#FCE4EC','sage':'#B84E72','sage-soft':'#FCE4EC',
+    'rose':'#F0A3B8','rose-soft':'#FDEBF0','sky':'#A284D6','sky-soft':'#F1E9FB','line':'#F5E1E6',
+    'shadow-sm':'0 1px 3px rgba(184,78,114,.06)',
+    'shadow-md':'0 8px 24px rgba(184,78,114,.09)',
+    'shadow-lg':'0 16px 44px rgba(184,78,114,.18)'
   },
-  hariny:{
-    name:'Hariny', logo:'H', brand:'Hariny OS', tag:'Plan · Focus · Grow',
-    title:'Hariny OS',
-    palette:{
-      /* Same HCL ivory base as the site — accents shift to purple */
-      light:{
-        'bg':'#F7F3EE','surface':'#FFFFFF','surface-2':'#EFE9F5','surface-glass':'rgba(255,255,255,.92)',
-        'ink':'#2C2C2C','ink-2':'#6E6575','ink-3':'#A79DB2',
-        'gold':'#8E6BC9','gold-soft':'#EBE2F6','sage':'#7A9E7E','sage-soft':'#E9EFE5',
-        'rose':'#7350A8','rose-soft':'#E5DBF1','sky':'#9B8CCB','sky-soft':'#ECE7F5','line':'#E3DCE0',
-        'shadow-sm':'0 0 0 rgba(0,0,0,0)',
-        'shadow-md':'0 10px 28px rgba(44,44,44,.07)',
-        'shadow-lg':'0 18px 48px rgba(44,44,44,.12)'
-      },
-      dark:{
-        'bg':'#1D1924','surface':'#262031','surface-2':'#2F2840','surface-glass':'rgba(38,32,49,.92)',
-        'ink':'#EFEAF6','ink-2':'#AFA1C6','ink-3':'#77688F',
-        'gold':'#AF8FE3','gold-soft':'#342647','sage':'#93AC8E','sage-soft':'#2A3226',
-        'rose':'#9F7ED6','rose-soft':'#33264A','sky':'#AB9DDB','sky-soft':'#2C2443','line':'#382F4C',
-        'shadow-sm':'0 0 0 rgba(0,0,0,0)',
-        'shadow-md':'0 10px 28px rgba(0,0,0,.35)',
-        'shadow-lg':'0 18px 48px rgba(0,0,0,.45)'
-      }
-    },
-    sections:['home','ritual','blocks','big3','water','gym','room','nightritual','night','weekly','calendar','vision','admin'],
-    editable:true,
-    seedDefs:harinySeedDefs,
-    customWork:true,
-    seedWork:['Bank of America'],
-    focusCards:[
-      {emoji:'💼',title:'Work',desc:'Your board and notes for the workday.',accent:'var(--sky)',go:'@work'},
-      {emoji:'💰',title:'Income',desc:'One task today that earns or saves money.',accent:'var(--gold)',go:'big3'},
-      {emoji:'🌱',title:'Personal Growth',desc:'The goals everything else serves — read them daily.',accent:'var(--sage)',go:'vision'}
-    ],
-    b3:[
-      {kind:'Money',accent:'var(--gold)',title:'One task that earns income',ph:'e.g. An invoice, a sale, a shift — anything that pays'},
-      {kind:'Work',accent:'var(--sky)',title:'One task that moves your work forward',ph:'e.g. Finish the report draft'},
-      {kind:'Growth',accent:'var(--sage)',title:'One task for personal growth',ph:'e.g. 30 minutes of course study'}
-    ],
-    goals:[
-      ['income','💰','Income goal','e.g. Save ₹50k by December'],
-      ['fitness','💪','Fitness goal','e.g. Gym 4×/week, feel strong'],
-      ['business','🚀','Career goal','e.g. Lead one project end-to-end'],
-      ['youtube','📚','Learning goal','e.g. Finish two courses this quarter'],
-      ['instagram','🎨','Creative goal','e.g. One creative project a month'],
-      ['workshop','🌿','Personal goal','e.g. A calmer, earlier morning']
-    ],
-    quotes:QUOTES.filter(q=>q[1]!=='High Conscious Life'),
-    affirmations:AFFIRMATIONS,
-    confetti:['#8E6BC9','#C9B4E9','#7350A8','#9B8CCB','#E9DFF7'],
-    water:['#A9A3D8','#C0A3D6'],
-    fab:false,
-    perfectDay:'🌟 A perfect day, Hariny. Everything done!'
-  },
-  /* Planner profile: to-do with priorities, habits, goals, calendar,
-     daily affirmations. Sans-serif throughout, no italics. */
-  preetha:{
-    name:'Preetha', logo:'P', brand:'Preetha OS', tag:'Plan · Focus · Glow',
-    title:'Preetha — My Day',
-    palette:{
-      light:{
-        'bg':'#FFF8F5','surface':'#FFFFFF','surface-2':'#FDEEF1','surface-glass':'rgba(255,255,255,.9)',
-        'ink':'#3A2A30','ink-2':'#8A6B76','ink-3':'#C2A9B1',
-        'gold':'#B84E72','gold-soft':'#FCE4EC','sage':'#B84E72','sage-soft':'#FCE4EC',
-        'rose':'#F0A3B8','rose-soft':'#FDEBF0','sky':'#A284D6','sky-soft':'#F1E9FB','line':'#F5E1E6',
-        'shadow-sm':'0 1px 3px rgba(184,78,114,.06)',
-        'shadow-md':'0 8px 24px rgba(184,78,114,.09)',
-        'shadow-lg':'0 16px 44px rgba(184,78,114,.18)'
-      },
-      dark:{
-        'bg':'#1B1418','surface':'#271C22','surface-2':'#33252D','surface-glass':'rgba(39,28,34,.9)',
-        'ink':'#FAEEF1','ink-2':'#CDAAB6','ink-3':'#8E6C79',
-        'gold':'#F493B3','gold-soft':'#4A2637','sage':'#F493B3','sage-soft':'#4A2637',
-        'rose':'#F7B9CB','rose-soft':'#48293A','sky':'#C6ACEB','sky-soft':'#35284A','line':'#3F2C36',
-        'shadow-sm':'0 1px 3px rgba(0,0,0,.2)',
-        'shadow-md':'0 8px 24px rgba(0,0,0,.32)',
-        'shadow-lg':'0 16px 44px rgba(0,0,0,.5)'
-      }
-    },
-    sections:['home','habits','goals','calendar','affirm','admin'],
-    planner:true, noItalic:true,
-    editable:false,
-    customWork:false,
-    focusCards:[],
-    b3:[], goals:[], quotes:QUOTES, affirmations:AFFIRMATIONS,
-    confetti:['#B84E72','#F0A3B8','#F5B83D','#A284D6','#FCE4EC'],
-    water:['#F0A3B8','#A284D6'],
-    fab:false,
-    perfectDay:'🌟 A perfect day, Preetha. Everything done!'
+  dark:{
+    'bg':'#1B1418','surface':'#271C22','surface-2':'#33252D','surface-glass':'rgba(39,28,34,.9)',
+    'ink':'#FAEEF1','ink-2':'#CDAAB6','ink-3':'#8E6C79',
+    'gold':'#F493B3','gold-soft':'#4A2637','sage':'#F493B3','sage-soft':'#4A2637',
+    'rose':'#F7B9CB','rose-soft':'#48293A','sky':'#C6ACEB','sky-soft':'#35284A','line':'#3F2C36',
+    'shadow-sm':'0 1px 3px rgba(0,0,0,.2)',
+    'shadow-md':'0 8px 24px rgba(0,0,0,.32)',
+    'shadow-lg':'0 16px 44px rgba(0,0,0,.5)'
   }
+};
+const plannerProfile=name=>({
+  name, logo:name[0], brand:name+' OS', tag:'Plan · Focus · Glow',
+  title:name+' — My Day',
+  palette:PLANNER_PALETTE,
+  sections:['home','habits','goals','calendar','affirm','admin'],
+  planner:true, noItalic:true,
+  editable:false, customWork:false,
+  focusCards:[], b3:[], goals:[], quotes:QUOTES, affirmations:AFFIRMATIONS,
+  confetti:['#B84E72','#F0A3B8','#F5B83D','#A284D6','#FCE4EC'],
+  water:['#F0A3B8','#A284D6'],
+  fab:false,
+  perfectDay:`🌟 A perfect day, ${name}. Everything done!`
+});
+const PROFILES={
+  prathy:plannerProfile('Prathy'),
+  hariny:plannerProfile('Hariny'),
+  preetha:plannerProfile('Preetha')
 };
 const hasSec=id=>!!P&&P.sections.includes(id);
 const dayOffset=(ds,n)=>{const d=new Date(ds+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10);};
@@ -1439,9 +1353,6 @@ async function loadState(){
     chosen=new Date(cloud.updated_at)>=new Date(local.savedAt)?cloud.state:local.state;
   }else if(cloud){ chosen=cloud.state; }
   else if(local&&local.state){ chosen=local.state; }
-  else if(profileKey==='prathy'){
-    try{ chosen=JSON.parse(storage.get('pradhishta-os-v1')); }catch(e){}
-  }
   S=chosen||defaults();
   mergeDefaults();
   rollover();
@@ -2605,7 +2516,7 @@ async function enter(session){
 (function prefill(){
   const u=(new URLSearchParams(location.search).get('u')||'').toLowerCase();
   if(EMAILS[u])$('#loginName').value=u;
-  if((PROFILES[u]&&PROFILES[u].noItalic)||(!u&&storage.get('os-noitalic')==='1'))document.body.classList.add('no-italic');
+  document.body.classList.add('no-italic');
 })();
 
 (async function boot(){
